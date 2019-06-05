@@ -18,8 +18,8 @@ class Navbar extends React.Component{
 
   render(){
   return (
-    <Segment inverted>
-    <Menu inverted pointing secondary>
+    <Segment >
+    <Menu pointing secondary>
       <Menu.Item
         as={Link}
         to='/'
@@ -44,11 +44,15 @@ class Navbar extends React.Component{
         </Dropdown>
         <Menu.Menu position='right'>
           <Menu.Item
+            as={Link}
+            to="/login"
             name='login'
             active={this.state.activeItem === 'login'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
+            as={Link}
+            to="/register"
               name='register'
               active={this.state.activeItem === 'register'}
               onClick={this.handleItemClick}

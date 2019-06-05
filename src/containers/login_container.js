@@ -4,12 +4,12 @@ import { Container,Divider } from 'semantic-ui-react'
 
 
 
-const HomeContainer=()=>{
+const LoginContainer=()=>{
   return (
     <Container>
-    <h1>Event Hub</h1>
+    <h1>Log in</h1>
     </Container>
   )
 }
 
-export default HomeContainer;
+export default LoginContainer;
