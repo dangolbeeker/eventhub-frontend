@@ -12,9 +12,22 @@ class App extends React.Component{
 
 
   componentDidMount = () => {
-    this.props.addCities()
+    fetch('http://localhost:3001/venues/index')
+    .then(resp=>resp.json())
+    .then(venues=>{this.props.addVenues(venues)})
+    fetch('http://localhost:3001/events/index')
+    .then(resp=>resp.json())
+    .then(events=>{this.props.addEvents(events)})
+    fetch('http://localhost:3001/venue_events/index')
+    .then(resp=>resp.json())
+    .then(venueEvents=>{this.props.addVenueEvents(venueEvents)})
+    fetch('http://localhost:3001/reviews/index')
+    .then(resp=>resp.json())
+    .then(reviews=>{this.props.addReviews(reviews)})
+    // this.props.addVenues("cities")
+    // this.props.addEvents("events")
+    // this.props.addVenueEvents("venueEvents")
   }
-
 
   render(){
     return (
@@ -33,14 +46,22 @@ class App extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return state
 }
 
 const mapDispatchToProps = (dispatch) => {
   return{
-    addCities:()=>{
-      console.log("addcities used")
+    addVenues:cities=>{
+      dispatch({type:"ADD_VENUES",payload:cities})
+    },
+    addEvents:events=>{
+      dispatch({type:"ADD_EVENTS",payload:events})
+    },
+    addVenueEvents:venueEvents=>{
+      dispatch({type:"ADD_VENUE_EVENTS",payload:venueEvents})
+    },
+    addReviews:reviews=>{
+      dispatch({type:"ADD_REVIEWS",payload:reviews})
     }
   }
 }

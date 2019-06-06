@@ -14,16 +14,16 @@ const defaultState = {
   function reducer(state=defaultState,action){
     switch(action.type){
       case"ADD_VENUES":
-        console.log("adding venues")
-        return {...state}
+        return {...state,venues:action.payload}
         break;
       case"ADD_EVENTS":
-        console.log("adding events")
-        return {...state}
+        return {...state,events:action.payload}
         break;
       case"ADD_VENUE_EVENTS":
-        console.log("adding venue events")
-        return {...state}
+        return {...state,venueEvents:action.payload}
+        break;
+      case"ADD_REVIEWS":
+        return {...state,reviews:action.payload}
         break;
       default:
       return state
