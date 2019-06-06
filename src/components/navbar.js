@@ -8,7 +8,6 @@ class Navbar extends React.Component{
 
 
   seeCurentUrl = () =>{
-    console.log("SEEING URL PROB")
     if(this.props){
       switch(this.props.location.pathname){
       case"/":
@@ -21,6 +20,8 @@ class Navbar extends React.Component{
         return"login"
       case"/register":
         return"register"
+      default:
+        return"home"
     }
     }else{return"home"}
   }

@@ -2,10 +2,6 @@ const defaultState = {
   user:null,
   venues:{},
   events:{
-    sports:{},
-    music:{},
-    artsAndTheatre:{},
-    misc:{}
   },
   venueEvents:{}
 }

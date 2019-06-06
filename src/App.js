@@ -3,6 +3,7 @@ import './App.css';
 import Navbar from './components/navbar';
 import HomeContainer from './containers/home_container'
 import VenueContainer from './containers/venue_container'
+import EventContainer from './containers/event_container'
 import LoginContainer from './containers/login_container'
 import RegisterContainer from './containers/register_container'
 import { Route, Switch} from 'react-router-dom'
@@ -36,7 +37,10 @@ class App extends React.Component{
         <Switch>
           <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/register' render={(routerProps)=><RegisterContainer{...routerProps}/>}/>
-          <Route exact path='/events' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
+          <Route exact path='/events/sports' render={(routerProps)=><EventContainer{...routerProps}/>}/>
+          <Route exact path='/events/music' render={(routerProps)=><EventContainer{...routerProps}/>}/>
+          <Route exact path='/events/arts&theatre' render={(routerProps)=><EventContainer{...routerProps}/>}/>
+          <Route exact path='/events/misc' render={(routerProps)=><EventContainer{...routerProps}/>}/>
           <Route exact path='/venues' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
           <Route exact path='/' render={(routerProps)=><HomeContainer{...routerProps}/>}/>
         </Switch>
@@ -45,9 +49,9 @@ class App extends React.Component{
   }
 }
 
-const mapStateToProps = (state) => {
-  return state
-}
+// const mapStateToProps = (state) => {
+//   return state
+// }
 
 const mapDispatchToProps = (dispatch) => {
   return{
@@ -66,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

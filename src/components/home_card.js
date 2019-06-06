@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card,Image } from 'semantic-ui-react'
+import { Card,Image,Button } from 'semantic-ui-react'
 
 
 export default class HomeCard extends React.Component{
@@ -29,6 +29,7 @@ export default class HomeCard extends React.Component{
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
         </Card.Content>
+        <Button primary>Details</Button>
       </Card>
     )
   }

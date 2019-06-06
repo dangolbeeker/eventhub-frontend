@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container,Divider } from 'semantic-ui-react'
 import {connect} from 'react-redux'
-import VenueSlot from '../components/venue_slot'
+import Slot from '../components/slot'
 
 
 
@@ -11,7 +11,7 @@ const VenueContainer = (props) => {
   const renderVenueContainers = () => {
     if(props){
     let arr = Object.values(props.venues)
-      return arr.map(venue=><React.Fragment><VenueSlot{...venue}/><Divider/></React.Fragment>)
+      return arr.map(venue=><React.Fragment><Slot{...venue}/><Divider/></React.Fragment>)
     }
   }
 
@@ -32,7 +32,8 @@ const VenueContainer = (props) => {
 const make_venue_obj = (venues) => {
   let obj={}
   if(Object.keys(venues).length===0){}
-  else{for(let i=0;i<20;i++){
+  else{
+    for(let i=0;i<Object.keys(venues).length;i++){
     obj[i]=venues[Math.floor(Math.random() * Object.keys(venues).length)]
   }}
   return obj
