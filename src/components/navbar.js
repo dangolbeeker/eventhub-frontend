@@ -6,8 +6,27 @@ import { Link } from 'react-router-dom'
 
 class Navbar extends React.Component{
 
+
+  seeCurentUrl = () =>{
+    console.log("SEEING URL PROB")
+    if(this.props){
+      switch(this.props.location.pathname){
+      case"/":
+        return"home"
+      case"/venues":
+        return"venues"
+      case this.props.location.pathname.includes("/events"):
+      return"events"
+      case"/login":
+        return"login"
+      case"/register":
+        return"register"
+    }
+    }else{return"home"}
+  }
+
   state = {
-    activeItem: 'home',
+    activeItem: this.seeCurentUrl()
   }
 
   handleItemClick = (e, { name }) => {
@@ -15,6 +34,8 @@ class Navbar extends React.Component{
        activeItem: name
      })
   }
+
+
 
   render(){
   return (

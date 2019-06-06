@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Navbar from './components/navbar';
 import HomeContainer from './containers/home_container'
-import DisplayContainer from './containers/display_container'
+import VenueContainer from './containers/venue_container'
 import LoginContainer from './containers/login_container'
 import RegisterContainer from './containers/register_container'
 import { Route, Switch} from 'react-router-dom'
@@ -32,13 +32,13 @@ class App extends React.Component{
   render(){
     return (
       <div className="App">
-        <Navbar/>
+        <Navbar{...this.props}/>
         <Switch>
-          <Route path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
-          <Route path='/register' render={(routerProps)=><RegisterContainer{...routerProps}/>}/>
-          <Route path='/events' render={(routerProps)=><DisplayContainer{...routerProps}/>}/>
-          <Route path='/venues' render={(routerProps)=><DisplayContainer{...routerProps}/>}/>
-          <Route path='/' render={(routerProps)=><HomeContainer{...routerProps}/>}/>
+          <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
+          <Route exact path='/register' render={(routerProps)=><RegisterContainer{...routerProps}/>}/>
+          <Route exact path='/events' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
+          <Route exact path='/venues' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
+          <Route exact path='/' render={(routerProps)=><HomeContainer{...routerProps}/>}/>
         </Switch>
       </div>
     );
