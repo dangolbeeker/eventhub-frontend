@@ -28,6 +28,32 @@ class App extends React.Component{
     .then(reviews=>{this.props.addReviews(reviews)})
   }
 
+
+  makeFoundEvents = (venueEvents,obj) =>{
+    let newObj ={}
+    if(venueEvents.length>0&&Object.values(obj).length>0)
+    {
+      // newObj[venueEvents[0].event_id] = obj[venueEvents[0].event_id]
+      // console.log("FORCED ITEM",newObj)
+    venueEvents.forEach(event=>{
+      if(newObj[event.event_id]){}
+      else{newObj[event.event_id] = obj[event.event_id]}
+    })}
+    return newObj
+  }
+
+
+  makeFoundVenues = (venueEvents,obj) =>{
+    let newObj ={}
+    if(venueEvents.length>0 && Object.values(obj).length>0){
+        venueEvents.forEach(event=>{
+        if(newObj[event.venue_id]){}
+        else{newObj[event.venue_id] = obj[event.venue_id]}
+      })
+    }
+    return newObj
+  }
+
   render(){
     return (
       <div className="App">
@@ -36,11 +62,16 @@ class App extends React.Component{
         <Route path="/venue/:id" render={(routerProps) => {
             const foundVenue = this.props.venues[parseInt(routerProps.match.params.id)]
               if (foundVenue){
-              const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.venue_id===foundVenue.id)
-              if(foundVenueEvents){
-                this.props.addSelectedContent(foundVenue)
-                this.props.addSelectedContentStuff(foundVenueEvents)
-                return <DetailContainer{...routerProps}/>}
+                const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.venue_id===foundVenue.id)
+                if(foundVenueEvents){
+                  const foundEventsForVenue = this.makeFoundEvents(foundVenueEvents,this.props.events)
+                  if(foundEventsForVenue){
+                    this.props.addSelectedContent(foundVenue)
+                    this.props.addSelectedContentVenueEvents(foundVenueEvents)
+                    this.props.addSelectedContentCounterpart(foundEventsForVenue)
+                      return <DetailContainer{...routerProps}/>
+                    }
+                  }
               } else {
                 return <h1>Loading</h1>
               }
@@ -48,11 +79,16 @@ class App extends React.Component{
           <Route path="/event/:id" render={(routerProps) => {
               const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
                 if (foundEvent){
-                const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)
-                if(foundVenueEvents){
-                  this.props.addSelectedContent(foundEvent)
-                  this.props.addSelectedContentStuff(foundVenueEvents)
-                  return <DetailContainer{...routerProps}/>}
+                  const foundEventVenues = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)
+                  if(foundEventVenues){
+                    const foundVenuesForEvent = this.makeFoundVenues(foundEventVenues,this.props.venues)
+                    if(foundVenuesForEvent){
+                      this.props.addSelectedContent(foundEvent)
+                      this.props.addSelectedContentVenueEvents(foundEventVenues)
+                      this.props.addSelectedContentCounterpart(foundVenuesForEvent)
+                        return <DetailContainer{...routerProps}/>
+                      }
+                    }
                 } else {
                   return <h1>Loading</h1>
                 }
@@ -96,10 +132,27 @@ const mapDispatchToProps = (dispatch) => {
     addSelectedContent:selectedContent=>{
       dispatch({type:"ADD_SELECTED_CONTENT",payload:selectedContent})
     },
-    addSelectedContentStuff:selectedContentStuff=>{
-      dispatch({type:"ADD_SELECTED_CONTENT_STUFF",payload:selectedContentStuff})
+    addSelectedContentVenueEvents:selectedContentVenueEvents=>{
+      dispatch({type:"ADD_SELECTED_CONTENT_VENUE_EVENTS",payload:selectedContentVenueEvents})
+    },
+    addSelectedContentCounterpart:selectedContentCounterpart=>{
+      dispatch({type:"ADD_SELECTED_CONTENT_COUNTERPART",payload:selectedContentCounterpart})
     }
   }
 }
+
+// <Route path="/event/:id" render={(routerProps) => {
+//     const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
+//       if (foundEvent){
+//       const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)
+//       if(foundVenueEvents){
+//         this.props.addSelectedContent(foundEvent)
+//         this.props.addSelectedContentVenueEvents(foundVenueEvents)
+//         this.props.addSelectedContentCounterpart()
+//         return <DetailContainer{...routerProps}/>}
+//       } else {
+//         return <h1>Loading</h1>
+//       }
+//   }} />
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

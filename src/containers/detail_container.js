@@ -1,6 +1,7 @@
 import React from 'react'
 import {Container,Image,Accordion,Divider} from 'semantic-ui-react'
 import {connect} from 'react-redux'
+import Slot from '../components/slot'
 
 const DetailContainer = (props) => {
   let info=[]
@@ -59,8 +60,13 @@ const DetailContainer = (props) => {
   })
   }
 
-  const eventOrVenue = () =>{
-    return( props.selectedContent.classifications ? <h2>Venues</h2> : <h2>Events</h2>)
+  const renderSlots = () =>{
+   if(Object.values(props.selectedContentCounterpart).length>0){
+     return Object.values(props.selectedContentCounterpart).map(event=>
+       <React.Fragment><Slot{...event}/><Divider/></React.Fragment>
+     )
+   }
+   else{return"Loading"}
   }
 
   return(
@@ -74,7 +80,8 @@ const DetailContainer = (props) => {
     </Container>
     <Divider/>
     <Container>
-    {eventOrVenue()}
+    {props.selectedContent.classifications ? <h2>Venues</h2> : <h2>Events</h2>}
+    {renderSlots()}
     </Container>
     </React.Fragment>
   )
@@ -83,7 +90,8 @@ const DetailContainer = (props) => {
 const mapStateToProps=(state)=>{
   return{
     selectedContent:state.selectedContent,
-    selectedContentStuff:state.selectedContentStuff
+    selectedContentVenueEvents:state.selectedContentVenueEvents,
+    selectedContentCounterpart: state.selectedContentCounterpart
   }
 }
 
