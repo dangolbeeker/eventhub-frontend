@@ -63,7 +63,7 @@ const DetailContainer = (props) => {
   const renderSlots = () =>{
    if(Object.values(props.selectedContentCounterpart).length>0){
      return Object.values(props.selectedContentCounterpart).map(event=>
-       <React.Fragment><Slot{...event}/><Divider/></React.Fragment>
+       <React.Fragment><Slot{...event}location={props.location}/><Divider/></React.Fragment>
      )
    }
    else{return"Loading"}

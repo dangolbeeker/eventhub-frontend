@@ -21,12 +21,42 @@ export default class Slot extends React.Component{
     }else{return""}
   }
 
+  handleOtherButtonLink = (location,id) =>{
+    if(location&&id)
+    {if(location.pathname.split('/').length==3){
+        return(location.pathname.includes("event")) ?
+        <Button as={Link} to={location.pathname + `/venue/${id}`}size="big" primary>{this.buttonName()}</Button>
+          :
+        <Button as={Link} to={location.pathname + `/event/${id}`}size="big" primary>{this.buttonName()}</Button>
+
+      }}
+
+    }
+
+  otherButtonLink = () =>{
+    if(this.props.location)
+    {if(this.props.location.pathname.split("/").length==3){
+      return(<Button as={Link} to={this.handleOtherButtonLink(this.props.location,this.props.id)}size="big" primary>Event Detail</Button>)
+    }}
+  }
+
+  buttonName = () =>{
+    if(this.props.classifications){
+      return"Attraction Details"
+    }else if(this.props.address_info){
+      return"Venue Details"
+    }else{return""}
+  }
+
+
+
   render(){
     return(
       <Container textAlign="center">
       <Image centered="true"height='140' src={this.renderImage()}/>
       <h2>{this.props.name}</h2>
-      <Button as={Link} to={this.buttonLink()}size="big" primary>Details</Button>
+      <Button as={Link} to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>
+      {this.handleOtherButtonLink(this.props.location,this.props.id)}
       </Container>
     )
   }
