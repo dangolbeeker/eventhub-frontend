@@ -25,9 +25,9 @@ export default class Slot extends React.Component{
     if(location&&id)
     {if(location.pathname.split('/').length==3){
         return(location.pathname.includes("event")) ?
-        <Button as={Link} to={location.pathname + `/venue/${id}`}size="big" primary>{this.buttonName()}</Button>
+        <Button as={Link} to={location.pathname + `/venue/${id}`}size="big" primary>Event Details</Button>
           :
-        <Button as={Link} to={location.pathname + `/event/${id}`}size="big" primary>{this.buttonName()}</Button>
+        <Button as={Link} to={location.pathname + `/event/${id}`}size="big" primary>Event Details</Button>
 
       }}
 
