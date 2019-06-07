@@ -66,8 +66,8 @@ class App extends React.Component{
                 if(foundVenueEvents){
                   const foundEventsForVenue = this.makeFoundEvents(foundVenueEvents,this.props.events)
                   if(foundEventsForVenue){
-                    this.props.addSelectedContent(foundVenue)
                     this.props.addSelectedContentVenueEvents(foundVenueEvents)
+                    this.props.addSelectedContent(foundVenue)
                     this.props.addSelectedContentCounterpart(foundEventsForVenue)
                       return <DetailContainer{...routerProps}/>
                     }

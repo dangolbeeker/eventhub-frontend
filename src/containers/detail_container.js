@@ -60,12 +60,19 @@ const DetailContainer = (props) => {
   })
   }
 
+  const giveSpecifics = (newEvent,props) =>{
+    let event = newEvent
+    props.selectedContentVenueEvents.filter(venueEvent=>{
+    debugger
+    })
+  }
+
   const renderSlots = () =>{
+    let i=0
+    console.log(props)
    if(Object.values(props.selectedContentCounterpart).length>0){
      return Object.values(props.selectedContentCounterpart).map(event=>
-       <React.Fragment><Slot{...event}/><Divider/></React.Fragment>
-     )
-   }
+       <React.Fragment><Slot{...event}location={props.location}/><Divider/></React.Fragment>)}
    else{return"Loading"}
   }
 
@@ -88,6 +95,7 @@ const DetailContainer = (props) => {
 }
 
 const mapStateToProps=(state)=>{
+  console.log(state)
   return{
     selectedContent:state.selectedContent,
     selectedContentVenueEvents:state.selectedContentVenueEvents,

@@ -55,7 +55,7 @@ class Navbar extends React.Component{
       active={this.state.activeItem === 'venues'}
       onClick={this.handleItemClick}
       name='venues'/>
-      <Dropdown item text='Events'
+      <Dropdown item text='Attractions'
       active={this.state.activeItem === 'events'}
       onClick={this.handleItemClick}>
         <Dropdown.Menu>
