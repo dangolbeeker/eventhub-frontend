@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container,Accordion,Image,Button } from 'semantic-ui-react'
+import {Link} from 'react-router-dom'
 
 export default class Slot extends React.Component{
 
@@ -12,12 +13,20 @@ export default class Slot extends React.Component{
     }
   }
 
+  buttonLink = () =>{
+    if(this.props.classifications){
+      return`/event/${this.props.id}`
+    }else if(this.props.address_info){
+      return `/venue/${this.props.id}`
+    }else{return""}
+  }
+
   render(){
     return(
       <Container textAlign="center">
       <Image centered="true"height='140' src={this.renderImage()}/>
       <h2>{this.props.name}</h2>
-      <Button size="big" primary>Details</Button>
+      <Button as={Link} to={this.buttonLink()}size="big" primary>Details</Button>
       </Container>
     )
   }

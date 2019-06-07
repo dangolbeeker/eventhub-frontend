@@ -5,6 +5,7 @@ import HomeContainer from './containers/home_container'
 import VenueContainer from './containers/venue_container'
 import EventContainer from './containers/event_container'
 import LoginContainer from './containers/login_container'
+import DetailContainer from './containers/detail_container'
 import RegisterContainer from './containers/register_container'
 import { Route, Switch} from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -25,9 +26,6 @@ class App extends React.Component{
     fetch('http://localhost:3001/reviews/index')
     .then(resp=>resp.json())
     .then(reviews=>{this.props.addReviews(reviews)})
-    // this.props.addVenues("cities")
-    // this.props.addEvents("events")
-    // this.props.addVenueEvents("venueEvents")
   }
 
   render(){
@@ -35,6 +33,30 @@ class App extends React.Component{
       <div className="App">
         <Navbar{...this.props}/>
         <Switch>
+        <Route path="/venue/:id" render={(routerProps) => {
+            const foundVenue = this.props.venues[parseInt(routerProps.match.params.id)]
+              if (foundVenue){
+              const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.venue_id===foundVenue.id)
+              if(foundVenueEvents){
+                this.props.addSelectedContent(foundVenue)
+                this.props.addSelectedContentStuff(foundVenueEvents)
+                return <DetailContainer{...routerProps}/>}
+              } else {
+                return <h1>Loading</h1>
+              }
+          }} />
+          <Route path="/event/:id" render={(routerProps) => {
+              const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
+                if (foundEvent){
+                const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)
+                if(foundVenueEvents){
+                  this.props.addSelectedContent(foundEvent)
+                  this.props.addSelectedContentStuff(foundVenueEvents)
+                  return <DetailContainer{...routerProps}/>}
+                } else {
+                  return <h1>Loading</h1>
+                }
+            }} />
           <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/register' render={(routerProps)=><RegisterContainer{...routerProps}/>}/>
           <Route exact path='/events/sports' render={(routerProps)=><EventContainer{...routerProps}/>}/>
@@ -49,9 +71,13 @@ class App extends React.Component{
   }
 }
 
-// const mapStateToProps = (state) => {
-//   return state
-// }
+const mapStateToProps = (state) => {
+  return {
+    events:state.events,
+    venues:state.venues,
+    venueEvents:state.venueEvents
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return{
@@ -66,8 +92,14 @@ const mapDispatchToProps = (dispatch) => {
     },
     addReviews:reviews=>{
       dispatch({type:"ADD_REVIEWS",payload:reviews})
+    },
+    addSelectedContent:selectedContent=>{
+      dispatch({type:"ADD_SELECTED_CONTENT",payload:selectedContent})
+    },
+    addSelectedContentStuff:selectedContentStuff=>{
+      dispatch({type:"ADD_SELECTED_CONTENT_STUFF",payload:selectedContentStuff})
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

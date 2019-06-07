@@ -3,7 +3,9 @@ const defaultState = {
   venues:{},
   events:{
   },
-  venueEvents:{}
+  venueEvents:{},
+  selectedContent:{},
+  selectedContentStuff:{}
 }
 
 
@@ -21,6 +23,10 @@ const defaultState = {
       case"ADD_REVIEWS":
         return {...state,reviews:action.payload}
         break;
+      case"ADD_SELECTED_CONTENT":
+        return{...state,selectedContent:action.payload}
+      case"ADD_SELECTED_CONTENT_STUFF":
+        return{...state,selectedContentStuff:action.payload}
       default:
       return state
     }

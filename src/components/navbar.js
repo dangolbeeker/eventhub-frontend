@@ -9,16 +9,17 @@ class Navbar extends React.Component{
 
   seeCurentUrl = () =>{
     if(this.props){
-      switch(this.props.location.pathname){
-      case"/":
-        return"home"
-      case"/venues":
+      let url = this.props.location.pathname.split("/")[1]
+      switch(url){
+      case"venues":
         return"venues"
-      case this.props.location.pathname.includes("/events"):
+      case"venue":
+        return"venues"
+      case "events":
       return"events"
-      case"/login":
+      case"login":
         return"login"
-      case"/register":
+      case"register":
         return"register"
       default:
         return"home"
