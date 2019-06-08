@@ -7,6 +7,7 @@ import EventContainer from './containers/event_container'
 import LoginContainer from './containers/login_container'
 import DetailContainer from './containers/detail_container'
 import RegisterContainer from './containers/register_container'
+import VenueEventContainer from './containers/venue_events_container'
 import { Route, Switch} from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -59,7 +60,22 @@ class App extends React.Component{
       <div className="App">
         <Navbar{...this.props}/>
         <Switch>
-        <Route path="/venue/:id" render={(routerProps) => {
+        <Route exact path="/venue/:vID/event/:eID" render={(routerProps) => {
+            const foundVenue = this.props.venues[parseInt(routerProps.match.params.vID)]
+            const foundEvent = this.props.events[parseInt(routerProps.match.params.eID)]
+              if (foundVenue&&foundEvent){
+                const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.venue_id===foundVenue.id&&event.event_id===foundEvent.id)
+                if(foundVenueEvents){
+                    this.props.addSelectedContent(foundVenue)
+                    this.props.addSelectedContentVenueEvents(foundVenueEvents)
+                    this.props.addSelectedContentCounterpart(foundEvent)
+                      return <VenueEventContainer{...routerProps}/>
+                  }
+              } else {
+                return <h1>Loading</h1>
+              }
+          }}/>
+        <Route exact path="/venue/:id" render={(routerProps) => {
             const foundVenue = this.props.venues[parseInt(routerProps.match.params.id)]
               if (foundVenue){
                 const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.venue_id===foundVenue.id)
@@ -76,7 +92,7 @@ class App extends React.Component{
                 return <h1>Loading</h1>
               }
           }} />
-          <Route path="/event/:id" render={(routerProps) => {
+          <Route exact path="/event/:id" render={(routerProps) => {
               const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
                 if (foundEvent){
                   const foundEventVenues = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)

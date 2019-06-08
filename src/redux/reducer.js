@@ -23,7 +23,7 @@ const defaultState = {
       case"ADD_SELECTED_CONTENT":
         return{...state,selectedContent:action.payload}
       case"ADD_SELECTED_CONTENT_VENUE_EVENTS":
-        return{...state,selectedContenVenueEvents:action.payload}
+        return{...state,selectedContentVenueEvents:action.payload}
         case"ADD_SELECTED_CONTENT_COUNTERPART":
           return{...state,selectedContentCounterpart:action.payload}
       default:

@@ -4,15 +4,36 @@ import {Link} from 'react-router-dom'
 
 export default class Slot extends React.Component{
 
-  renderImage = () => {
-    if(this.props.images==null){
-      return"https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"
-    }
-    else{
-      return this.props.images[this.props.images.length-1]
+
+  dateOrTitle = () =>{
+    switch(this.props.event_info){
+      case undefined:
+      return(this.props.name)
+      default:
+      return(this.props.event_info.date)
     }
   }
 
+  renderImageOrInfo = () => {
+    if(this.props.pricing_info){return(this.renderShowingDetails(this.props))}
+    else{return(this.renderImage())}
+  }
+
+  renderShowingDetails = (props) => {
+    return Object.entries(props.event_info).map(entry=><p>{`${entry[0]} - ${entry[1]}`}</p>)
+  }
+
+  renderImage = () => {
+    if(this.props.pricing_info){return(this.renderShowingDetails(this.props))}
+      else{
+        if(this.props.images==null){
+        return(<Image centered="true"height='140' src={"https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"}/>)
+      }
+
+      else{return(<Image centered="true"height='140' src={this.props.images[this.props.images.length-1]}/>)}
+    }
+  }
+"https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"
   buttonLink = () =>{
     if(this.props.classifications){
       return`/event/${this.props.id}`
@@ -45,7 +66,7 @@ export default class Slot extends React.Component{
       return"Attraction Details"
     }else if(this.props.address_info){
       return"Venue Details"
-    }else{return""}
+    }else{return"Add to cart"}
   }
 
 
@@ -53,8 +74,8 @@ export default class Slot extends React.Component{
   render(){
     return(
       <Container textAlign="center">
-      <Image centered="true"height='140' src={this.renderImage()}/>
-      <h2>{this.props.name}</h2>
+      <h2>{this.dateOrTitle()}</h2>
+      {this.renderImageOrInfo()}
       <Button as={Link} to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>
       {this.handleOtherButtonLink(this.props.location,this.props.id)}
       </Container>
