@@ -69,11 +69,18 @@ const DetailContainer = (props) => {
    else{return"Loading"}
   }
 
+  const renderImage = () => {
+    if(props.selectedContent){
+
+    return(props.selectedContent.images ? props.selectedContent.images[props.selectedContent.images.length-1]||props.selectedContent.images[0] : null)
+  }}
+
   return(
     <React.Fragment>
     <h1>Event Hub</h1>
     <h2>{props.selectedContent.name}</h2>
     <Container fluid textAlign="center">
+    <Image centered="true"height='140' src={renderImage()}/>
       {createInfo()}
       {renderInfo(info)}
       {renderInfo(info2)}

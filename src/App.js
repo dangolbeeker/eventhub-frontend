@@ -6,7 +6,6 @@ import VenueContainer from './containers/venue_container'
 import EventContainer from './containers/event_container'
 import LoginContainer from './containers/login_container'
 import DetailContainer from './containers/detail_container'
-import RegisterContainer from './containers/register_container'
 import VenueEventContainer from './containers/venue_events_container'
 import { Route, Switch} from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -125,7 +124,7 @@ class App extends React.Component{
                 }
             }} />
           <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
-          <Route exact path='/register' render={(routerProps)=><RegisterContainer{...routerProps}/>}/>
+          <Route exact path='/register' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/events/sports' render={(routerProps)=><EventContainer{...routerProps}/>}/>
           <Route exact path='/events/music' render={(routerProps)=><EventContainer{...routerProps}/>}/>
           <Route exact path='/events/arts&theatre' render={(routerProps)=><EventContainer{...routerProps}/>}/>

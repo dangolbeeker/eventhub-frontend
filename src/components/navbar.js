@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Segment, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-
+import {connect} from 'react-redux'
 
 
 class Navbar extends React.Component{
@@ -37,6 +37,28 @@ class Navbar extends React.Component{
      })
   }
 
+  checkerForUser = () =>{
+    return(this.props.user ? null :
+      <React.Fragment>
+      <Menu.Menu position='right'>
+        <Menu.Item
+          as={Link}
+          to="/login"
+          name='login'
+          active={this.state.activeItem === 'login'}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={Link}
+          to="/register"
+            name='register'
+            active={this.state.activeItem === 'register'}
+            onClick={this.handleItemClick}
+          />
+      </Menu.Menu>
+      </React.Fragment>)
+  }
+
 
 
   render(){
@@ -65,26 +87,15 @@ class Navbar extends React.Component{
         <Dropdown.Item as={Link} name ='misc'to='/events/misc'>Miscellaneous</Dropdown.Item>
         </Dropdown.Menu>
         </Dropdown>
-        <Menu.Menu position='right'>
-          <Menu.Item
-            as={Link}
-            to="/login"
-            name='login'
-            active={this.state.activeItem === 'login'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            as={Link}
-            to="/register"
-              name='register'
-              active={this.state.activeItem === 'register'}
-              onClick={this.handleItemClick}
-            />
-        </Menu.Menu>
+        {this.checkerForUser()}
       </Menu>
       </Segment>
     )
   }
 }
 
-export default Navbar;
+ const mapStateToProps=(state)=>{
+   return{user:state.user}
+}
+
+export default connect (mapStateToProps)(Navbar);

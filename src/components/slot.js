@@ -6,18 +6,21 @@ export default class Slot extends React.Component{
 
 
   dateOrTitle = () =>{
-    switch(this.props.event_info){
-      case undefined:
-      return(
+    if(this.props){
+      if(this.props.address_info){
+        return(
         <React.Fragment>
         <h1>{this.props.name}</h1>
-        <h3>{this.props.address_info ? this.props.address_info.city + "," + this.props.address_info.state : this.props.classifications.genre}</h3>
+        <h3>{this.props.address_info ? this.props.address_info.city + "," + this.props.address_info.state : this.props.address_info.zip_code}</h3>
         </React.Fragment>
-      )
-      default:
-      return(this.props.event_info.date)
+      )}else if(this.props.classifications){
+        return(
+        <React.Fragment>
+        <h1>{this.props.name}</h1>
+        <h3>{this.props.classifications.genre}</h3>
+        </React.Fragment>)}}
+      else{return(null)}
     }
-  }
 
   renderImageOrInfo = () => {
     if(this.props.pricing_info){return(this.renderShowingDetails(this.props))}
@@ -35,7 +38,7 @@ export default class Slot extends React.Component{
         return(<Image centered="true"height='140' src={"https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"}/>)
       }
 
-      else{return(<Image centered="true"height='140' src={this.props.images[this.props.images.length-1]}/>)}
+      else{return(<Image centered={true}height='140' src={this.props.images[this.props.images.length-1]}/>)}
     }
   }
 "https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"
@@ -79,7 +82,7 @@ export default class Slot extends React.Component{
   render(){
     return(
       <Container textAlign="center">
-      <h2>{this.dateOrTitle()}</h2>
+      {this.dateOrTitle()}
       {this.renderImageOrInfo()}
       <Button as={Link} to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>
       {this.handleOtherButtonLink(this.props.location,this.props.id)}

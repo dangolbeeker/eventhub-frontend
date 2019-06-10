@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom'
 
 export default class HomeCard extends React.Component{
 
+  handleButtonLink = () => {
+    if(this.props){
+      return(this.props.address_info ? `/venue/${this.props.id}` : `/event/${this.props.id}`)
+    }
+  }
+
   renderVenueImage = () => {
     if(this.props.images==null){
       return"https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"
@@ -30,7 +36,7 @@ export default class HomeCard extends React.Component{
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
         </Card.Content>
-        <Button as={Link}primary>Details</Button>
+        <Button as={Link} to={this.handleButtonLink()}primary>Details</Button>
       </Card>
     )
   }
