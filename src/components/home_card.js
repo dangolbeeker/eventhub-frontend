@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card,Image,Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 
 export default class HomeCard extends React.Component{
@@ -29,7 +30,7 @@ export default class HomeCard extends React.Component{
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
         </Card.Content>
-        <Button primary>Details</Button>
+        <Button as={Link}primary>Details</Button>
       </Card>
     )
   }

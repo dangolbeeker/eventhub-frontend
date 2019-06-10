@@ -8,7 +8,12 @@ export default class Slot extends React.Component{
   dateOrTitle = () =>{
     switch(this.props.event_info){
       case undefined:
-      return(this.props.name)
+      return(
+        <React.Fragment>
+        <h1>{this.props.name}</h1>
+        <h3>{this.props.address_info ? this.props.address_info.city + "," + this.props.address_info.state : this.props.classifications.genre}</h3>
+        </React.Fragment>
+      )
       default:
       return(this.props.event_info.date)
     }

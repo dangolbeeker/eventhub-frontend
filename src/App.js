@@ -75,6 +75,21 @@ class App extends React.Component{
                 return <h1>Loading</h1>
               }
           }}/>
+          <Route exact path="/event/:eID/venue/:vID" render={(routerProps) => {
+              const foundVenue = this.props.venues[parseInt(routerProps.match.params.vID)]
+              const foundEvent = this.props.events[parseInt(routerProps.match.params.eID)]
+                if (foundVenue&&foundEvent){
+                  const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.venue_id===foundVenue.id&&event.event_id===foundEvent.id)
+                  if(foundVenueEvents){
+                      this.props.addSelectedContent(foundEvent)
+                      this.props.addSelectedContentVenueEvents(foundVenueEvents)
+                      this.props.addSelectedContentCounterpart(foundVenue)
+                        return <VenueEventContainer{...routerProps}/>
+                    }
+                } else {
+                  return <h1>Loading</h1>
+                }
+            }}/>
         <Route exact path="/venue/:id" render={(routerProps) => {
             const foundVenue = this.props.venues[parseInt(routerProps.match.params.id)]
               if (foundVenue){
