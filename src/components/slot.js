@@ -1,9 +1,21 @@
 import React from 'react'
 import { Container,Accordion,Image,Button } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
+import { connect } from 'react-redux'
 
-export default class Slot extends React.Component{
+class Slot extends React.Component{
 
+
+
+ checkForTicketPurchase = (e) =>{
+   if(e.target.name === "Add to cart"){
+     this.checkerForUser()
+   }
+ }
+
+  checkerForUser = () => {
+    this.props.user ? this.props.addToCart({veID:this.props.id}) : alert("you must be logged in to buy tickets!")
+  }
 
   dateOrTitle = () =>{
     if(this.props){
@@ -47,7 +59,7 @@ export default class Slot extends React.Component{
       return`/event/${this.props.id}`
     }else if(this.props.address_info){
       return `/venue/${this.props.id}`
-    }else{return""}
+    }else{return null}
   }
 
   handleOtherButtonLink = (location,id) =>{
@@ -84,9 +96,23 @@ export default class Slot extends React.Component{
       <Container textAlign="center">
       {this.dateOrTitle()}
       {this.renderImageOrInfo()}
-      <Button as={Link} to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>
+      <Button as={Link} name={this.buttonName()}onClick={this.checkForTicketPurchase}to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>
       {this.handleOtherButtonLink(this.props.location,this.props.id)}
       </Container>
     )
   }
 }
+
+const mapStateToProps=(state)=>{
+  return{user:state.user}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    addToCart:ticket=>{
+      return({type:"ADD_TICKET_TO_CART",payload:ticket})
+    }
+  }
+}
+
+export default connect(mapStateToProps)(Slot)
