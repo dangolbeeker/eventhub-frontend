@@ -8,13 +8,13 @@ class Slot extends React.Component{
 
 
  checkForTicketPurchase = (e) =>{
-   if(e.target.name === "Add to cart"){
+   if(e.target.name === "Add to Cart"){
      this.checkerForUser()
    }
  }
 
   checkerForUser = () => {
-    this.props.user ? this.props.addToCart({veID:this.props.id}) : alert("you must be logged in to buy tickets!")
+    return(this.props.user != null ? this.props.addToCart({veID:this.props.id}) : alert("you must be logged in to buy tickets!"))
   }
 
   dateOrTitle = () =>{
@@ -54,6 +54,7 @@ class Slot extends React.Component{
     }
   }
 "https://cdn2.iconfinder.com/data/icons/sport-136/128/1_arena_athletics_building_sport_stadium_venue-128.png"
+
   buttonLink = () =>{
     if(this.props.classifications){
       return`/event/${this.props.id}`
@@ -86,17 +87,49 @@ class Slot extends React.Component{
       return"Attraction Details"
     }else if(this.props.address_info){
       return"Venue Details"
-    }else{return"Add to cart"}
+    }else if(this.props.on_sale){
+      return"Add to Cart"
+    }else{return"Sold out!"}
   }
 
+  checkForOnsale = () => {
+    if(this.props.on_sale){
+      return(<h3>On Sale!</h3>)
+    }else if(this.props.on_sale ===false){
+      return(<h3>Not on sale</h3>)
+    }
+  }
+
+  checkForSale = () => {
+    if(this.props){
+      if(this.props.on_sale===true){
+        debugger
+        return(
+          <Button
+          as={ this.props.on_sale ? null : Link}
+          name={this.buttonName()}
+          onClick={this.checkForTicketPurchase}
+          to={this.buttonLink()}size="big"
+          primary>{this.buttonName()}</Button>
+        )
+      }else if(this.props.on_sale===false){
+        return(<Button
+        as={Link}
+        disabled
+        name={this.buttonName()}
+        to={this.buttonLink()}size="big"
+        primary>{this.buttonName()}</Button>)}
+        else{return(<Button as={Link} name={this.buttonName()}onClick={this.checkForTicketPurchase}to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>)}}
+    }
 
 
   render(){
     return(
       <Container textAlign="center">
+      {this.checkForOnsale()}
       {this.dateOrTitle()}
       {this.renderImageOrInfo()}
-      <Button as={Link} name={this.buttonName()}onClick={this.checkForTicketPurchase}to={this.buttonLink()}size="big" primary>{this.buttonName()}</Button>
+      {this.checkForSale()}
       {this.handleOtherButtonLink(this.props.location,this.props.id)}
       </Container>
     )

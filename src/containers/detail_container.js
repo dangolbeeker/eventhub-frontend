@@ -40,14 +40,15 @@ const DetailContainer = (props) => {
       else{info2.push("no info available")}
 
     }
-    else if(props.selectedContent.classifications){
-      props.selectedContent.on_sale ? info.push("On Sale Now!") : info.push("Not on sale")
-
-      info2.push("Event Info")
-      Object.entries(props.selectedContent.classifications).forEach(value=>{
-        if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-      info2.push(`${value[0]}: ${value[1]}`)})
-    }else{return""}
+    // else if(props.selectedContent.classifications){
+    //   props.selectedContent.on_sale ? info.push("On Sale Now!") : info.push("Not on sale")
+    //
+    //   info2.push("Event Info")
+    //   Object.entries(props.selectedContent.classifications).forEach(value=>{
+    //     if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+    //   info2.push(`${value[0]}: ${value[1]}`)})
+    // }
+    else{return""}
   }
 
   const renderInfo = (info) =>{

@@ -95,9 +95,9 @@ const VenueEventContainer = (props) => {
     <h2>{handleNaming()}</h2>
     <Container fluid textAlign="center">
     </Container>
-    <Divider/>
     <Container>
     <h2>Showings</h2>
+    <Divider/>
     </Container>
     {renderSlots()}
     </React.Fragment>
