@@ -72,7 +72,6 @@ const DetailContainer = (props) => {
 
   const renderImage = () => {
     if(props.selectedContent){
-
     return(props.selectedContent.images ? props.selectedContent.images[props.selectedContent.images.length-1]||props.selectedContent.images[0] : null)
   }}
 

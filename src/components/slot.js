@@ -14,8 +14,26 @@ class Slot extends React.Component{
  }
 
   checkerForUser = () => {
-    return(this.props.user != null ? this.props.addToCart({veID:this.props.id}) : alert("you must be logged in to buy tickets!"))
+    return(this.props.user != null ? this.createCartTicket(this.props.id,this.props.user.id) : alert("you must be logged in to buy tickets!"))
   }
+
+  createCartTicket = (veID,userID) => {
+    debugger
+    let token = localStorage.getItem("token")
+    fetch('http://localhost:3001/tickets/create',{
+      method: 'POST',
+      headers: {
+        'Authorization':token,
+          'Content-Type': 'application/json',
+          'Accepts': 'application/json'},
+      body:{
+
+        }
+      }
+    )
+  }
+
+
 
   dateOrTitle = () =>{
     if(this.props){
@@ -103,7 +121,6 @@ class Slot extends React.Component{
   checkForSale = () => {
     if(this.props){
       if(this.props.on_sale===true){
-        debugger
         return(
           <Button
           as={ this.props.on_sale ? null : Link}
@@ -141,11 +158,11 @@ const mapStateToProps=(state)=>{
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return{
-    addToCart:ticket=>{
-      return({type:"ADD_TICKET_TO_CART",payload:ticket})
+    return{addToCart:obj=>
+      {
+        dispatch({type:"ADD_TICKET_TO_CART",payload:obj})
+      }
     }
   }
-}
 
-export default connect(mapStateToProps)(Slot)
+export default connect(mapStateToProps,mapDispatchToProps)(Slot)

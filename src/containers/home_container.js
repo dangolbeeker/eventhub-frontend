@@ -17,12 +17,13 @@ const HomeContainer = (props) => {
 
   const renderVenueCards = () => {
     let arr = Object.values(props.venues)
-    return arr.map(venue=><Grid.Column><HomeCard key={generateKey()} {...venue} /></Grid.Column>)
+    return arr.map(venue=><Grid.Column><HomeCard key={generateKey()} {...venue}{...props.location} /></Grid.Column>)
   }
 
   const renderEventCards = () => {
+    console.log(props)
     let arr = Object.values(props.events)
-    return arr.map(event=><Grid.Column><HomeCard key={generateKey()}{...event} /></Grid.Column>)
+    return arr.map(event=><Grid.Column><HomeCard key={generateKey()}{...event}{...props.location} /></Grid.Column>)
   }
 
   return (

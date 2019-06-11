@@ -6,12 +6,29 @@ import VenueContainer from './containers/venue_container'
 import EventContainer from './containers/event_container'
 import LoginContainer from './containers/login_container'
 import DetailContainer from './containers/detail_container'
+import CartContainer from './containers/cart_container'
 import VenueEventContainer from './containers/venue_events_container'
 import { Route, Switch} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class App extends React.Component{
 
+
+
+
+  autologin = () => {
+    let token = localStorage.getItem("token")
+    if(token){
+    fetch('http://localhost:3001/auto_login', {
+      method: 'POST',
+      headers: {
+      'Authorization':token,
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      }})
+      .then(resp=>resp.json())
+      .then(data=>{this.props.addUser(data)})
+  }}
 
   componentDidMount = () => {
     fetch('http://localhost:3001/venues/index')
@@ -26,6 +43,7 @@ class App extends React.Component{
     fetch('http://localhost:3001/reviews/index')
     .then(resp=>resp.json())
     .then(reviews=>{this.props.addReviews(reviews)})
+    this.autologin()
   }
 
 
@@ -123,6 +141,16 @@ class App extends React.Component{
                   return <h1>Loading</h1>
                 }
             }} />
+            <Route exact path='/cart' render={(routerProps)=>{
+              if(Object.values(this.props.venueEvents).length > 0)
+              {
+              const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
+              const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
+              const cartVenues = cartVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
+              const cartEvents =  cartVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
+              return(cartVenues&&cartEvents&&cartVenueEvents ? <CartContainer{...routerProps}cartEvents={cartEvents}cartVenues={cartVenues}cartTickets={cartTickets}cartVenueEvents={cartVenueEvents}/> : null)}
+              }
+            }/>
           <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/register' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/events/sports' render={(routerProps)=><EventContainer{...routerProps}/>}/>
@@ -141,7 +169,8 @@ const mapStateToProps = (state) => {
   return {
     events:state.events,
     venues:state.venues,
-    venueEvents:state.venueEvents
+    venueEvents:state.venueEvents,
+    user:state.user
   }
 }
 
@@ -167,7 +196,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     addSelectedContentCounterpart:selectedContentCounterpart=>{
       dispatch({type:"ADD_SELECTED_CONTENT_COUNTERPART",payload:selectedContentCounterpart})
-    }
+    },
+    addUser:user=>{dispatch({type:"ADD_USER",payload:user})}
   }
 }
 

@@ -33,6 +33,8 @@ const EventContainer = (props) => {
           return"Misc"
         case"/events/arts&theatre":
         return"Arts & Theatre"
+        default:
+        console.log("wtf")
       }
     }
   }

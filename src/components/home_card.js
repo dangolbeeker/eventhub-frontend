@@ -3,7 +3,7 @@ import { Card,Image,Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 
-export default class HomeCard extends React.Component{
+class HomeCard extends React.Component{
 
   handleButtonLink = () => {
     if(this.props){
@@ -29,6 +29,22 @@ export default class HomeCard extends React.Component{
     }
   }
 
+  purchaseOrDetail = () => {
+    if(this.props){
+      return(this.props.pathname==="/cart" ?
+    <Button primary onClick={this.handlePurchase}>Purchase</Button>
+    :
+    <Button as={Link} to={this.handleButtonLink()}primary>Details</Button>)}
+  }
+
+  renderOptionalButton = () => {
+    return(this.props.venueEvent ? <Button as={Link} to={`/event/${this.props.event.id}/venue/${this.props.venue.id}`}primary>Details</Button> : null)
+  }
+
+  renderDeleteButton = () => {
+    return(this.props.venueEvent ? <Button onClick ={this.deleteCartItem} color="red"primary>Delete</Button> : null)
+  }
+
   render(){
     return(
       <Card height='500'>
@@ -36,8 +52,13 @@ export default class HomeCard extends React.Component{
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
         </Card.Content>
-        <Button as={Link} to={this.handleButtonLink()}primary>Details</Button>
-      </Card>
+        {this.purchaseOrDetail()}
+        {this.renderOptionalButton()}
+        {this.renderDeleteButton()}
+        </Card>
+
     )
   }
 }
+
+export default HomeCard

@@ -1,21 +1,21 @@
 import React from 'react';
 import { Container,Form,Checkbox,Button } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 
 
 
-export default class LoginContainer extends React.Component{
+class LoginContainer extends React.Component{
 
 
   state = {
     Username:"",
     Password:"",
     Email:"",
-    Agreed:false
   }
 
-  handleTermsClick = (e) => {
-    this.setState(prevState =>({Agreed: !prevState.Agreed}))
-  }
+  // handleTermsClick = (e) => {
+  //   this.setState(prevState =>({Agreed: !prevState.Agreed}))
+  // }
 
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
@@ -24,33 +24,69 @@ export default class LoginContainer extends React.Component{
   generateEmailFormAndTerms = () => {
     if(this.props.location.pathname=="/register"){
       return(
-        <React.Fragment>
+        // <React.Fragment>
         <Form.Field>
           <label>Email</label>
-          <input onChange ={this.handleChange}name="email"placeholder='Email' />
+          <input onChange ={this.handleChange}name="Email"placeholder='Email' />
         </Form.Field>
-        <Form.Field>
-          <Checkbox onChange ={this.handleTermsClick}label='I agree to the Terms and Conditions' />
-        </Form.Field>
-        </React.Fragment>
+        // <Form.Field>
+        //   <Checkbox onChange ={this.handleTermsClick}label='I agree to the Terms and Conditions' />
+        // </Form.Field>
+        // </React.Fragment>
       )
     }
   }
 
+  handleSuccess = (data) => {
+    localStorage.setItem("token", data.token)
+    this.props.addUser(data.user)
+    this.props.history.push('/')
+  }
+
+
+
 
   login = () => {
-    console.log("loggin in")
+    fetch('http://localhost:3001/login',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    })
+    .then(resp=>resp.json())
+    .then(data=>{
+      data.errors||data.error ? alert(data.errors||data.error)
+      :
+      this.handleSuccess(data)
+    })
   }
 
   register = () => {
-    console.log('registering')
+    fetch('http://localhost:3001/register',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    })
+    .then(resp=>resp.json())
+    .then(data=>{
+      debugger
+      data.errors||data.error ? alert(data.errors||data.error)
+      :
+      this.handleSuccess(data)
+    })
   }
 
   capatilizeString=(string)=>{
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-   handleLoginOrRegister = () =>{
+   handleLoginOrRegister = (e) =>{
+     e.preventDefault()
      this.props.location.pathname ==="/login" ? this.login() : this.register()
    }
 
@@ -80,3 +116,11 @@ export default class LoginContainer extends React.Component{
     )
   }
 }
+
+ function mapDispatchToProps(dispatch){
+   return{addUser:user=>
+     dispatch({type:"ADD_USER",payload:{user}})
+   }
+ }
+
+export default connect(null,mapDispatchToProps)(LoginContainer)

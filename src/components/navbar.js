@@ -21,6 +21,8 @@ class Navbar extends React.Component{
         return"login"
       case"register":
         return"register"
+      case"cart":
+      return"cart"
       default:
         return"home"
     }
@@ -37,8 +39,29 @@ class Navbar extends React.Component{
      })
   }
 
+  handleLogout = () => {
+    this.props.deleteUser()
+    localStorage.removeItem('token')
+    this.props.history.push('/')
+  }
+
   checkerForUser = () =>{
-    return(this.props.user ? null :
+    return(this.props.user ?
+      <React.Fragment>
+      <Menu.Menu position='right'>
+        <Menu.Item
+          as={Link}
+          to="/cart"
+          name='cart'
+          active={this.state.activeItem === 'cart'}
+          onClick={this.handleItemClick}
+        /><Menu.Item
+            name='logout'
+            onClick={this.handleLogout}
+          />
+      </Menu.Menu>
+      </React.Fragment>
+       :
       <React.Fragment>
       <Menu.Menu position='right'>
         <Menu.Item
@@ -97,5 +120,8 @@ class Navbar extends React.Component{
  const mapStateToProps=(state)=>{
    return{user:state.user}
 }
+ const mapDispatchToProps = (dispatch) => {
+   return{deleteUser:()=>dispatch({type:"DELETE_USER",payload:null})}
+ }
 
-export default connect (mapStateToProps)(Navbar);
+export default connect (mapStateToProps,mapDispatchToProps)(Navbar);
