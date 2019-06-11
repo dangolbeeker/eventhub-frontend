@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card,Image,Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 
 class HomeCard extends React.Component{
@@ -30,20 +31,65 @@ class HomeCard extends React.Component{
   }
 
   purchaseOrDetail = () => {
-    if(this.props){
-      return(this.props.pathname==="/cart" ?
-    <Button primary onClick={this.handlePurchase}>Purchase</Button>
-    :
-    <Button as={Link} to={this.handleButtonLink()}primary>Details</Button>)}
-  }
+      if(this.props){
+        switch(this.props.pathname){
+          case"/cart":
+          return(<Button primary onClick={this.purchaseCartItem}>Purchase</Button>)
+          case"/tickets":
+          return null
+          default:
+          return(<Button as={Link} to={this.handleButtonLink()}primary>Details</Button>)
+        }
+      }
+    }
+
 
   renderOptionalButton = () => {
     return(this.props.venueEvent ? <Button as={Link} to={`/event/${this.props.event.id}/venue/${this.props.venue.id}`}primary>Details</Button> : null)
   }
 
   renderDeleteButton = () => {
-    return(this.props.venueEvent ? <Button onClick ={this.deleteCartItem} color="red"primary>Delete</Button> : null)
+      switch(this.props.pathname){
+        case"/cart":
+          return(<Button onClick ={this.deleteCartItem} color="red"primary>Delete</Button>)
+        case"/tickets":
+          return(<Button onClick ={this.deleteCartItem} color="red"primary>Refund</Button>)
+        default:
+        return null
+      }
   }
+
+  deleteCartItem = () => {
+    fetch(`http://localhost:3001/tickets/destroy/${this.props.id}`,{
+      method:"DELETE",
+      headers:{
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body:JSON.stringify({
+        UserID:this.props.user_id
+      })
+    })
+    .then(resp=>resp.json())
+    .then(data=>this.props.updateUser(data.user))
+  }
+
+  purchaseCartItem = () => {
+    fetch(`http://localhost:3001/tickets/purchase/${this.props.id}`,{
+      method:"PATCH",
+      headers:{
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body:JSON.stringify({
+        UserID:this.props.user_id
+      })
+    })
+    .then(resp=>resp.json())
+    .then(data=>this.props.updateUser(data.user))
+  }
+
+
 
   render(){
     return(
@@ -51,6 +97,7 @@ class HomeCard extends React.Component{
         <Image  height="140" src={this.renderVenueImage()} />
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
+          <h3>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</h3>
         </Card.Content>
         {this.purchaseOrDetail()}
         {this.renderOptionalButton()}
@@ -61,4 +108,12 @@ class HomeCard extends React.Component{
   }
 }
 
-export default HomeCard
+ const mapDispatchToProps = (dispatch) => {
+    return{updateUser:data=>
+      {
+        dispatch({type:"ADD_USER",payload:data})
+      }
+    }
+ }
+
+export default connect(null,mapDispatchToProps)(HomeCard)

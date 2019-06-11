@@ -10,6 +10,7 @@ class Navbar extends React.Component{
   seeCurentUrl = () =>{
     if(this.props){
       let url = this.props.location.pathname.split("/")[1]
+
       switch(url){
       case"venues":
         return"venues"
@@ -17,12 +18,16 @@ class Navbar extends React.Component{
         return"venues"
       case "events":
       return"events"
+      case "event":
+      return"events"
       case"login":
         return"login"
       case"register":
         return"register"
       case"cart":
       return"cart"
+      case"tickets":
+      return"tickets"
       default:
         return"home"
     }
@@ -49,13 +54,21 @@ class Navbar extends React.Component{
     return(this.props.user ?
       <React.Fragment>
       <Menu.Menu position='right'>
+      <Menu.Item
+        as={Link}
+        to="/tickets"
+        name='tickets'
+        active={this.state.activeItem === 'tickets'}
+        onClick={this.handleItemClick}
+      />
         <Menu.Item
           as={Link}
           to="/cart"
           name='cart'
           active={this.state.activeItem === 'cart'}
           onClick={this.handleItemClick}
-        /><Menu.Item
+        />
+        <Menu.Item
             name='logout'
             onClick={this.handleLogout}
           />

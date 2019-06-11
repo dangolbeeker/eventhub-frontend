@@ -18,7 +18,6 @@ class Slot extends React.Component{
   }
 
   createCartTicket = (veID,userID) => {
-    debugger
     let token = localStorage.getItem("token")
     fetch('http://localhost:3001/tickets/create',{
       method: 'POST',
@@ -26,11 +25,13 @@ class Slot extends React.Component{
         'Authorization':token,
           'Content-Type': 'application/json',
           'Accepts': 'application/json'},
-      body:{
-
-        }
-      }
-    )
+      body:JSON.stringify({
+          UserID:userID,
+          venueEventID:veID
+        })
+      })
+      .then(resp=>resp.json())
+      .then(data=>this.props.updateUser(data.user))
   }
 
 
@@ -158,9 +159,9 @@ const mapStateToProps=(state)=>{
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return{addToCart:obj=>
-      {
-        dispatch({type:"ADD_TICKET_TO_CART",payload:obj})
+    return{updateUser:data=>
+      {console.log(data)
+        dispatch({type:"ADD_USER",payload:data})
       }
     }
   }

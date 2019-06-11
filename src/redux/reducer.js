@@ -26,14 +26,12 @@ const defaultState = {
         return{...state,selectedContent:action.payload}
       case"ADD_SELECTED_CONTENT_VENUE_EVENTS":
         return{...state,selectedContentVenueEvents:action.payload}
-        case"ADD_SELECTED_CONTENT_COUNTERPART":
-          return{...state,selectedContentCounterpart:action.payload}
-        case"ADD_TICKET_TO_USER":
-          return{...state,user:action.payload}
-        case"ADD_USER":
-          return{...state,user:action.payload}
-        case "DELETE_USER":
-          return{...state,user:null}
+      case"ADD_SELECTED_CONTENT_COUNTERPART":
+        return{...state,selectedContentCounterpart:action.payload}
+      case"ADD_USER":
+        return{...state,user:action.payload}
+      case "DELETE_USER":
+        return{...state,user:null}
       default:
       return state
     }

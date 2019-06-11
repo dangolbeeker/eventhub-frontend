@@ -21,7 +21,6 @@ const HomeContainer = (props) => {
   }
 
   const renderEventCards = () => {
-    console.log(props)
     let arr = Object.values(props.events)
     return arr.map(event=><Grid.Column><HomeCard key={generateKey()}{...event}{...props.location} /></Grid.Column>)
   }

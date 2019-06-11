@@ -74,7 +74,6 @@ class LoginContainer extends React.Component{
     })
     .then(resp=>resp.json())
     .then(data=>{
-      debugger
       data.errors||data.error ? alert(data.errors||data.error)
       :
       this.handleSuccess(data)

@@ -141,8 +141,22 @@ class App extends React.Component{
                   return <h1>Loading</h1>
                 }
             }} />
+            <Route exact path='/tickets' render={(routerProps)=>{
+              if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
+              {
+              const tickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===true)
+              const ticketVenueEvents =   tickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
+              const ticketVenues = ticketVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
+              const ticketEvents =  ticketVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
+              console.log(tickets)
+              console.log(ticketVenueEvents)
+              console.log(ticketVenues)
+              console.log(ticketEvents)
+              return(ticketVenues&&ticketEvents&&ticketVenueEvents ? <CartContainer{...routerProps}cartEvents={ticketEvents}cartVenues={ticketVenues}cartTickets={tickets}cartVenueEvents={ticketVenueEvents}/> : null)}
+              }
+            }/>
             <Route exact path='/cart' render={(routerProps)=>{
-              if(Object.values(this.props.venueEvents).length > 0)
+              if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
               {
               const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
               const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
