@@ -63,8 +63,8 @@ const DetailContainer = (props) => {
 
   const renderSlots = () =>{
    if(Object.values(props.selectedContentCounterpart).length>0){
-     return Object.values(props.selectedContentCounterpart).map(event=>
-       <React.Fragment><Slot{...event}location={props.location}/><Divider/></React.Fragment>
+     return Object.values(props.selectedContentCounterpart).map(e=>
+       <React.Fragment><Slot{...e} key={e.id} location={props.location}/><Divider/></React.Fragment>
      )
    }
    else{return"Loading"}
@@ -80,7 +80,7 @@ const DetailContainer = (props) => {
     <h1>Event Hub</h1>
     <h2>{props.selectedContent.name}</h2>
     <Container fluid textAlign="center">
-    <Image centered="true"height='140' src={renderImage()}/>
+    <Image centered={true}height='140' src={renderImage()}/>
       {createInfo()}
       {renderInfo(info)}
       {renderInfo(info2)}

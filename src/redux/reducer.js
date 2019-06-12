@@ -3,9 +3,10 @@ const defaultState = {
     tickets:{}
   },
   venues:{},
-  events:{
-  },
+  events:{},
   venueEvents:{},
+  //this doesnt get used until venue container gets used
+  venueOrEvents:{},
   selectedContent:{},
   selectedContentVenueEvents:{},
   selectedContentCounterpart:{}
@@ -32,6 +33,8 @@ const defaultState = {
         return{...state,user:action.payload}
       case "DELETE_USER":
         return{...state,user:null}
+      case"RESET_PROPS":
+      return{...state,venueOrEvents:{}}
       default:
       return state
     }

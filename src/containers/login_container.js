@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container,Form,Checkbox,Button } from 'semantic-ui-react'
+import { Container,Form,Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
 
@@ -22,7 +22,7 @@ class LoginContainer extends React.Component{
   }
 
   generateEmailFormAndTerms = () => {
-    if(this.props.location.pathname=="/register"){
+    if(this.props.location.pathname==="/register"){
       return(
         // <React.Fragment>
         <Form.Field>
@@ -118,7 +118,8 @@ class LoginContainer extends React.Component{
 
  function mapDispatchToProps(dispatch){
    return{addUser:user=>
-     dispatch({type:"ADD_USER",payload:{user}})
+       dispatch({type:"ADD_USER",payload:user})
+
    }
  }
 

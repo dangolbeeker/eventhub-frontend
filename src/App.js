@@ -28,6 +28,7 @@ class App extends React.Component{
       }})
       .then(resp=>resp.json())
       .then(data=>{this.props.addUser(data)})
+      // .then(()=>this.props.history.push('/'))
   }}
 
   componentDidMount = () => {
@@ -124,6 +125,7 @@ class App extends React.Component{
                 return <h1>Loading</h1>
               }
           }} />
+          <Route path='/events/:type' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
           <Route exact path="/event/:id" render={(routerProps) => {
               const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
                 if (foundEvent){
@@ -148,17 +150,13 @@ class App extends React.Component{
               const ticketVenueEvents =   tickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
               const ticketVenues = ticketVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
               const ticketEvents =  ticketVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
-              console.log(tickets)
-              console.log(ticketVenueEvents)
-              console.log(ticketVenues)
-              console.log(ticketEvents)
               return(ticketVenues&&ticketEvents&&ticketVenueEvents ? <CartContainer{...routerProps}cartEvents={ticketEvents}cartVenues={ticketVenues}cartTickets={tickets}cartVenueEvents={ticketVenueEvents}/> : null)}
               }
             }/>
             <Route exact path='/cart' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
               {
-              const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
+              const cartTickets = this.props.user.tickets.filter(ticket=>ticket.bought===false)
               const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
               const cartVenues = cartVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
               const cartEvents =  cartVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
@@ -167,10 +165,6 @@ class App extends React.Component{
             }/>
           <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/register' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
-          <Route exact path='/events/sports' render={(routerProps)=><EventContainer{...routerProps}/>}/>
-          <Route exact path='/events/music' render={(routerProps)=><EventContainer{...routerProps}/>}/>
-          <Route exact path='/events/arts&theatre' render={(routerProps)=><EventContainer{...routerProps}/>}/>
-          <Route exact path='/events/misc' render={(routerProps)=><EventContainer{...routerProps}/>}/>
           <Route exact path='/venues' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
           <Route exact path='/' render={(routerProps)=><HomeContainer{...routerProps}/>}/>
         </Switch>
@@ -190,8 +184,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return{
-    addVenues:cities=>{
-      dispatch({type:"ADD_VENUES",payload:cities})
+    addVenues:venues=>{
+      dispatch({type:"ADD_VENUES",payload:venues})
     },
     addEvents:events=>{
       dispatch({type:"ADD_EVENTS",payload:events})

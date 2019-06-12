@@ -84,7 +84,7 @@ class Slot extends React.Component{
 
   handleOtherButtonLink = (location,id) =>{
     if(location&&id)
-    {if(location.pathname.split('/').length==3){
+    {if(location.pathname.split('/').length===3){
         return(location.pathname.includes("event")) ?
         <Button as={Link} to={location.pathname + `/venue/${id}`}size="big" primary>Event Details</Button>
           :
@@ -96,7 +96,7 @@ class Slot extends React.Component{
 
   otherButtonLink = () =>{
     if(this.props.location)
-    {if(this.props.location.pathname.split("/").length==3){
+    {if(this.props.location.pathname.split("/").length===3){
       return(<Button as={Link} to={this.handleOtherButtonLink(this.props.location,this.props.id)}size="big" primary>Event Detail</Button>)
     }}
   }

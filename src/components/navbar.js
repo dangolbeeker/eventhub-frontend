@@ -10,7 +10,6 @@ class Navbar extends React.Component{
   seeCurentUrl = () =>{
     if(this.props){
       let url = this.props.location.pathname.split("/")[1]
-
       switch(url){
       case"venues":
         return"venues"
@@ -27,7 +26,7 @@ class Navbar extends React.Component{
       case"cart":
       return"cart"
       case"tickets":
-      return"tickets"
+      return"ticket"
       default:
         return"home"
     }
@@ -38,16 +37,51 @@ class Navbar extends React.Component{
     activeItem: this.seeCurentUrl()
   }
 
-  handleItemClick = (e, { name }) => {
-    this.setState({
-       activeItem: name
-     })
+  // pushNavbar = (name) => {
+  //   console.log(this.props)
+  //   switch(name){
+  //     case"venues":
+  //       this.props.history.push('/venues')
+  //       break;
+  //     case"home":
+  //       // this.props.history.push('/')
+  //       break;
+  //     case"cart":
+  //       this.props.history.push('/cart')
+  //       break;
+  //     case"tickets":
+  //       this.props.history.push('/tickets')
+  //       break;
+  //     case"sports":
+  //       console.log("should be going to sports")
+  //       this.props.history.push('/events/sports')
+  //       break;
+  //     case"music":
+  //       this.props.history.push('/events/music')
+  //       break;
+  //     case"misc":
+  //       this.props.history.push('/events/music')
+  //       break;
+  //     case"arts&theatre":
+  //       this.props.history.push('/events/music')
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
+
+  handleItemClick = (e,{name}) => {
+    this.setState({activeItem:name}
+      // ,
+      // ()=>{this.pushNavbar(name)}
+    )
   }
 
   handleLogout = () => {
     this.props.deleteUser()
     localStorage.removeItem('token')
-    this.props.history.push('/')
+    this.setState({activeItem:"home"},
+    ()=>{this.props.history.push('/')})
   }
 
   checkerForUser = () =>{
@@ -117,10 +151,10 @@ class Navbar extends React.Component{
       active={this.state.activeItem === 'events'}
       onClick={this.handleItemClick}>
         <Dropdown.Menu>
-        <Dropdown.Item as={Link} name ='sports'to='/events/sports'>Sports</Dropdown.Item>
-        <Dropdown.Item as={Link} name ='music'to='/events/music'>Music</Dropdown.Item>
-        <Dropdown.Item as={Link} name ='arts&theatre'to='/events/arts&theatre'>Arts & Theatre</Dropdown.Item>
-        <Dropdown.Item as={Link} name ='misc'to='/events/misc'>Miscellaneous</Dropdown.Item>
+        <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='sports' to='/events/sports'>Sports</Dropdown.Item>
+        <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='music' to='/events/music'>Music</Dropdown.Item>
+        <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='arts&theatre' to='/events/arts&theatre'>Arts & Theatre</Dropdown.Item>
+        <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='misc' to='/events/misc'>Miscellaneous</Dropdown.Item>
         </Dropdown.Menu>
         </Dropdown>
         {this.checkerForUser()}

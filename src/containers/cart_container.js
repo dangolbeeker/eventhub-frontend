@@ -64,7 +64,6 @@ handleNaming = () => {
 
 
   render(){
-    console.log(this.props)
       return (
       <Container>
       <h1>{this.handleNaming()}</h1>
