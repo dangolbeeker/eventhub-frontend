@@ -57,6 +57,8 @@ handleNaming = () => {
     return(Object.values(this.props.cartTickets).length>0 ? "Cart" : "You have nothing in your cart!")
     case"/tickets":
     return(Object.values(this.props.cartTickets).length>0 ? "Tickets" : "You have no tickets!")
+    default:
+    console.log("you got here somehow, enjoy")
   }
 }
 

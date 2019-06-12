@@ -3,7 +3,6 @@ import './App.css';
 import Navbar from './components/navbar';
 import HomeContainer from './containers/home_container'
 import VenueContainer from './containers/venue_container'
-import EventContainer from './containers/event_container'
 import LoginContainer from './containers/login_container'
 import DetailContainer from './containers/detail_container'
 import CartContainer from './containers/cart_container'
@@ -156,7 +155,7 @@ class App extends React.Component{
             <Route exact path='/cart' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
               {
-              const cartTickets = this.props.user.tickets.filter(ticket=>ticket.bought===false)
+              const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
               const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
               const cartVenues = cartVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
               const cartEvents =  cartVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
