@@ -142,6 +142,7 @@ class Slot extends React.Component{
 
 
   render(){
+    console.log(this.props)
     return(
       <Container textAlign="center">
       {this.checkForOnsale()}

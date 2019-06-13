@@ -5,7 +5,6 @@ import Slot from '../components/slot'
 
 
 
-
 class VenueContainer extends React.Component{
 
   state = {
@@ -16,16 +15,13 @@ class VenueContainer extends React.Component{
     if(this.props.venuesOrEvents){
     let arr = Object.values(this.props.venuesOrEvents)
     if(arr.length>0){
-      console.log(this.state)
       let arr2 = arr.filter(vOrE=>this.handleFilter(vOrE,this.state.searchTerm))
-      console.log(arr2)
       return arr2.map(vOrE=><React.Fragment><Slot key={vOrE.id}{...vOrE}/><Divider/></React.Fragment>)
       }
     }
   }
 
   handleFilter = (vOrE,term) => {
-    console.log(vOrE)
     return(vOrE.classifications ? this.handleEventFilter(vOrE,term) : this.handleVenueFilter(vOrE,term))
   }
 
@@ -129,3 +125,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(VenueContainer);
+
+
+// process.env.REACT_APP_GOOGLE_MAPS_API

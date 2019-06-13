@@ -1,7 +1,16 @@
+
 import React from 'react'
 import {Container,Image,Accordion,Divider} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
+
+
+const mapStyles={
+  width:'33%',
+  height:'33%',
+  zIndex:-1
+}
 
 const DetailContainer = (props) => {
   let info=[]
@@ -25,11 +34,18 @@ const DetailContainer = (props) => {
   const createInfo = () =>{
     if(props.selectedContent.address_info){
 
+
+
+
       info.push("Address Info")
       Object.entries(props.selectedContent.address_info).forEach(value=>{
-        if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        info.push(`${value[0]}: ${value[1]}`)
+        if(value[0]!=="longitude"&&value[0]!=="latitude")
+        {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+        info.push(`${value[0]}: ${value[1]}`)}
       })
+
+
+
 
       info2.push("Box Office Info")
       if(props.selectedContent.box_office_info)
@@ -75,12 +91,27 @@ const DetailContainer = (props) => {
     return(props.selectedContent.images ? props.selectedContent.images[props.selectedContent.images.length-1]||props.selectedContent.images[0] : null)
   }}
 
+  const renderGoogleMap = () => {
+    console.log(props)
+    return(
+      <Map
+          google={props.google}
+          zoom={13}
+          style={mapStyles}
+          initialCenter={{ lat: props.selectedContent.address_info.latitude, lng: props.selectedContent.address_info.longitude}}
+        >
+        <Marker position={{lat: props.selectedContent.address_info.latitude, lng: props.selectedContent.address_info.longitude}} />
+        </Map>
+    )
+  }
+
   return(
     <React.Fragment>
     <h1>Event Hub</h1>
     <h2>{props.selectedContent.name}</h2>
-    <Container fluid textAlign="center">
+    <Container className="mapbox"fluid textAlign="center">
     <Image centered={true}height='140' src={renderImage()}/>
+      {props.selectedContent.address_info ? renderGoogleMap() : null}
       {createInfo()}
       {renderInfo(info)}
       {renderInfo(info2)}
@@ -102,4 +133,5 @@ const mapStateToProps=(state)=>{
   }
 }
 
-export default connect(mapStateToProps)(DetailContainer)
+export default GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})(connect(mapStateToProps)(DetailContainer))
+// GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})
