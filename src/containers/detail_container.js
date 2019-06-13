@@ -9,7 +9,6 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 const mapStyles={
   width:'33%',
   height:'33%',
-  zIndex:-1
 }
 
 const DetailContainer = (props) => {
@@ -92,7 +91,6 @@ const DetailContainer = (props) => {
   }}
 
   const renderGoogleMap = () => {
-    console.log(props)
     return(
       <Map
           google={props.google}
