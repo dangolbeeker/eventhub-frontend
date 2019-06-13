@@ -51,7 +51,7 @@ const VenueEventContainer = (props) => {
     <React.Fragment>
     <h1>Event Hub</h1>
     <h2>{handleNaming()}</h2>
-    <Container fluid textAlign="center">
+    <Container fluid className="mapbox" textAlign="center">
     {props.selectedContent.address_info ? renderGoogleMap(props.selectedContent.address_info) : renderGoogleMap(props.selectedContentCounterpart.address_info)}
     <Image centered="true"height='240' src={renderImage()}/>
     </Container>

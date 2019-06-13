@@ -34,7 +34,8 @@ class HomeCard extends React.Component{
       if(this.props){
         switch(this.props.pathname){
           case"/cart":
-          return(<Button primary onClick={this.purchaseCartItem}>Purchase</Button>)
+          return null
+          // return(<Button primary onClick={this.purchaseCartItem}>Purchase</Button>)
           case"/tickets":
           return null
           default:
@@ -92,12 +93,14 @@ class HomeCard extends React.Component{
 
 
   render(){
+    console.log(this.props)
     return(
       <Card height='500'>
         <Image  height="140" src={this.renderVenueImage()} />
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
-          <h3>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</h3>
+          <p>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</p>
+          <p>{this.props.venueEvent ?  `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}` : null}</p>
         </Card.Content>
         {this.purchaseOrDetail()}
         {this.renderOptionalButton()}

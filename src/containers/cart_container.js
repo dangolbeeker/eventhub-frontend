@@ -1,8 +1,11 @@
 import React from 'react'
 import HomeCard from '../components/home_card'
 import { Container,Divider,Grid,Card } from 'semantic-ui-react'
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import CheckoutForm from '../components/checkout_form'
 import { connect } from 'react-redux'
 
+let total = 0
 
 class CartContainer extends React.Component{
 
@@ -42,6 +45,7 @@ class CartContainer extends React.Component{
         let cartVenueEvent = this.findVenueEvent(this.props.cartVenueEvents,ticket)
         let cartVenue = this.findVenue(this.props.cartVenues,cartVenueEvent)
         let cartEvent = this.findEvent(this.props.cartEvents,cartVenueEvent)
+        total = total + parseInt(cartVenueEvent.pricing_info.min.split('.')[0])
          return(<HomeCard{...ticket}key={ticket.id}
            name={`${cartEvent.name} @ ${cartVenue.name}`}
            images={cartEvent.images}{...this.props.location}
@@ -62,20 +66,32 @@ handleNaming = () => {
   }
 }
 
+  renderCheckOut = () => {
+    return(
+      <Elements>
+      <CheckoutForm total={total}/>
+      </Elements>
+    )
+  }
+
 
 
 
   render(){
       return (
+    <StripeProvider apiKey="pk_test_tBdnFsQYv5jxi24KtBSB6Kyp00dieuLXMt">
       <Container>
       <h1>{this.handleNaming()}</h1>
       <Divider/>
       <Container textAlign="center">
         <Card.Group columns={5}>
         {this.renderCart()}
+        <Divider/>
         </Card.Group>
+        {this.props.location.pathname==="/tickets" ? null : this.renderCheckOut()}
       </Container>
       </Container>
+      </StripeProvider>
     )
   }
 }

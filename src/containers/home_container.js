@@ -54,29 +54,22 @@ const HomeContainer = (props) => {
 
 const mapStateToProps = (state) =>{
   return{
-    venues: make_venue_obj(state.venues),
-    events: make_event_obj(state.events)
+    venues: make_suggestions_obj(state.venues),
+    events: make_suggestions_obj(state.events)
   }
 }
 
- const make_venue_obj = (venues) =>{
+
+ const make_suggestions_obj = (events) =>{
    let obj = {}
-   if(Object.keys(venues).length===0){}else{
-     for(let i=0;i<4;i++){
-       obj[i]=venues[Math.floor(Math.random() * Object.keys(venues).length)]}
-   }
-
-  return obj
- }
-
-
- const make_event_obj = (events) =>{
-   let obj = {}
-   if(Object.keys(events).length===0){
-   }else{
-    for(let i=0;i<4;i++){
-      obj[i]=events[Math.floor(Math.random() * Object.keys(events).length)]}
-  }
+     if(Object.keys(events).length===0){
+     }else{
+      Object.values(events).forEach(event=>{
+        if(event.suggested){
+          obj[event.id] = event
+        }
+      })
+    }
   return obj
  }
 
