@@ -8,21 +8,16 @@ import HomeCard from '../components/home_card'
 
 const HomeContainer = (props) => {
 
-  let key = 1
-
-  const generateKey = () => {
-    key = key + 1
-    return key
-  }
 
   const renderVenueCards = () => {
+    console.log(props)
     let arr = Object.values(props.venues)
-    return arr.map(venue=><Grid.Column><HomeCard key={generateKey()} {...venue}{...props.location} /></Grid.Column>)
+    return arr.map(venue=><Grid.Column><HomeCard key={venue.id} {...venue}{...props.location} /></Grid.Column>)
   }
 
   const renderEventCards = () => {
     let arr = Object.values(props.events)
-    return arr.map(event=><Grid.Column><HomeCard key={generateKey()}{...event}{...props.location} /></Grid.Column>)
+    return arr.map(event=><Grid.Column><HomeCard key={event.id}{...event}{...props.location} /></Grid.Column>)
   }
 
   return (

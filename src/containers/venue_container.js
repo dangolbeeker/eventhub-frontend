@@ -70,7 +70,7 @@ class VenueContainer extends React.Component{
 
 
   render()
-  {console.log(this.state.searchTerm)
+  {
     return (
     <React.Fragment>
     <h1>Event Hub</h1>

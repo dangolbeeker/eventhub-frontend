@@ -5,8 +5,6 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from '../components/checkout_form'
 import { connect } from 'react-redux'
 
-let total = 0
-
 class CartContainer extends React.Component{
 
   findVenue = (venues,item) => {
@@ -39,28 +37,47 @@ class CartContainer extends React.Component{
     return obj
   }
 
+componentDidUpdate = (prevProps) => {
+  // compare urls on update
+  debugger
+  if(this.props.location.pathname !== prevProps.location.pathname){
+    //set venueOrEvents to null and let mapstate handle giving props
+    debugger
+    this.forceUpdate()
+}}
+
+// shouldComponentUpdate = (prevProps) => {
+//   console.log("FROM",this.props.location.pathname)
+//   console.log("TO",prevProps.location.pathname)
+//   console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
+//   debugger
+//   return(prevProps.location.pathname === this.props.location.pathname ? false : true)
+// }
+
  renderCart = () => {
-     if(Object.values(this.props.cartTickets).length>0){
-       return(Object.values(this.props.cartTickets).map(ticket=>{
-        let cartVenueEvent = this.findVenueEvent(this.props.cartVenueEvents,ticket)
-        let cartVenue = this.findVenue(this.props.cartVenues,cartVenueEvent)
-        let cartEvent = this.findEvent(this.props.cartEvents,cartVenueEvent)
-        total = total + parseInt(cartVenueEvent.pricing_info.min.split('.')[0])
+     if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
+     {debugger
+       return(this.props.displayTickets).map(ticket=>{
+         console.log(this.props)
+        let cartVenueEvent = this.findVenueEvent(this.props.displayVenueEvents,ticket)
+        let cartVenue = this.findVenue(this.props.displayVenues,cartVenueEvent)
+        let cartEvent = this.findEvent(this.props.displayEvents,cartVenueEvent)
+        console.log(cartVenueEvent)
          return(<HomeCard{...ticket}key={ticket.id}
            name={`${cartEvent.name} @ ${cartVenue.name}`}
            images={cartEvent.images}{...this.props.location}
            venueEvent={cartVenueEvent}venue={cartVenue}
            event={cartEvent}/>)
-       }))
+       })
  }else{return(null)}
 }
 
 handleNaming = () => {
   switch(this.props.location.pathname){
     case"/cart":
-    return(Object.values(this.props.cartTickets).length>0 ? "Cart" : "You have nothing in your cart!")
+    return(this.props.displayTickets.length>0 ? "Cart" : "You have nothing in your cart!")
     case"/tickets":
-    return(Object.values(this.props.cartTickets).length>0 ? "Tickets" : "You have no tickets!")
+    return(this.props.displayTickets.length>0 ? "Tickets" : "You have no tickets!")
     default:
     console.log("you got here somehow, enjoy")
   }
@@ -69,12 +86,10 @@ handleNaming = () => {
   renderCheckOut = () => {
     return(
       <Elements>
-      <CheckoutForm total={total}/>
+      <CheckoutForm total={this.props.total}/>
       </Elements>
     )
   }
-
-
 
 
   render(){
@@ -82,13 +97,14 @@ handleNaming = () => {
     <StripeProvider apiKey="pk_test_tBdnFsQYv5jxi24KtBSB6Kyp00dieuLXMt">
       <Container>
       <h1>{this.handleNaming()}</h1>
+      <h2>{this.props.total > 0 ? `Your Total is $${this.props.total}`:null}</h2>
       <Divider/>
       <Container textAlign="center">
         <Card.Group columns={5}>
         {this.renderCart()}
         <Divider/>
         </Card.Group>
-        {this.props.location.pathname==="/tickets" ? null : this.renderCheckOut()}
+        {this.props.location.pathname==="/tickets"||this.props.displayTickets.length===0 ? null : this.renderCheckOut()}
       </Container>
       </Container>
       </StripeProvider>
@@ -96,14 +112,33 @@ handleNaming = () => {
   }
 }
 
+ // const configureTickets=(tickets)=>{
+ //   switch(window.location.href.split('/')[3]){
+ //     case"tickets":
+ //     debugger
+ //     return(Object.values(tickets).filter(ticket=>ticket.bought===true))
+ //     case"cart":
+ //     debugger
+ //     return(Object.values(tickets).filter(ticket=>ticket.bought===false))
+ //   }
+ // }
+
  const mapStateToProps = (state) => {
+   // let ticketsToRender = configureTickets(state.user.tickets)
+   // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
+   // console.log(ticketsToRender)
+   // console.log(ticketVenueEvents)
+      debugger
    return{
-     user:state.user,
+     displayTickets:state.displayTickets,
+     displayVenueEvents:state.displayVenueEvents,
+     displayVenues:state.displayVenues,
+     displayEvents:state.displayEvents
    }
  }
 
  const mapDispatchToProps = (dispatch) => {
-   return{
+   return{resetCart:()=>{dispatch({type:"RESET_CART_TICKETS",payload:null})},
      confirmTicketPurchase:(ticketObj)=>
      dispatch({type:"ADD_TICKET_TO_USER",payload:ticketObj})
    }

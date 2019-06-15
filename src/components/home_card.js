@@ -89,18 +89,17 @@ class HomeCard extends React.Component{
     .then(resp=>resp.json())
     .then(data=>this.props.updateUser(data.user))
   }
-
+// <p>{this.props.venueEvent ?  `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}` : null}</p>
 
 
   render(){
-    console.log(this.props)
     return(
       <Card height='500'>
         <Image  height="140" src={this.renderVenueImage()} />
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
           <p>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</p>
-          <p>{this.props.venueEvent ?  `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}` : null}</p>
+
         </Card.Content>
         {this.purchaseOrDetail()}
         {this.renderOptionalButton()}

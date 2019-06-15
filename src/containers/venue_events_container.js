@@ -34,7 +34,6 @@ const VenueEventContainer = (props) => {
   }}
 
    const renderGoogleMap = (address_info) => {
-     console.log(address_info)
      return(
        <Map
            google={props.google}
@@ -72,4 +71,4 @@ const mapStateToProps=(state)=>{
   }
 }
 
-export default GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})(connect(mapStateToProps)(VenueEventContainer))
+export default GoogleApiWrapper({apiKey:})(connect(mapStateToProps)(VenueEventContainer))

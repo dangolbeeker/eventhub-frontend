@@ -85,7 +85,7 @@ class Navbar extends React.Component{
   }
 
   checkerForUser = () =>{
-    return(this.props.user ?
+    return(this.props.user.id ?
       <React.Fragment>
       <Menu.Menu position='right'>
       <Menu.Item

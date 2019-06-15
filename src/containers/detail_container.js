@@ -131,5 +131,5 @@ const mapStateToProps=(state)=>{
   }
 }
 
-export default GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})(connect(mapStateToProps)(DetailContainer))
+export default GoogleApiWrapper({apiKey:})(connect(mapStateToProps)(DetailContainer))
 // GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})

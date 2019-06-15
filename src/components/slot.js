@@ -14,7 +14,7 @@ class Slot extends React.Component{
  }
 
   checkerForUser = () => {
-    return(this.props.user != null ? this.createCartTicket(this.props.id,this.props.user.id) : alert("you must be logged in to buy tickets!"))
+    return(this.props.user.id ? this.createCartTicket(this.props.id,this.props.user.id) : alert("you must be logged in to buy tickets!"))
   }
 
   createCartTicket = (veID,userID) => {
@@ -32,6 +32,7 @@ class Slot extends React.Component{
       })
       .then(resp=>resp.json())
       .then(data=>this.props.updateUser(data.user))
+      .then(()=>{alert("ticket added to cart")})
   }
 
 
@@ -54,7 +55,7 @@ class Slot extends React.Component{
     }
 
   renderImageOrInfo = () => {
-    if(this.props.pricing_info){return(this.renderShowingDetails(this.props))}
+    if(this.props.pricing_info===null){return(this.renderShowingDetails(this.props))}
     else{return(this.renderImage())}
   }
 
@@ -106,22 +107,24 @@ class Slot extends React.Component{
       return"Attraction Details"
     }else if(this.props.address_info){
       return"Venue Details"
-    }else if(this.props.on_sale){
+    }else if(this.props.on_sale&&this.props.pricing_info){
       return"Add to Cart"
-    }else{return"Sold out!"}
+    }else if(this.props.pricing_info===null){return"not for sale"}
+    else{return"Sold Out!"}
   }
 
   checkForOnsale = () => {
-    if(this.props.on_sale){
-      return(<h3>On Sale!</h3>)
+    if(this.props.pricing_info===undefined||null){
+      return(<h3>Not available for sale yet</h3>)
     }else if(this.props.on_sale ===false){
       return(<h3>Not on sale</h3>)
     }
+    else{return(<h3>On Sale</h3>)}
   }
 
   checkForSale = () => {
     if(this.props){
-      if(this.props.on_sale===true){
+      if(this.props.on_sale===true&&this.props.pricing_info){
         return(
           <Button
           as={ this.props.on_sale ? null : Link}
@@ -130,7 +133,7 @@ class Slot extends React.Component{
           to={this.buttonLink()}size="big"
           primary>{this.buttonName()}</Button>
         )
-      }else if(this.props.on_sale===false){
+      }else if(this.props.pricing_info===null||this.props.on_sale===false){
         return(<Button
         as={Link}
         disabled
@@ -144,10 +147,15 @@ class Slot extends React.Component{
   render(){
     return(
       <Container textAlign="center">
-      {this.checkForOnsale()}
+      { this.props.sale_info ? this.checkForOnsale() : null}
       {this.dateOrTitle()}
       {this.renderImageOrInfo()}
-      {this.checkForSale()}
+      {this.props.pricing_info? this.checkForSale() : <Button
+      as={ this.props.on_sale ? null : Link}
+      name={this.buttonName()}
+      onClick={this.checkForTicketPurchase}
+      to={this.buttonLink()}size="big"
+      primary>{this.buttonName()}</Button>}
       {this.handleOtherButtonLink(this.props.location,this.props.id)}
       </Container>
     )

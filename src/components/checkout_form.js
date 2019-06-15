@@ -14,10 +14,8 @@ class CheckoutForm extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="checkout">
-        <h2>Your Total is ${this.props.total}</h2>
         <p>Would you like to complete the purchase?</p>
         <CardElement />
         <Button onClick={this.submit}>CheckOut</Button>
