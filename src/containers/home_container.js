@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container,Divider,Card,Grid } from 'semantic-ui-react'
+import { Container,Divider,Card,Grid,Image } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import HomeCard from '../components/home_card'
 
@@ -21,8 +21,8 @@ const HomeContainer = (props) => {
   }
 
   return (
-    <React.Fragment>
-      <h1>Event Hub</h1>
+    <Container>
+      <h1>Not</h1><Image inline height='140'src='https://i2.wp.com/stubhubpressbox.com/wp-content/uploads/2018/08/cropped-StubHub-Logo-Indigo.png'/>
       <h2>Suggested Venues</h2>
     <Container celled="true">
     <Card.Group center="true">
@@ -40,7 +40,7 @@ const HomeContainer = (props) => {
       </Grid>
     </Card.Group>
     </Container>
-    </React.Fragment>
+    </Container>
   )
 }
 

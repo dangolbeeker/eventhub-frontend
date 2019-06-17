@@ -1,7 +1,9 @@
 import React from 'react'
-import {Container,Image,Accordion,Divider} from 'semantic-ui-react'
+import {Card,Container,Image,Accordion,Divider} from 'semantic-ui-react'
+import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
+import  Carousel  from  'semantic-ui-carousel-react'
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 
 const mapStyles={
@@ -10,6 +12,10 @@ const mapStyles={
 }
 
 const VenueEventContainer = (props) => {
+
+  const returnImages = (images) => {
+    return(images.map(image=>{return({render:()=>{return <Image src={image}/>}})}))
+  }
 
   const handleNaming = () => {
     if(props){
@@ -24,13 +30,13 @@ const VenueEventContainer = (props) => {
   const renderSlots = () =>{
    if(Object.values(props.selectedContentVenueEvents).length>0){
      return Object.values(props.selectedContentVenueEvents).map(showing=>
-       <React.Fragment><Slot{...showing}/><Divider/></React.Fragment>)}
+       <React.Fragment><Slot{...showing}/></React.Fragment>)}
    else{return"Loading"}
   }
 
   const renderImage = () => {
     if(props.selectedContent){
-    return(props.selectedContent.images ? props.selectedContent.images[props.selectedContent.images.length-1]||props.selectedContent.images[0] : null)
+    return(props.selectedContent.images ? returnImages(props.selectedContent.images) : null)
   }}
 
    const renderGoogleMap = (address_info) => {
@@ -47,9 +53,18 @@ const VenueEventContainer = (props) => {
    }
 
   return(
-    <React.Fragment>
+    <Container>
     <h1>Event Hub</h1>
     <h2>{handleNaming()}</h2>
+    {props.selectedContent.images === null ? null :
+    <Carousel
+        style={{display:"inline-block"}}
+        elements={returnImages(props.selectedContent.images)}
+        duration  ={3000}
+        animation  ='slide left'
+        showNextPrev  =  {false}
+        showIndicators  ={true}
+      />}
     <Container fluid className="mapbox" textAlign="center">
     {props.selectedContent.address_info ? renderGoogleMap(props.selectedContent.address_info) : renderGoogleMap(props.selectedContentCounterpart.address_info)}
     <Image centered="true"height='240' src={renderImage()}/>
@@ -58,10 +73,24 @@ const VenueEventContainer = (props) => {
     <h2>Showings</h2>
     <Divider/>
     </Container>
+    <StackGrid columnWidth={250}>
     {renderSlots()}
-    </React.Fragment>
+    </StackGrid>
+    </Container>
   )
 }
+
+
+
+// {props.selectedContent.images === null ? :
+// <Carousel
+//     elements={returnImages(props.selectedContent.images)}
+//     duration  ={3000}
+//     animation  ='slide left'
+//     showNextPrev  =  {false}
+//     showIndicators  ={true}
+//   />}
+
 
 const mapStateToProps=(state)=>{
   return{
@@ -71,4 +100,4 @@ const mapStateToProps=(state)=>{
   }
 }
 
-export default GoogleApiWrapper({apiKey:})(connect(mapStateToProps)(VenueEventContainer))
+export default GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})(connect(mapStateToProps)(VenueEventContainer))

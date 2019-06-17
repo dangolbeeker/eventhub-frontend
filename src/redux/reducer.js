@@ -47,8 +47,6 @@ const defaultState = {
       case"RESET_PROPS":
       return{...state,venueOrEvents:{}}
       case"RESET_CART_TICKETS":
-      console.log(state)
-      debugger
       return({...state,
         displayTickets:[],
         displayVenueEvents:[],
@@ -56,16 +54,12 @@ const defaultState = {
         displayVenues:[]
       })
       case"ADD_D_TICKETS":
-      debugger
       return({...state,displayTickets:action.payload})
       case"ADD_D_VENUE_EVENTS":
-      debugger
       return({...state,displayVenueEvents:action.payload})
       case"ADD_D_EVENTS":
-      debugger
       return({...state,displayEvents:action.payload})
       case"ADD_D_VENUES":
-      debugger
       return({...state,displayVenues:action.payload})
       default:
       return state

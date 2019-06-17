@@ -2,6 +2,7 @@ import React from 'react';
 import { Card,Image,Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import  Carousel  from  'semantic-ui-carousel-react'
 
 
 class HomeCard extends React.Component{
@@ -93,13 +94,14 @@ class HomeCard extends React.Component{
 
 
   render(){
+    console.log(this.props)
     return(
       <Card height='500'>
         <Image  height="140" src={this.renderVenueImage()} />
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
           <p>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</p>
-
+          <p>{this.props.venueEvent.pricing_info === null ? null : `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}`}</p>
         </Card.Content>
         {this.purchaseOrDetail()}
         {this.renderOptionalButton()}

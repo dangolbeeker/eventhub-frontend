@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container,Accordion,Image,Button } from 'semantic-ui-react'
+import { Card,Accordion,Image,Button } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -146,7 +146,7 @@ class Slot extends React.Component{
 
   render(){
     return(
-      <Container textAlign="center">
+      <Card>
       { this.props.sale_info ? this.checkForOnsale() : null}
       {this.dateOrTitle()}
       {this.renderImageOrInfo()}
@@ -157,7 +157,7 @@ class Slot extends React.Component{
       to={this.buttonLink()}size="big"
       primary>{this.buttonName()}</Button>}
       {this.handleOtherButtonLink(this.props.location,this.props.id)}
-      </Container>
+      </Card>
     )
   }
 }

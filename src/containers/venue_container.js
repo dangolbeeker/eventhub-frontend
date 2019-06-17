@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container,Divider,Search } from 'semantic-ui-react'
+import { Card,Container,Divider,Search } from 'semantic-ui-react'
+import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
 
@@ -16,7 +17,7 @@ class VenueContainer extends React.Component{
     let arr = Object.values(this.props.venuesOrEvents)
     if(arr.length>0){
       let arr2 = arr.filter(vOrE=>this.handleFilter(vOrE,this.state.searchTerm))
-      return arr2.map(vOrE=><React.Fragment><Slot key={vOrE.id}{...vOrE}/><Divider/></React.Fragment>)
+      return arr2.map(vOrE=><React.Fragment><Slot key={vOrE.id}{...vOrE}/></React.Fragment>)
       }
     }
   }
@@ -77,9 +78,9 @@ class VenueContainer extends React.Component{
     <h2>{this.capatilizeString(this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1])}</h2>
     <Search showNoResults={false}onSearchChange={this.handleChange}/>
     <Divider/>
-    <Container>
+    <StackGrid columnWidth={250}>
     {this.renderContainers()}
-    </Container>
+    </StackGrid>
     </React.Fragment>
   )}
 }

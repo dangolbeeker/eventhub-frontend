@@ -133,8 +133,12 @@ class Navbar extends React.Component{
 
   render(){
   return (
-    <Segment >
-    <Menu pointing secondary>
+    <Menu style={{position: "fixed",
+                  width: "100%",
+                  zIndex: "5",
+                  backgroundColor:"white"
+                }}
+  pointing secondary>
       <Menu.Item
         as={Link}
         to='/'
@@ -159,7 +163,7 @@ class Navbar extends React.Component{
         </Dropdown>
         {this.checkerForUser()}
       </Menu>
-      </Segment>
+
     )
   }
 }

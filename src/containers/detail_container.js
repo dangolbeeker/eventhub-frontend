@@ -1,9 +1,11 @@
 
 import React from 'react'
-import {Container,Image,Accordion,Divider} from 'semantic-ui-react'
+import {Container,Image,Accordion,Button,Divider} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
+import  Carousel  from  'semantic-ui-carousel-react'
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
+import StackGrid from 'react-stack-grid'
 
 
 const mapStyles={
@@ -12,6 +14,17 @@ const mapStyles={
 }
 
 const DetailContainer = (props) => {
+
+  const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      };
+
+
+
   let info=[]
   let info2=[]
   let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
@@ -85,9 +98,14 @@ const DetailContainer = (props) => {
    else{return"Loading"}
   }
 
+  const returnImages = (images) => {
+    return(images.map(image=>{return({render:()=>{return <Image src={image}/>}})}))
+  }
+
   const renderImage = () => {
     if(props.selectedContent){
-    return(props.selectedContent.images ? props.selectedContent.images[props.selectedContent.images.length-1]||props.selectedContent.images[0] : null)
+      console.log(props.selectedContent.images)
+    return(props.selectedContent.images === null ? null : returnImages(props.selectedContent.images))
   }}
 
   const renderGoogleMap = () => {
@@ -103,22 +121,36 @@ const DetailContainer = (props) => {
     )
   }
 
+
+  // let  elements  = [
+  // 		{render:()=>{return <Button  fluid>1111111</Button>}},
+  // 		{render:()=>{return <Button  fluid>2222222</Button>}},
+  // 	]
+
   return(
     <React.Fragment>
     <h1>Event Hub</h1>
     <h2>{props.selectedContent.name}</h2>
+    {props.selectedContent.images === null? null :
+    <Carousel
+        elements={returnImages(props.selectedContent.images)}
+        duration  ={3000}
+				animation  ='slide left'
+				showNextPrev  =  {false}
+				showIndicators  ={true}
+      />
+    }
     <Container className="mapbox"fluid textAlign="center">
-    <Image centered={true}height='140' src={renderImage()}/>
       {props.selectedContent.address_info ? renderGoogleMap() : null}
       {createInfo()}
       {renderInfo(info)}
       {renderInfo(info2)}
     </Container>
     <Divider/>
-    <Container>
     {props.selectedContent.classifications ? <h2>Venues</h2> : <h2>Events</h2>}
+    <StackGrid columnWidth={250}>
     {renderSlots()}
-    </Container>
+    </StackGrid>
     </React.Fragment>
   )
 }
@@ -131,5 +163,5 @@ const mapStateToProps=(state)=>{
   }
 }
 
-export default GoogleApiWrapper({apiKey:})(connect(mapStateToProps)(DetailContainer))
+export default GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})(connect(mapStateToProps)(DetailContainer))
 // GoogleApiWrapper({apiKey:'AIzaSyASH06VE-Hs_R4StGyDG52pjgBIdPD0sl8'})

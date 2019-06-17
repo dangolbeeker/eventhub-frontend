@@ -5,7 +5,7 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from '../components/checkout_form'
 import { connect } from 'react-redux'
 
-class CartContainer extends React.Component{
+class TicketContainer extends React.Component{
 
   findVenue = (venues,item) => {
     let obj = {}
@@ -37,22 +37,13 @@ class CartContainer extends React.Component{
     return obj
   }
 
-componentDidUpdate = (prevProps) => {
-  // compare urls on update
+shouldComponentUpdate = (prevProps) => {
+  console.log("FROM",this.props.location.pathname)
+  console.log("TO",prevProps.location.pathname)
+  console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
   debugger
-  if(this.props.location.pathname !== prevProps.location.pathname){
-    //set venueOrEvents to null and let mapstate handle giving props
-    debugger
-    this.forceUpdate()
-}}
-
-// shouldComponentUpdate = (prevProps) => {
-//   console.log("FROM",this.props.location.pathname)
-//   console.log("TO",prevProps.location.pathname)
-//   console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
-//   debugger
-//   return(prevProps.location.pathname === this.props.location.pathname ? false : true)
-// }
+  return(prevProps.location.pathname === this.props.location.pathname ? false : true)
+}
 
  renderCart = () => {
      if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
@@ -93,7 +84,6 @@ handleNaming = () => {
 
 
   render(){
-    console.log(this.props)
       return (
     <StripeProvider apiKey="pk_test_tBdnFsQYv5jxi24KtBSB6Kyp00dieuLXMt">
       <Container>
@@ -124,27 +114,17 @@ handleNaming = () => {
  //   }
  // }
 
- const configureTotal = (venueEvents) => {
-   let total = 0
-   if(venueEvents.length!==0){
-     venueEvents.forEach(ve=>{
-       total = total + parseInt(ve.pricing_info.min)
-     })
-   }
-   return total
- }
-
  const mapStateToProps = (state) => {
    // let ticketsToRender = configureTickets(state.user.tickets)
    // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
    // console.log(ticketsToRender)
    // console.log(ticketVenueEvents)
+      debugger
    return{
      displayTickets:state.displayTickets,
      displayVenueEvents:state.displayVenueEvents,
      displayVenues:state.displayVenues,
-     displayEvents:state.displayEvents,
-     total:configureTotal(state.displayVenueEvents)
+     displayEvents:state.displayEvents
    }
  }
 
@@ -156,4 +136,4 @@ handleNaming = () => {
  }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(CartContainer)
+export default connect(mapStateToProps,mapDispatchToProps)(TicketContainer)

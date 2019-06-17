@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Navbar from './components/navbar';
 import HomeContainer from './containers/home_container'
+import TicketContainer from './containers/ticket_container.js'
 import VenueContainer from './containers/venue_container'
 import LoginContainer from './containers/login_container'
 import DetailContainer from './containers/detail_container'
@@ -75,10 +76,8 @@ class App extends React.Component{
   configureTickets=(tickets,term)=>{
     switch(term){
       case"tickets":
-      debugger
       return(Object.values(tickets).filter(ticket=>ticket.bought===true))
       case"cart":
-      debugger
       return(Object.values(tickets).filter(ticket=>ticket.bought===false))
     }
   }
@@ -87,7 +86,6 @@ class App extends React.Component{
     console.log("TICKETS",this.props.user.tickets)
     let ticketsToRender = this.configureTickets(this.props.user.tickets,term)
     let ticketVenueEvents = ticketsToRender.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
-    debugger
     this.props.addDisplayTickets(ticketsToRender)
     this.props.addDisplayVenueEvents(ticketVenueEvents)
     this.props.addDisplayVenues(ticketVenueEvents.map(ticket=>this.props.venues[ticket.venue_id]))
@@ -175,14 +173,13 @@ class App extends React.Component{
               // const ticketVenues = ticketVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
               // const ticketEvents =  ticketVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
               // return(ticketVenues&&ticketEvents&&ticketVenueEvents ?
-                 return(<CartContainer{...routerProps}/>)}
+                 return(<TicketContainer{...routerProps}/>)}
               }
             }/>
             <Route exact path='/cart' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
               {
                 this.props.resetCart()
-                debugger
                 this.configureTicketing("cart")
               // const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
               // const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
