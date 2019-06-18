@@ -1,5 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+mind the usernameless commits, i did not configure git correctly in my term.
+
 ## Available Scripts
 
 In the project directory, you can run:
