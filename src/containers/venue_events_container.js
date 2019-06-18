@@ -110,6 +110,7 @@ const VenueEventContainer = (props) => {
     <Container>
     <h1>Event Hub</h1>
     <h2>{handleNaming()}</h2>
+    <div className='cont'>
     {props.selectedContent.images === null ? null :
     <Carousel
         id='customCarousel'
@@ -120,6 +121,7 @@ const VenueEventContainer = (props) => {
         showIndicators  ={true}
       />}
     {props.selectedContent.address_info ? renderGoogleMap(props.selectedContent.address_info) : renderGoogleMap(props.selectedContentCounterpart.address_info)}
+    </div>
     <Container>
     <Container>
     {createInfo()}

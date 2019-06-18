@@ -109,16 +109,19 @@ const DetailContainer = (props) => {
     return(props.selectedContent.images === null ? null : returnImages(props.selectedContent.images))
   }}
 
-  const renderGoogleMap = () => {
+  const renderGoogleMap = (addressInfo) => {
+    debugger
     return(
+      <div className='mapbox'>
       <Map
           google={props.google}
           zoom={13}
           style={mapStyles}
-          initialCenter={{ lat: props.selectedContent.address_info.latitude, lng: props.selectedContent.address_info.longitude}}
+          initialCenter={{ lat: addressInfo.latitude, lng: addressInfo.longitude}}
         >
-        <Marker position={{lat: props.selectedContent.address_info.latitude, lng: props.selectedContent.address_info.longitude}} />
+        <Marker position={{lat: addressInfo.latitude, lng: addressInfo.longitude}} />
         </Map>
+        </div>
     )
   }
 
@@ -127,46 +130,50 @@ const DetailContainer = (props) => {
   // 		{render:()=>{return <Button  fluid>1111111</Button>}},
   // 		{render:()=>{return <Button  fluid>2222222</Button>}},
   // 	]
+   const configureGMAddress = (props) => {
+     return(props.selectedContent.address_info ? renderGoogleMap(props.selectedContent.address_info) : renderGoogleMap(props.selectedContentVenueEvents.address_info))
+   }
 
   return(
-    <React.Fragment>
-    <h1>Event Hub</h1>
-    <h2>{props.selectedContent.name}</h2>
-    {props.selectedContent.images === null? null :
-    <div className="detail">
-    <Carousel
-        id="detail"
-        elements={returnImages(props.selectedContent.images)}
-        duration  ={3000}
-				animation  ='slide left'
-				showNextPrev  =  {false}
-				showIndicators  ={true}
-      />
-      <Container className="mapbox"fluid textAlign="center">
-        {props.selectedContent.address_info ? renderGoogleMap() : null}
-      </Container>
-      </div>
-    }
     <Container>
-    {createInfo()}
-    <Segment>
-    <Grid columns={2}>
-    <Grid.Column>
-    {renderInfo(info)}
-    </Grid.Column>
-    <Grid.Column>
-    {renderInfo(info2)}
-    </Grid.Column>
-    </Grid>
-    <Divider vertical/>
+      <h1>Event Hub</h1>
+      <h2>{props.selectedContent.name}</h2>
+      <div className="cont">
+        {props.selectedContent.images === null? null :
+          <Carousel
+          id="detail"
+          elements={returnImages(props.selectedContent.images)}
+          duration  ={3000}
+  				animation  ='slide left'
+  				showNextPrev  =  {false}
+  				showIndicators  ={true}
+        />
+        }
+        {props.selectedContent.address_info||props.selectedContentCounterpart.address_info ? configureGMAddress(props) : null}
+      </div >
+        {createInfo()}
+        <Container>
+      <Segment>
+        <Grid columns={props.selectedContentCounterpart.address_info ? 2 : 1}>
+          {props.selectedContentCounterpart.address_info ?
+            <Grid.Column>
+            {renderInfo(info)}
+            </Grid.Column> : null
+            }
+            <Grid.Column>
+            {renderInfo(info2)}
+            </Grid.Column>
+          </Grid>
+            {props.selectedContentCounterpart.address_info ? <Divider vertical/> : null}
     </Segment>
-    </Container>
     <Divider/>
+
     {props.selectedContent.classifications ? <h2>Venues</h2> : <h2>Events</h2>}
     <StackGrid columnWidth={250}>
     {renderSlots()}
     </StackGrid>
-    </React.Fragment>
+    </Container>
+    </Container>
   )
 }
 

@@ -73,7 +73,7 @@ class VenueContainer extends React.Component{
   render()
   {
     return (
-    <React.Fragment>
+    <Container >
     <h1>Event Hub</h1>
     <h2>{this.capatilizeString(this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1])}</h2>
     <Search showNoResults={false}onSearchChange={this.handleChange}/>
@@ -81,7 +81,7 @@ class VenueContainer extends React.Component{
     <StackGrid columnWidth={250}>
     {this.renderContainers()}
     </StackGrid>
-    </React.Fragment>
+    </Container>
   )}
 }
 

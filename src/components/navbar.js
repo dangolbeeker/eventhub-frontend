@@ -135,10 +135,12 @@ class Navbar extends React.Component{
   return (
     <Menu style={{position: "fixed",
                   width: "100%",
+                  height:'0%',
                   zIndex: "5",
-                  backgroundColor:"white"
+                  color:'white',
+                  backgroundColor:'#17202A'
                 }}
-  pointing secondary>
+  pointing  inverted secondary>
       <Menu.Item
         as={Link}
         to='/'
