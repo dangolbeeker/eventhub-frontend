@@ -93,6 +93,10 @@ class HomeCard extends React.Component{
 // <p>{this.props.venueEvent ?  `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}` : null}</p>
 
 
+ checkForPrice = (props) => {
+  return(props.venueEvent.pricing_info === null ? null : `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}`)
+ }
+
   render(){
     console.log(this.props)
     return(
@@ -101,7 +105,7 @@ class HomeCard extends React.Component{
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
           <p>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</p>
-          <p>{this.props.venueEvent.pricing_info === null ? null : `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}`}</p>
+          <p>{this.props.venueEvent === undefined ? null : this.checkForPrice(this.props)}</p>
         </Card.Content>
         {this.purchaseOrDetail()}
         {this.renderOptionalButton()}

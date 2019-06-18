@@ -21,8 +21,8 @@ const HomeContainer = (props) => {
   }
 
   return (
-    <Container>
-      <h1>Not</h1><Image inline height='140'src='https://i2.wp.com/stubhubpressbox.com/wp-content/uploads/2018/08/cropped-StubHub-Logo-Indigo.png'/>
+    <Container style={{textAlign:'center'}}>
+      <h1>Not</h1><Image inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
       <h2>Suggested Venues</h2>
     <Container celled="true">
     <Card.Group center="true">

@@ -1,6 +1,6 @@
 
 import React from 'react'
-import {Container,Image,Accordion,Button,Divider} from 'semantic-ui-react'
+import {Container,Image,Accordion,Button,Divider,Grid,Segment} from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
 import  Carousel  from  'semantic-ui-carousel-react'
@@ -9,8 +9,9 @@ import StackGrid from 'react-stack-grid'
 
 
 const mapStyles={
-  width:'33%',
-  height:'33%',
+
+  width:'40%',
+  height:'60%',
 }
 
 const DetailContainer = (props) => {
@@ -68,14 +69,14 @@ const DetailContainer = (props) => {
       else{info2.push("no info available")}
 
     }
-    // else if(props.selectedContent.classifications){
-    //   props.selectedContent.on_sale ? info.push("On Sale Now!") : info.push("Not on sale")
-    //
-    //   info2.push("Event Info")
-    //   Object.entries(props.selectedContent.classifications).forEach(value=>{
-    //     if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-    //   info2.push(`${value[0]}: ${value[1]}`)})
-    // }
+    else if(props.selectedContent.classifications){
+      props.selectedContent.on_sale ? info.push("On Sale Now!") : info.push("Not on sale")
+
+      info2.push("Event Info")
+      Object.entries(props.selectedContent.classifications).forEach(value=>{
+        if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+      info2.push(`${value[0]}: ${value[1]}`)})
+    }
     else{return""}
   }
 
@@ -99,7 +100,7 @@ const DetailContainer = (props) => {
   }
 
   const returnImages = (images) => {
-    return(images.map(image=>{return({render:()=>{return <Image src={image}/>}})}))
+    return(images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
   }
 
   const renderImage = () => {
@@ -132,19 +133,33 @@ const DetailContainer = (props) => {
     <h1>Event Hub</h1>
     <h2>{props.selectedContent.name}</h2>
     {props.selectedContent.images === null? null :
+    <div className="detail">
     <Carousel
+        id="detail"
         elements={returnImages(props.selectedContent.images)}
         duration  ={3000}
 				animation  ='slide left'
 				showNextPrev  =  {false}
 				showIndicators  ={true}
       />
+      <Container className="mapbox"fluid textAlign="center">
+        {props.selectedContent.address_info ? renderGoogleMap() : null}
+      </Container>
+      </div>
     }
-    <Container className="mapbox"fluid textAlign="center">
-      {props.selectedContent.address_info ? renderGoogleMap() : null}
-      {createInfo()}
-      {renderInfo(info)}
-      {renderInfo(info2)}
+    <Container>
+    {createInfo()}
+    <Segment>
+    <Grid columns={2}>
+    <Grid.Column>
+    {renderInfo(info)}
+    </Grid.Column>
+    <Grid.Column>
+    {renderInfo(info2)}
+    </Grid.Column>
+    </Grid>
+    <Divider vertical/>
+    </Segment>
     </Container>
     <Divider/>
     {props.selectedContent.classifications ? <h2>Venues</h2> : <h2>Events</h2>}
