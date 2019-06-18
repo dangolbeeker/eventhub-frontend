@@ -8,7 +8,7 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 
 const mapStyles={
   width:'40%',
-  height:'60%',
+  height:'56%',
 }
 
 const VenueEventContainer = (props) => {
@@ -25,7 +25,7 @@ const VenueEventContainer = (props) => {
       Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        info.push(`${value[0]}: ${value[1]}`)}
+        info.push(`${capatilizeString(value[0])}: ${value[1]}`)}
       })
 
 
@@ -35,7 +35,7 @@ const VenueEventContainer = (props) => {
         Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
-      info2.push(`${value[0]}: ${value[1]}`)})}
+      info2.push(`${capatilizeString(value[0])}: ${value[1]}`)})}
       else{info2.push("no info available")}
 
     }
@@ -45,9 +45,13 @@ const VenueEventContainer = (props) => {
       info2.push("Event Info")
       Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-      info2.push(`${value[0]}: ${value[1]}`)})
+      if(value[1]!=="Undefined"){info2.push(`${capatilizeString(value[0])}: ${value[1]}`)}})
     }
     else{return""}
+  }
+
+  const capatilizeString=(string)=>{
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   const renderInfo = (info) =>{
@@ -61,11 +65,22 @@ const VenueEventContainer = (props) => {
   }
 
 
+  const actuallyReturnImages = (images) => {
+    return(images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
+  }
+  // props.selectedContentCounterpart.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
+  // :
+  // props.selectedContent.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
+
+  const testImagesForNull = (images) => {
+    return(images === null ? [{render:()=>{return <div className='img' style={{backgroundImage:'url(https://image.flaticon.com/icons/svg/45/45944.svg)'}}/>}}] : actuallyReturnImages(images))
+  }
+
+
   const returnImages = (props) => {
-    return(props.location.pathname.split('/').length === 5 ?
-    props.selectedContentCounterpart.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
-    :
-    props.selectedContent.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
+    debugger
+    return(props.location.pathname.split('/').length === 5 ? testImagesForNull(props.selectedContentCounterpart.images) : testImagesForNull(props.selectedContent.images)
+  )
   }
 
   const handleNaming = () => {

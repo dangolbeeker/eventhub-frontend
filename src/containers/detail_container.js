@@ -11,7 +11,7 @@ import StackGrid from 'react-stack-grid'
 const mapStyles={
 
   width:'40%',
-  height:'60%',
+  height:'56%',
 }
 
 const DetailContainer = (props) => {
@@ -43,6 +43,9 @@ const DetailContainer = (props) => {
   // }}
   //
   // const panels = generatePanels()
+  const capatilizeString=(string)=>{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   const createInfo = () =>{
     if(props.selectedContent.address_info){
@@ -54,7 +57,7 @@ const DetailContainer = (props) => {
       Object.entries(props.selectedContent.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        info.push(`${value[0]}: ${value[1]}`)}
+        info.push(`${capatilizeString(value[0])}: ${value[1]}`)}
       })
 
 
@@ -65,7 +68,7 @@ const DetailContainer = (props) => {
       {Object.entries(props.selectedContent.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
-      info2.push(`${value[0]}: ${value[1]}`)})}
+      info2.push(`${capatilizeString(value[0])}: ${value[1]}`)})}
       else{info2.push("no info available")}
 
     }
@@ -75,7 +78,7 @@ const DetailContainer = (props) => {
       info2.push("Event Info")
       Object.entries(props.selectedContent.classifications).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-      info2.push(`${value[0]}: ${value[1]}`)})
+        if(value[1]!=="Undefined"){info2.push(`${capatilizeString(value[0])}: ${value[1]}`)}})
     }
     else{return""}
   }
@@ -99,9 +102,22 @@ const DetailContainer = (props) => {
    else{return"Loading"}
   }
 
-  const returnImages = (images) => {
-    return(images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
-  }
+    const actuallyReturnImages = (images) => {
+      return(images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
+    }
+    // props.selectedContentCounterpart.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
+    // :
+    // props.selectedContent.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
+
+    const testImagesForNull = (images) => {
+      return(images === null ? [{render:()=>{return <div className='img' style={{backgroundImage:'url(https://image.flaticon.com/icons/svg/45/45944.svg)'}}/>}}] : actuallyReturnImages(images))
+    }
+
+
+    const returnImages = (props) => {
+      return(props.location.pathname.split('/').length === 5 ? testImagesForNull(props.selectedContentCounterpart.images) : testImagesForNull(props.selectedContent.images)
+    )
+    }
 
   const renderImage = () => {
     if(props.selectedContent){
@@ -112,7 +128,7 @@ const DetailContainer = (props) => {
   const renderGoogleMap = (addressInfo) => {
     debugger
     return(
-      <div className='mapbox'>
+      <div className={props.selectedContent.images === null ? 'mapbox2' : 'mapbox'}>
       <Map
           google={props.google}
           zoom={13}
@@ -138,11 +154,11 @@ const DetailContainer = (props) => {
     <Container>
       <h1>Event Hub</h1>
       <h2>{props.selectedContent.name}</h2>
-      <div className="cont">
+      <div className="cont" id={props.selectedContent.address_info||props.selectedContentCounterpart.address_info ? null : 'detail'}>
         {props.selectedContent.images === null? null :
           <Carousel
           id="detail"
-          elements={returnImages(props.selectedContent.images)}
+          elements={returnImages(props)}
           duration  ={3000}
   				animation  ='slide left'
   				showNextPrev  =  {false}
@@ -152,7 +168,7 @@ const DetailContainer = (props) => {
         {props.selectedContent.address_info||props.selectedContentCounterpart.address_info ? configureGMAddress(props) : null}
       </div >
         {createInfo()}
-        <Container>
+        <Container style={{display:'inline-block'}}>
       <Segment>
         <Grid columns={props.selectedContentCounterpart.address_info ? 2 : 1}>
           {props.selectedContentCounterpart.address_info ?

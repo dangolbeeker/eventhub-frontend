@@ -60,7 +60,11 @@ class Slot extends React.Component{
   }
 
   renderShowingDetails = (props) => {
-    return Object.entries(props.event_info).map(entry=><p>{`${entry[0]} - ${entry[1]}`}</p>)
+    return Object.entries(props.event_info).map(entry=><p>{`${this.capatilizeString(entry[0])}: ${entry[1]}`}</p>)
+  }
+
+  capatilizeString=(string)=>{
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   renderImage = () => {

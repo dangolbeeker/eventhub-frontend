@@ -32,6 +32,14 @@
   }
 }
 
+.mapbox2 >*{
+  position:relative;
+  left:30%;
+  top: 12%;
+/* z-index:-1; */
+padding:inherit;
+}
+
 .mapbox >*{
   position:relative;
   left:9.8%;
@@ -73,11 +81,13 @@ padding:inherit;
 }
 
 .cont {
-  min-height: 550px;
+  min-height: 500px;
   width: 100%;
   display: inline-block;
 }
 
-.detail {
+#detail {
   text-align: center;
+  position:relative;
+  right:34%;
 }
