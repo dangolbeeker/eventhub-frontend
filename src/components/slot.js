@@ -38,6 +38,7 @@ class Slot extends React.Component{
 
 
   dateOrTitle = () =>{
+    console.log(this.props)
     if(this.props){
       if(this.props.address_info){
         return(
@@ -49,7 +50,7 @@ class Slot extends React.Component{
         return(
         <React.Fragment>
         <h1>{this.props.name}</h1>
-        <h3>{this.props.classifications.genre}</h3>
+        <h3>{this.props.classifications.genre === "Undefined" ? this.props.classifications.main_genre : this.props.classifications.genre}</h3>
         </React.Fragment>)}}
       else{return(null)}
     }

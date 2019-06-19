@@ -11,7 +11,7 @@ import StackGrid from 'react-stack-grid'
 const mapStyles={
 
   width:'40%',
-  height:'56%',
+  height:'53%',
 }
 
 const DetailContainer = (props) => {
@@ -53,34 +53,64 @@ const DetailContainer = (props) => {
 
 
 
-      info.push("Address Info")
+      // info.push("Address Info")
+      let counter = 0
       Object.entries(props.selectedContent.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        info.push(`${capatilizeString(value[0])}: ${value[1]}`)}
+        info.push({
+        key:counter,
+        title:`${capatilizeString(value[0])}`,
+        content:`${value[1]}`
+      })
+      counter = counter + 1
+    }
+      })
+      info.push({
+        key:counter,
+        title: "Full Address",
+        content:info[2].content.split('(')[0] + ', ' +info[0].content + ', ' + info[1].content + ' ' + info[4].content + ', ' + info[3].content 
       })
 
 
 
 
-      info2.push("Box Office Info")
+      // info2.push("Box Office Info")
+      let counter2 = 0
       if(props.selectedContent.box_office_info)
       {Object.entries(props.selectedContent.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
-      info2.push(`${capatilizeString(value[0])}: ${value[1]}`)})}
+        info2.push({
+        key:counter2,
+        title:`${capatilizeString(value[0])}`,
+        content:`${value[1]}`
+      })
+        counter2 = counter2 + 1
+    })
+  }
       else{info2.push("no info available")}
 
     }
     else if(props.selectedContent.classifications){
       props.selectedContent.on_sale ? info.push("On Sale Now!") : info.push("Not on sale")
 
-      info2.push("Event Info")
+      // info2.push("Event Info")
+      let counter3 = 0
       Object.entries(props.selectedContent.classifications).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        if(value[1]!=="Undefined"){info2.push(`${capatilizeString(value[0])}: ${value[1]}`)}})
+
+        if(value[1]!=="Undefined"){
+          info2.push({
+          key:counter3,
+          title:`${capatilizeString(value[0])}`,
+          content:`${value[1]}`
+        })
+          counter3 = counter3 + 1
+      }})
     }
     else{return""}
+    debugger
   }
 
   const renderInfo = (info) =>{
@@ -170,14 +200,16 @@ const DetailContainer = (props) => {
         {createInfo()}
         <Container style={{display:'inline-block'}}>
       <Segment>
-        <Grid columns={props.selectedContentCounterpart.address_info ? 2 : 1}>
-          {props.selectedContentCounterpart.address_info ?
+        <Grid columns={props.selectedContent.address_info ? 2 : 1}>
+          {props.selectedContent.address_info ?
             <Grid.Column>
-            {renderInfo(info)}
+            <h2>{props.selectedContent.address_info ? "Address" : null}</h2>
+            <Accordion panels={info} exclusive={false} fluid />
             </Grid.Column> : null
             }
             <Grid.Column>
-            {renderInfo(info2)}
+            <h2>Box Office</h2>
+            <Accordion panels={info2} exclusive={false} fluid />
             </Grid.Column>
           </Grid>
             {props.selectedContentCounterpart.address_info ? <Divider vertical/> : null}

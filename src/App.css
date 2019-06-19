@@ -43,7 +43,7 @@ padding:inherit;
 .mapbox >*{
   position:relative;
   left:9.8%;
-  top: 12%;
+  top: 11%;
 /* z-index:-1; */
 padding:inherit;
 }
@@ -66,8 +66,8 @@ padding:inherit;
   text-align: center;
   position: relative;
   left:50%;
-  width:69%;
-  height:82%;
+  width:68%;
+  height:50%;
 }
 
 .img {
