@@ -22,7 +22,7 @@ const HomeContainer = (props) => {
 
   return (
     <Container>
-    <Image inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
+    <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
       <h2>Suggested Venues</h2>
     <Container celled="true">
     <Card.Group center="true">

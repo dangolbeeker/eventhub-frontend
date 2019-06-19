@@ -47,6 +47,17 @@ padding:inherit;
 /* z-index:-1; */
 padding:inherit;
 }
+
+.mapbox3 >*{
+  position:relative;
+  left:9.8%;
+  top: 27.4%;
+/* z-index:-1; */
+padding:inherit;
+}
+
+
+
 .ui.card>.content{
   border-color: dodgerblue;
   display: inline-block;
@@ -90,4 +101,21 @@ padding:inherit;
   text-align: center;
   position:relative;
   right:34%;
+}
+
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-4rem) scale(.8);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in .6s cubic-bezier(0, .9, .3, 1.2) forwards;
+  opacity: 0;
 }

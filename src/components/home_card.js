@@ -100,8 +100,8 @@ class HomeCard extends React.Component{
   render(){
     console.log("CARD GOING TO RENDER")
     return(
-      <Card height='500'>
-        <Image  height="140" src={this.renderVenueImage()} />
+      <Card className="animate-pop-in" height='500'>
+        <Image height="140" src={this.renderVenueImage()} />
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
           <p>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</p>

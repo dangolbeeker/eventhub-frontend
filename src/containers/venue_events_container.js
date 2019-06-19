@@ -163,7 +163,7 @@ const VenueEventContainer = (props) => {
 
    const renderGoogleMap = (address_info) => {
      return(
-       <Container fluid className={props.selectedContent.images === null ? 'mapbox2' : 'mapbox'} textAlign="center">
+       <Container fluid className={props.selectedContent.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
        <Map
            google={props.google}
            zoom={13}
@@ -186,8 +186,8 @@ const VenueEventContainer = (props) => {
    }
 
   return(
-    <Container>
-    <h1>Event Hub</h1>
+    <Container >
+    <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
     <h2>{handleNaming()}</h2>
     <div className='cont'>
     {props.selectedContent.images === null ? null :
