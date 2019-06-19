@@ -8,20 +8,23 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 
 const mapStyles={
   width:'40%',
-  height:'56%',
+  height:'51.4%',
 }
 
 const VenueEventContainer = (props) => {
 
-  let info=[]
-  let info2=[]
+  let infoRoot=[]
+  let infoPanels=[]
+  let infoContent=[]
+  let info2Root=[]
+  let info2Panels=[]
+  let info2Content=[]
   let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
 
   const createInfo = () =>{
-    console.log(props)
+
     if(props.selectedContentCounterpart.address_info){
-
-
+      debugger
 
 
       // info.push("Address Info")
@@ -29,7 +32,7 @@ const VenueEventContainer = (props) => {
       Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        info.push({
+        infoPanels.push({
         key:counter,
         title:`${capatilizeString(value[0])}`,
         content:`${value[1]}`
@@ -37,6 +40,20 @@ const VenueEventContainer = (props) => {
       counter = counter + 1
     }
       })
+      infoPanels.push({
+        key:counter,
+        title: "Full Address",
+        content:infoPanels[2].content.split('(')[0] + ', ' +infoPanels[0].content + ', ' + infoPanels[1].content + ' ' + infoPanels[4].content + ', ' + infoPanels[3].content
+      })
+
+      infoContent.push(<div><Accordion.Accordion panels={infoPanels}/></div>)
+
+      infoRoot.push({
+        key:'root-1',
+        title:'Info',
+        content:{content:infoContent}
+      })
+
 
 
 
@@ -47,37 +64,47 @@ const VenueEventContainer = (props) => {
       {Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
-        info2.push({
+        info2Panels.push({
         key:counter2,
         title:`${capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
         counter2 = counter2 + 1
-    })}
-      else{info2.push("no info available")}
+    })
 
-    }
-    else if(props.selectedContentVenueEvents[0]){
-      console.log(props.selectedContentVenueEvents[0])
-      debugger
-      // info2.push("Event Info")
-      let counter3 = 0
-      Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
-        if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+    info2Content.push(<div><Accordion.Accordion panels={info2Panels}/></div>)
 
-        if(value[1]!=="Undefined"){
-          info2.push({
-          key:counter3,
-          title:`${capatilizeString(value[0])}`,
-          content:`${value[1]}`
-        })
-          counter3 = counter3 + 1
-      }})
-    }
-    else{return""}
-    console.log("INFO2",info2)
-    console.log("INFO",info)
+    info2Root.push({
+      key:'root-2',
+      title:'Info',
+      content:[info2Content]
+  })}}
+  else if(props.selectedContentCounterpart.classifications){
+    // info2.push("Event Info")
+    let counter3 = 0
+    Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
+      if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+
+      if(value[1]!=="Undefined"){
+        info2Panels.push({
+        key:counter3,
+        title:`${capatilizeString(value[0])}`,
+        content:`${value[1]}`
+      })
+        counter3 = counter3 + 1
+    }})
+
+    info2Content = (<div><Accordion.Accordion panels={info2Panels}/></div>)
+
+    info2Root.push({
+      key:'root-2',
+      title:'Info',
+      content :[info2Content]
+    })
+
   }
+
+}
 
   const capatilizeString=(string)=>{
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -107,13 +134,12 @@ const VenueEventContainer = (props) => {
 
 
   const returnImages = (props) => {
-    debugger
     return(props.location.pathname.split('/').length === 5 ? testImagesForNull(props.selectedContentCounterpart.images) : testImagesForNull(props.selectedContent.images)
   )
   }
 
   const handleNaming = () => {
-    console.log(props)
+    // console.log(props)
     if(props){
       return(props.selectedContent.address_info ?
         `${props.selectedContentCounterpart.name} @ ${props.selectedContent.name}`
@@ -183,14 +209,14 @@ const VenueEventContainer = (props) => {
     {
       props.selectedContentCounterpart.address_info?
     <Grid.Column>
-    <h2>{figureTitleBasedOnInfo(info) }</h2>
-    {info.length === 0 ? null : <Accordion panels={info} exclusive={false} fluid />}
+    <h2>{figureTitleBasedOnInfo(infoPanels) }</h2>
+    {infoPanels.length === 0 ? null : <Accordion panels={infoRoot} exclusive={false} fluid />}
     </Grid.Column>
     : null
   }
     <Grid.Column>
-    <h2>{props.selectedContentCounterpart.address_info ? "Box Office Info" : "Classifications"}</h2>
-    <Accordion panels={info2} exclusive={false} fluid />
+    <h2>{props.selectedContentCounterpart.box_office_info ? "Box Office Info" : "Classifications"}</h2>
+    <Accordion panels={info2Root} exclusive={false} fluid />
     </Grid.Column>
     </Grid>
     {props.selectedContentCounterpart.classifications ? null : <Divider vertical/> }

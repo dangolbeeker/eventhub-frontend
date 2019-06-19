@@ -38,7 +38,7 @@ class Slot extends React.Component{
 
 
   dateOrTitle = () =>{
-    console.log(this.props)
+    // console.log(this.props)
     if(this.props){
       if(this.props.address_info){
         return(

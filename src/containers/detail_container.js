@@ -11,7 +11,7 @@ import StackGrid from 'react-stack-grid'
 const mapStyles={
 
   width:'40%',
-  height:'53%',
+  height:'51.4%',
 }
 
 const DetailContainer = (props) => {
@@ -26,8 +26,12 @@ const DetailContainer = (props) => {
 
 
 
-  let info=[]
-  let info2=[]
+  let infoRoot=[]
+  let infoPanels=[]
+  let infoContent=[]
+  let info2Root=[]
+  let info2Panels=[]
+  let info2Content=[]
   let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
   //
   // const generatePanels = () => {
@@ -48,17 +52,17 @@ const DetailContainer = (props) => {
   }
 
   const createInfo = () =>{
-    if(props.selectedContent.address_info){
 
-
+    if(props.selectedContentCounterpart.address_info){
+      debugger
 
 
       // info.push("Address Info")
       let counter = 0
-      Object.entries(props.selectedContent.address_info).forEach(value=>{
+      Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-        info.push({
+        infoPanels.push({
         key:counter,
         title:`${capatilizeString(value[0])}`,
         content:`${value[1]}`
@@ -66,61 +70,80 @@ const DetailContainer = (props) => {
       counter = counter + 1
     }
       })
-      info.push({
+      infoPanels.push({
         key:counter,
         title: "Full Address",
-        content:info[2].content.split('(')[0] + ', ' +info[0].content + ', ' + info[1].content + ' ' + info[4].content + ', ' + info[3].content 
+        content:infoPanels[2].content.split('(')[0] + ', ' +infoPanels[0].content + ', ' + infoPanels[1].content + ' ' + infoPanels[4].content + ', ' + infoPanels[3].content
       })
+
+      infoContent.push(<div><Accordion.Accordion panels={infoPanels}/></div>)
+
+      infoRoot.push({
+        key:'root-1',
+        title:'Info',
+        content:{content:infoContent}
+      })
+
 
 
 
 
       // info2.push("Box Office Info")
       let counter2 = 0
-      if(props.selectedContent.box_office_info)
-      {Object.entries(props.selectedContent.box_office_info).forEach(value=>{
+      if(props.selectedContentCounterpart.box_office_info)
+      {Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
-        info2.push({
+        info2Panels.push({
         key:counter2,
         title:`${capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
         counter2 = counter2 + 1
     })
+
+    info2Content.push(<div><Accordion.Accordion panels={info2Panels}/></div>)
+
+    info2Root.push({
+      key:'root-2',
+      title:'Info',
+      content:[info2Content]
+  })}}
+  else if(props.selectedContentCounterpart.classifications){
+    // info2.push("Event Info")
+    let counter3 = 0
+    Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
+      if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+
+      if(value[1]!=="Undefined"){
+        info2Panels.push({
+        key:counter3,
+        title:`${capatilizeString(value[0])}`,
+        content:`${value[1]}`
+      })
+        counter3 = counter3 + 1
+    }})
+
+    info2Content = (<div><Accordion.Accordion panels={info2Panels}/></div>)
+
+    info2Root.push({
+      key:'root-2',
+      title:'Info',
+      content :[info2Content]
+    })
+
   }
-      else{info2.push("no info available")}
 
-    }
-    else if(props.selectedContent.classifications){
-      props.selectedContent.on_sale ? info.push("On Sale Now!") : info.push("Not on sale")
-
-      // info2.push("Event Info")
-      let counter3 = 0
-      Object.entries(props.selectedContent.classifications).forEach(value=>{
-        if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
-
-        if(value[1]!=="Undefined"){
-          info2.push({
-          key:counter3,
-          title:`${capatilizeString(value[0])}`,
-          content:`${value[1]}`
-        })
-          counter3 = counter3 + 1
-      }})
-    }
-    else{return""}
-    debugger
-  }
+}
 
   const renderInfo = (info) =>{
     return info.map(entry=>{
-    if(headerThese.includes(entry)){
-      return(<h3>{entry}</h3>)
-    }else{
-      return(<h4>{entry}</h4>)
-    }
-  })
+      if(headerThese.includes(entry)){
+        return(<h3>{entry}</h3>)
+      }else{
+        return(<h4>{entry}</h4>)
+      }
+    })
   }
 
   const renderSlots = () =>{
@@ -204,22 +227,24 @@ const DetailContainer = (props) => {
           {props.selectedContent.address_info ?
             <Grid.Column>
             <h2>{props.selectedContent.address_info ? "Address" : null}</h2>
-            <Accordion panels={info} exclusive={false} fluid />
+            <Accordion panels={infoRoot} exclusive={false} fluid />
             </Grid.Column> : null
             }
             <Grid.Column>
             <h2>Box Office</h2>
-            <Accordion panels={info2} exclusive={false} fluid />
+            <Accordion panels={info2Root} exclusive={false} fluid />
             </Grid.Column>
           </Grid>
-            {props.selectedContentCounterpart.address_info ? <Divider vertical/> : null}
+            {props.selectedContentCounterpart.address_info||props.selectedContent.address_info ? <Divider vertical/> : null}
     </Segment>
     <Divider/>
 
     {props.selectedContent.classifications ? <h2>Venues</h2> : <h2>Events</h2>}
+    <div style={{textAlign:'center'}}>
     <StackGrid columnWidth={250}>
     {renderSlots()}
     </StackGrid>
+    </div>
     </Container>
     </Container>
   )
