@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card,Container,Divider,Search } from 'semantic-ui-react'
+import { Card,Container,Divider,Search,Image } from 'semantic-ui-react'
 import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
@@ -75,6 +75,7 @@ class VenueContainer extends React.Component{
     return (
     <Container >
     <h1>Event Hub</h1>
+    <Image inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
     <h2>{this.capatilizeString(this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1])}</h2>
     <Search showNoResults={false}onSearchChange={this.handleChange}/>
     <Divider/>

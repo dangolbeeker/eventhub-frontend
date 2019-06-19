@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from 'semantic-ui-react'
 import {CardElement, injectStripe} from 'react-stripe-elements';
+import {connect} from 'react-redux'
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -8,10 +9,24 @@ class CheckoutForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  async submit(ev) {
+  submit(ev) {
     // User clicked submit
-    console.log("you would complete purchase here")
+    let token = localStorage.getItem('token')
+    fetch('http://localhost:3001/tickets/purchase',{
+      method:'PATCH',
+      headers:{
+        'Authorization':token,
+          'Content-Type': 'application/json',
+          'Accepts': 'application/json'
+      },
+      body:JSON.stringify({tickets:this.props.tickets})
+    })
+    .then(resp=>resp.json())
+    .then(data=>{
+      this.props.confirmTicketPurchase(data)
+    })
   }
+
 
   render() {
     return (
@@ -24,4 +39,11 @@ class CheckoutForm extends Component {
   }
 }
 
-export default injectStripe(CheckoutForm);
+const mapDispatchToProps  = (dispatch) => {
+  return{
+    confirmTicketPurchase:ticketObj=>dispatch({type:"ADD_TICKET_TO_USER",payload:ticketObj})
+  }
+}
+
+
+export default injectStripe(connect(null,mapDispatchToProps)(CheckoutForm));

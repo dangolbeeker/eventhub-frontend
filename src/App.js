@@ -73,24 +73,6 @@ class App extends React.Component{
     return newObj
   }
 
-  configureTickets=(tickets,term)=>{
-    switch(term){
-      case"tickets":
-      return(Object.values(tickets).filter(ticket=>ticket.bought===true))
-      case"cart":
-      return(Object.values(tickets).filter(ticket=>ticket.bought===false))
-    }
-  }
-
-  configureTicketing = (term) => {
-    console.log("TICKETS",this.props.user.tickets)
-    let ticketsToRender = this.configureTickets(this.props.user.tickets,term)
-    let ticketVenueEvents = ticketsToRender.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
-    this.props.addDisplayTickets(ticketsToRender)
-    this.props.addDisplayVenueEvents(ticketVenueEvents)
-    this.props.addDisplayVenues(ticketVenueEvents.map(ticket=>this.props.venues[ticket.venue_id]))
-    this.props.addDisplayEvents(ticketVenueEvents.map(ticket=>this.props.events[ticket.event_id]))
-  }
 
   render(){
     return (
@@ -165,9 +147,6 @@ class App extends React.Component{
             <Route exact path='/tickets' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
               {
-                this.props.resetCart()
-                debugger
-                this.configureTicketing("tickets")
               // const tickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===true)
               // const ticketVenueEvents =   tickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
               // const ticketVenues = ticketVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
@@ -179,8 +158,6 @@ class App extends React.Component{
             <Route exact path='/cart' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
               {
-                this.props.resetCart()
-                this.configureTicketing("cart")
               // const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
               // const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
               // const cartVenues = cartVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])

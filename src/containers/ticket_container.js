@@ -37,13 +37,17 @@ class TicketContainer extends React.Component{
     return obj
   }
 
-shouldComponentUpdate = (prevProps) => {
-  console.log("FROM",this.props.location.pathname)
-  console.log("TO",prevProps.location.pathname)
-  console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
-  debugger
-  return(prevProps.location.pathname === this.props.location.pathname ? false : true)
-}
+// shouldComponentUpdate = (prevProps) => {
+//   console.log("FROM",this.props.location.pathname)
+//   console.log("TO",prevProps.location.pathname)
+//   console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
+//   debugger
+//   return(prevProps.displayTickets.length===this.props.displayTickets||prevProps.location.pathname === this.props.location.pathname ? false : true)
+// }
+//
+// componentDidUpdate = () => {
+//   this.props.resetCart()
+// }
 
  renderCart = () => {
      if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
@@ -114,17 +118,32 @@ handleNaming = () => {
  //   }
  // }
 
+ const configureVEDisplay = (tickets,things) => {
+      return tickets.map(ticket=>things[ticket.venue_event_id])
+}
+
+ const configureEDisplay = (ve,things) => {
+      return ve.map(ve=>things[ve.event_id])
+}
+
+const configureVDisplay = (ve,things) => {
+    return ve.map(ve=>things[ve.venue_id])
+}
+
+
+
  const mapStateToProps = (state) => {
    // let ticketsToRender = configureTickets(state.user.tickets)
    // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
    // console.log(ticketsToRender)
    // console.log(ticketVenueEvents)
-      debugger
+      let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought)
+      let displayVE = configureVEDisplay(tickets,state.venueEvents)
    return{
-     displayTickets:state.displayTickets,
-     displayVenueEvents:state.displayVenueEvents,
-     displayVenues:state.displayVenues,
-     displayEvents:state.displayEvents
+     displayTickets:tickets,
+     displayVenueEvents:displayVE,
+     displayVenues:configureVDisplay(displayVE,state.venues),
+     displayEvents:configureEDisplay(displayVE,state.events)
    }
  }
 

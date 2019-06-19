@@ -37,14 +37,18 @@ class CartContainer extends React.Component{
     return obj
   }
 
-componentDidUpdate = (prevProps) => {
-  // compare urls on update
-  debugger
-  if(this.props.location.pathname !== prevProps.location.pathname){
-    //set venueOrEvents to null and let mapstate handle giving props
-    debugger
-    this.forceUpdate()
-}}
+  // componentDidMount = () => {
+  // window.alert("Stripe normally takes a real card, for demo purposes you can just check out without a card")
+  // }
+
+// componentDidUpdate = (prevProps) => {
+//   // compare urls on update
+//   debugger
+//   if(this.props.location.pathname !== prevProps.location.pathname){
+//     //set venueOrEvents to null and let mapstate handle giving props
+//     debugger
+//     this.forceUpdate()
+// }}
 
 // shouldComponentUpdate = (prevProps) => {
 //   console.log("FROM",this.props.location.pathname)
@@ -56,7 +60,7 @@ componentDidUpdate = (prevProps) => {
 
  renderCart = () => {
      if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
-     {debugger
+     { console.log(this.props)
        return(this.props.displayTickets).map(ticket=>{
          console.log(this.props)
         let cartVenueEvent = this.findVenueEvent(this.props.displayVenueEvents,ticket)
@@ -86,14 +90,18 @@ handleNaming = () => {
   renderCheckOut = () => {
     return(
       <Elements>
-      <CheckoutForm total={this.props.total}/>
+      <CheckoutForm history={this.props.history}tickets={this.props.displayTickets}total={this.props.total}/>
       </Elements>
     )
   }
 
+  renderDemoAlert = () => {
+    alert("Stripe normally takes a real card, for demo purposes you can just check out without a card. Feel free to play around with the form :)")
+  }
+
 
   render(){
-    console.log(this.props)
+    this.renderDemoAlert()
       return (
     <StripeProvider apiKey="pk_test_tBdnFsQYv5jxi24KtBSB6Kyp00dieuLXMt">
       <Container>
@@ -134,26 +142,36 @@ handleNaming = () => {
    return total
  }
 
+ const configureVEDisplay = (tickets,things) => {
+      return tickets.map(ticket=>things[ticket.venue_event_id])
+}
+
+ const configureEDisplay = (ve,things) => {
+      return ve.map(ve=>things[ve.event_id])
+}
+
+const configureVDisplay = (ve,things) => {
+    return ve.map(ve=>things[ve.venue_id])
+}
+
  const mapStateToProps = (state) => {
    // let ticketsToRender = configureTickets(state.user.tickets)
    // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
    // console.log(ticketsToRender)
    // console.log(ticketVenueEvents)
-   return{
-     displayTickets:state.displayTickets,
-     displayVenueEvents:state.displayVenueEvents,
-     displayVenues:state.displayVenues,
-     displayEvents:state.displayEvents,
-     total:configureTotal(state.displayVenueEvents)
-   }
- }
 
- const mapDispatchToProps = (dispatch) => {
-   return{resetCart:()=>{dispatch({type:"RESET_CART_TICKETS",payload:null})},
-     confirmTicketPurchase:(ticketObj)=>
-     dispatch({type:"ADD_TICKET_TO_USER",payload:ticketObj})
-   }
- }
+   let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought===false)
+   let displayVE = configureVEDisplay(tickets,state.venueEvents)
+   console.log(tickets)
+   console.log(displayVE)
+return{
+  displayTickets:tickets,
+  displayVenueEvents:displayVE,
+  displayVenues:configureVDisplay(displayVE,state.venues),
+  displayEvents:configureEDisplay(displayVE,state.events)
+}
+}
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(CartContainer)
+
+export default connect(mapStateToProps)(CartContainer)

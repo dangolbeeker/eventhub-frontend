@@ -24,14 +24,15 @@ class Slot extends React.Component{
       headers: {
         'Authorization':token,
           'Content-Type': 'application/json',
-          'Accepts': 'application/json'},
+          'Accepts': 'application/json'
+        },
       body:JSON.stringify({
           UserID:userID,
           venueEventID:veID
         })
       })
       .then(resp=>resp.json())
-      .then(data=>this.props.updateUser(data.user))
+      .then(data=>this.props.updateUser(data.user.tickets))
       .then(()=>{alert("ticket added to cart")})
   }
 
@@ -114,7 +115,7 @@ class Slot extends React.Component{
       return"Venue Details"
     }else if(this.props.on_sale&&this.props.pricing_info){
       return"Add to Cart"
-    }else if(this.props.pricing_info===null){return"not for sale"}
+    }else if(this.props.pricing_info===null){return"no pricing available"}
     else{return"Sold Out!"}
   }
 
@@ -129,7 +130,7 @@ class Slot extends React.Component{
 
   checkForSale = () => {
     if(this.props){
-      if(this.props.on_sale===true&&this.props.pricing_info){
+      if(this.props.on_sale===true&&this.props.pricing_info !== null){
         return(
           <Button
           as={ this.props.on_sale ? null : Link}
@@ -150,12 +151,14 @@ class Slot extends React.Component{
 
 
   render(){
+    console.log(this.props)
     return(
       <Card>
       { this.props.sale_info ? this.checkForOnsale() : null}
       {this.dateOrTitle()}
       {this.renderImageOrInfo()}
-      {this.props.pricing_info? this.checkForSale() : <Button
+      <h3>{this.props.pricing_info ? `Price: $${this.props.pricing_info.min.split('.')[0]}` : null }</h3>
+      {this.props.pricing_info||this.props.pricing_info===null ? this.checkForSale() : <Button
       as={ this.props.on_sale ? null : Link}
       name={this.buttonName()}
       onClick={this.checkForTicketPurchase}
@@ -174,7 +177,7 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps = (dispatch) => {
     return{updateUser:data=>
       {console.log(data)
-        dispatch({type:"ADD_USER",payload:data})
+        dispatch({type:"ADD_CART_TICKETS",payload:data})
       }
     }
   }

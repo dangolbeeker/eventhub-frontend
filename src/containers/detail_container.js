@@ -53,13 +53,13 @@ const DetailContainer = (props) => {
 
   const createInfo = () =>{
 
-    if(props.selectedContentCounterpart.address_info){
+    if(props.selectedContent.address_info){
       debugger
 
 
       // info.push("Address Info")
       let counter = 0
-      Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
+      Object.entries(props.selectedContent.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         infoPanels.push({
@@ -90,8 +90,8 @@ const DetailContainer = (props) => {
 
       // info2.push("Box Office Info")
       let counter2 = 0
-      if(props.selectedContentCounterpart.box_office_info)
-      {Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
+      if(props.selectedContent.box_office_info)
+      {Object.entries(props.selectedContent.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
         info2Panels.push({
@@ -109,10 +109,10 @@ const DetailContainer = (props) => {
       title:'Info',
       content:[info2Content]
   })}}
-  else if(props.selectedContentCounterpart.classifications){
+  else if(props.selectedContent.classifications){
     // info2.push("Event Info")
     let counter3 = 0
-    Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
+    Object.entries(props.selectedContent.classifications).forEach(value=>{
       if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
 
       if(value[1]!=="Undefined"){
@@ -231,7 +231,7 @@ const DetailContainer = (props) => {
             </Grid.Column> : null
             }
             <Grid.Column>
-            <h2>Box Office</h2>
+            <h2>{props.selectedContent.box_office_info ? "Box Office" : "Classifications"}</h2>
             <Accordion panels={info2Root} exclusive={false} fluid />
             </Grid.Column>
           </Grid>

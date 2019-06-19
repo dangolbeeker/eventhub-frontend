@@ -98,7 +98,7 @@ class HomeCard extends React.Component{
  }
 
   render(){
-    debugger
+    console.log("CARD GOING TO RENDER")
     return(
       <Card height='500'>
         <Image  height="140" src={this.renderVenueImage()} />

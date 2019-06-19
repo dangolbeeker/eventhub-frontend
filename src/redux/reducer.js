@@ -6,14 +6,9 @@ const defaultState = {
   venues:{},
   events:{},
   venueEvents:{},
+  tickets:[],
   //this doesnt get used until venue container gets used
   venueOrEvents:{},
-  //not used until cart
-  displayTickets:[],
-  displayVenueEvents:[],
-  displayEvents:[],
-  displayVenues:[],
-  // above only exist in cart container components, kept her for reference
   selectedContent:{},
   selectedContentVenueEvents:{},
   selectedContentCounterpart:{},
@@ -30,15 +25,19 @@ const defaultState = {
       case"ADD_VENUE_EVENTS":
         return {...state,venueEvents:action.payload}
       case"ADD_REVIEWS":
+
         return {...state,reviews:action.payload}
       case"ADD_SELECTED_CONTENT":
         return{...state,selectedContent:action.payload}
+      case "ADD_TICKET_TO_USER":
+        this.props.history.push('/tickets')
+        return{...state,tickets:action.payload}
       case"ADD_SELECTED_CONTENT_VENUE_EVENTS":
         return{...state,selectedContentVenueEvents:action.payload}
       case"ADD_SELECTED_CONTENT_COUNTERPART":
         return{...state,selectedContentCounterpart:action.payload}
       case"ADD_USER":
-        return{...state,user:action.payload}
+        return{...state,user:action.payload,tickets:action.payload.tickets}
       case "DELETE_USER":
         return{...state,user:{
           id:null,
@@ -47,20 +46,10 @@ const defaultState = {
       case"RESET_PROPS":
       return{...state,venueOrEvents:{}}
       case"RESET_CART_TICKETS":
-      return({...state,
-        displayTickets:[],
-        displayVenueEvents:[],
-        displayEvents:[],
-        displayVenues:[]
-      })
-      case"ADD_D_TICKETS":
-      return({...state,displayTickets:action.payload})
-      case"ADD_D_VENUE_EVENTS":
-      return({...state,displayVenueEvents:action.payload})
-      case"ADD_D_EVENTS":
-      return({...state,displayEvents:action.payload})
-      case"ADD_D_VENUES":
-      return({...state,displayVenues:action.payload})
+      case"ADD_CART_TICKETS":
+        debugger
+        return({...state,tickets:action.payload})
+
       default:
       return state
     }

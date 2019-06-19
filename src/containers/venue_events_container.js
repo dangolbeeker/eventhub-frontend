@@ -215,7 +215,7 @@ const VenueEventContainer = (props) => {
     : null
   }
     <Grid.Column>
-    <h2>{props.selectedContentCounterpart.box_office_info ? "Box Office Info" : "Classifications"}</h2>
+    <h2>{props.selectedContentCounterpart.box_office_info ? "Box Office Info" : "Event Categories"}</h2>
     <Accordion panels={info2Root} exclusive={false} fluid />
     </Grid.Column>
     </Grid>

@@ -9,7 +9,8 @@ class Navbar extends React.Component{
 
   seeCurentUrl = () =>{
     if(this.props){
-      let url = this.props.location.pathname.split("/")[1]
+      debugger
+      let url = window.location.pathname.split("/")[1]
       switch(url){
       case"venues":
         return"venues"
@@ -133,9 +134,9 @@ class Navbar extends React.Component{
 
   render(){
   return (
-    <Menu style={{position: "fixed",
+    <Menu style={{position: "sticky",
+                  top:"0%",
                   width: "100%",
-                  height:'0%',
                   zIndex: "5",
                   color:'white',
                   backgroundColor:'#17202A'
@@ -156,7 +157,7 @@ class Navbar extends React.Component{
       <Dropdown item text='Events'
       active={this.state.activeItem === 'events'}
       onClick={this.handleItemClick}>
-        <Dropdown.Menu>
+        <Dropdown.Menu name="events">
         <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='sports' to='/events/sports'>Sports</Dropdown.Item>
         <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='music' to='/events/music'>Music</Dropdown.Item>
         <Dropdown.Item as={Link} onClick ={this.handleItemClick} name ='arts&theatre' to='/events/arts&theatre'>Arts & Theatre</Dropdown.Item>
