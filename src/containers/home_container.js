@@ -23,7 +23,7 @@ const HomeContainer = (props) => {
   return (
     <Container>
     <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
-      <h2>Suggested Venues</h2>
+      <h2 classname="animate-pop-in">Suggested Venues</h2>
     <Container celled="true">
     <Card.Group center="true">
       <Grid columns={Object.keys(props.venues).length}>
@@ -33,7 +33,7 @@ const HomeContainer = (props) => {
     </Container>
     <Divider horizontal/>
     <Container celled="true">
-    <h2>Suggested Events</h2>
+    <h2 classname="animate-pop-in">Suggested Events</h2>
     <Card.Group center="true">
       <Grid columns={Object.keys(props.events).length}>
       {renderEventCards()}

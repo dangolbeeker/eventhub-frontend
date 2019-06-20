@@ -89,16 +89,16 @@ class LoginContainer extends React.Component{
      this.props.location.pathname ==="/login" ? this.login() : this.register()
    }
 
-  checkLoginOrRegister = () => {
-    if(this.props.location){
-      return(this.capatilizeString(this.props.location.pathname.split('/')[1]))
-    }
-  }
+  // checkLoginOrRegister = () => {
+  //   if(this.props.location){
+  //     return(this.capatilizeString(this.props.location.pathname.split('/')[1]))
+  //   }
+  // }
 
   render(){
       return (
       <Container>
-      <h1>{this.checkLoginOrRegister()}</h1>
+      <h1>{this.props.location.pathname ==='/login' ? "Log In" : "Register"}</h1>
         <Form>
         <Form.Field>
           <label>Username</label>
