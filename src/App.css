@@ -35,7 +35,7 @@
 .mapbox2 >*{
   position:relative;
   left:30%;
-  top: 12%;
+  top: 12px%;
 /* z-index:-1; */
 padding:inherit;
 }
@@ -43,7 +43,7 @@ padding:inherit;
 .mapbox >*{
   position:relative;
   left:9.8%;
-  top: 16.5%;
+  top: 265px;
 /* z-index:-1; */
 padding:inherit;
 }
@@ -51,7 +51,8 @@ padding:inherit;
 .mapbox3 >*{
   position:relative;
   left:9.8%;
-  top: 27.4%;
+  top: 265px;
+  bottom:0px;
 /* z-index:-1; */
 padding:inherit;
 }

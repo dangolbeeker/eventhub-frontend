@@ -5,10 +5,11 @@ import {connect} from 'react-redux'
 import Slot from '../components/slot'
 import  Carousel  from  'semantic-ui-carousel-react'
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
+import {Link} from  'react-router-dom'
 
 const mapStyles={
   width:'40%',
-  height:'51.4%',
+  height:'52.9%',
 }
 
 const VenueEventContainer = (props) => {
@@ -121,7 +122,7 @@ const VenueEventContainer = (props) => {
       })
         counter4 = counter4 + 1
     }})
-    info2Content = (<div><Accordion.Accordion panels={info3Panels}/></div>)
+    info3Content = (<div><Accordion.Accordion panels={info3Panels}/></div>)
     info3Root.push({
       key:'root-2',
       title:'Info',
@@ -132,7 +133,7 @@ const VenueEventContainer = (props) => {
 
 
     let counter5=0
-    Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
+    Object.entries(props.selectedContent.box_office_info).forEach(value=>{
       if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
       if(value[1] === null){value[1] = "no info available"}
       info2Panels.push({
@@ -153,7 +154,7 @@ const VenueEventContainer = (props) => {
 
 
     let counter6 = 0
-    Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
+    Object.entries(props.selectedContent.address_info).forEach(value=>{
       if(value[0]!=="longitude"&&value[0]!=="latitude")
       {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
       infoPanels.push({
@@ -216,13 +217,18 @@ const VenueEventContainer = (props) => {
 
   const handleNaming = () => {
     // console.log(props)
-    if(props){
       return(props.selectedContent.address_info ?
-        `${props.selectedContentCounterpart.name} @ ${props.selectedContent.name}`
+        <h2>
+        <Link to={`/event/${props.selectedContentCounterpart.id}`}>
+        {props.selectedContentCounterpart.name}
+        </Link> @ <Link to={`/venue/${props.selectedContent.id}`}>
+         {props.selectedContent.name}
+         </Link>
+         </h2>
         :
-        `${props.selectedContent.name} @ ${props.selectedContentCounterpart.name}`
+        <h2><Link to={`/event/${props.selectedContent.id}`}>{props.selectedContent.name}</Link> @ <Link to={`/venue/${props.selectedContentCounterpart.id}`}>{props.selectedContentCounterpart.name}</Link></h2>
       )
-    }
+
   }
 
   const renderSlots = () =>{
@@ -273,7 +279,7 @@ const VenueEventContainer = (props) => {
   return(
     <Container >
     <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
-    <h2>{handleNaming()}</h2>
+    {handleNaming()}
     <div className='cont'>
     {props.selectedContent.images === null ? null :
     <Carousel
