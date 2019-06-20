@@ -187,36 +187,7 @@ const VenueEventContainer = (props) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const renderInfo = (info) =>{
-    return info.map(entry=><h4>{entry}</h4>)
-  }
-
-
-  const actuallyReturnImages = (images) => {
-    return(images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
-  }
-  // props.selectedContentCounterpart.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
-  // :
-  // props.selectedContent.images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})})
-
-  const testImagesForNull = (images) => {
-    return(images === null ? [{render:()=>{return <div className='img' style={{backgroundImage:'url(https://image.flaticon.com/icons/svg/45/45944.svg)'}}/>}}] : actuallyReturnImages(images))
-  }
-
-
-  const returnImages = (props) => {
-    let images = []
-    if(props.selectedContent.images&&props.selectedContentCounterpart.images !== null)
-    {
-      images = props.selectedContent.images.concat(props.selectedContentCounterpart.images)
-    }
-    else if(props.selectedContent.images&&props.selectedContentCounterpart.images === null){}
-    else(props.selectedContent.images === null ? images = props.selectedContentCounterpart.images : images = props.selectedContent.images)
-    return testImagesForNull(images)
-  }
-
   const handleNaming = () => {
-    // console.log(props)
       return(props.selectedContent.address_info ?
         <h2>
         <Link to={`/event/${props.selectedContentCounterpart.id}`}>
@@ -238,14 +209,9 @@ const VenueEventContainer = (props) => {
    else{return"Loading"}
   }
 
-  const renderImage = () => {
-    if(props.selectedContent){
-    return(props.selectedContent.images ? returnImages(props.selectedContent.images) : null)
-  }}
-
    const renderGoogleMap = (address_info) => {
      return(
-       <Container fluid className={props.selectedContent.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
+       <Container fluid className={props.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
        <Map
            google={props.google}
            zoom={13}
@@ -281,10 +247,10 @@ const VenueEventContainer = (props) => {
     <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
     {handleNaming()}
     <div className='cont'>
-    {props.selectedContent.images === null ? null :
+    {props.selectedContent.images&&props.selectedContentCounterpart.images === null ? null :
     <Carousel
         id='customCarousel'
-        elements={returnImages(props)}
+        elements={props.images}
         duration  ={3000}
         animation  ='slide left'
         showNextPrev  =  {false}
@@ -322,10 +288,30 @@ const VenueEventContainer = (props) => {
   )
 }
 
+const actuallyReturnImages = (images) => {
+  return(images.map(image=>{return({render:()=>{return <div className="img" style={{backgroundImage:`url(${image})`}}/>}})}))
+}
+
+const testImagesForNull = (images) => {
+  return(images === null ? [{render:()=>{return <div className='img' style={{backgroundImage:'url(https://image.flaticon.com/icons/svg/45/45944.svg)'}}/>}}] : actuallyReturnImages(images))
+}
+
+const returnImages = (state) => {
+  let images = []
+  if(state.selectedContent.images&&state.selectedContentCounterpart.images !== null)
+  {
+    images = state.selectedContent.images.concat(state.selectedContentCounterpart.images)
+  }
+  else if(state.selectedContent.images&&state.selectedContentCounterpart.images === null){}
+  else(state.selectedContent.images === null ? images = state.selectedContentCounterpart.images : images = state.selectedContent.images)
+  return testImagesForNull(images)
+}
+
 
 
 const mapStateToProps=(state)=>{
   return{
+    images:returnImages(state),
     selectedContent:state.selectedContent,
     selectedContentVenueEvents:state.selectedContentVenueEvents,
     selectedContentCounterpart: state.selectedContentCounterpart

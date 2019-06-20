@@ -23,7 +23,7 @@ class CheckoutForm extends Component {
     })
     .then(resp=>resp.json())
     .then(data=>{
-      this.props.confirmTicketPurchase(data)
+      this.props.confirmTicketPurchase(data.user)
       this.props.history.push('/tickets')
     })
   }
@@ -42,7 +42,7 @@ class CheckoutForm extends Component {
 
 const mapDispatchToProps  = (dispatch) => {
   return{
-    confirmTicketPurchase:ticketObj=>dispatch({type:"ADD_TICKET_TO_USER",payload:ticketObj})
+    confirmTicketPurchase:data=>dispatch({type:"ADD_USER",payload:data})
   }
 }
 

@@ -14,6 +14,9 @@ class TicketContainer extends React.Component{
         obj = venue
       }}
     )
+    console.log(venues)
+    console.log(obj)
+    debugger
     return obj
   }
 
@@ -24,6 +27,9 @@ class TicketContainer extends React.Component{
         obj = e
       }}
     )
+    console.log(events)
+    console.log(obj)
+    debugger
     return obj
   }
 
@@ -34,6 +40,9 @@ class TicketContainer extends React.Component{
         obj = venueEvent
       }}
     )
+    console.log(venueEvents)
+    console.log(obj)
+    debugger
     return obj
   }
 
@@ -51,13 +60,13 @@ class TicketContainer extends React.Component{
 
  renderCart = () => {
      if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
-     {debugger
+     {
+       debugger
        return(this.props.displayTickets).map(ticket=>{
-         console.log(this.props)
+
         let cartVenueEvent = this.findVenueEvent(this.props.displayVenueEvents,ticket)
         let cartVenue = this.findVenue(this.props.displayVenues,cartVenueEvent)
         let cartEvent = this.findEvent(this.props.displayEvents,cartVenueEvent)
-        console.log(cartVenueEvent)
          return(<HomeCard{...ticket}key={ticket.id}
            name={`${cartEvent.name} @ ${cartVenue.name}`}
            images={cartEvent.images}{...this.props.location}
@@ -119,7 +128,8 @@ handleNaming = () => {
  // }
 
  const configureVEDisplay = (tickets,things) => {
-      return tickets.map(ticket=>things[ticket.venue_event_id])
+    console.log(tickets,things)
+    return tickets.map(ticket=>things[ticket.venue_event_id])
 }
 
  const configureEDisplay = (ve,things) => {
@@ -127,7 +137,10 @@ handleNaming = () => {
 }
 
 const configureVDisplay = (ve,things) => {
-    return ve.map(ve=>things[ve.venue_id])
+    return ve.map(ve=>{
+      debugger
+      return things[ve.venue_id]
+    })
 }
 
 
@@ -137,7 +150,7 @@ const configureVDisplay = (ve,things) => {
    // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
    // console.log(ticketsToRender)
    // console.log(ticketVenueEvents)
-      let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought)
+      let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought===true)
       let displayVE = configureVEDisplay(tickets,state.venueEvents)
    return{
      displayTickets:tickets,

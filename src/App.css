@@ -35,26 +35,19 @@
 .mapbox2 >*{
   position:relative;
   left:30%;
-  top: 12px%;
-/* z-index:-1; */
-padding:inherit;
+  top: 265px%;
 }
 
 .mapbox >*{
   position:relative;
   left:9.8%;
   top: 265px;
-/* z-index:-1; */
-padding:inherit;
 }
 
 .mapbox3 >*{
   position:relative;
   left:9.8%;
   top: 265px;
-  bottom:0px;
-/* z-index:-1; */
-padding:inherit;
 }
 
 
