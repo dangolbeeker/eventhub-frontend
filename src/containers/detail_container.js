@@ -205,7 +205,7 @@ const DetailContainer = (props) => {
 
   return(
     <Container>
-      <h1>Event Hub</h1>
+      <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
       <h2>{props.selectedContent.name}</h2>
       <div className="cont" id={props.selectedContent.address_info||props.selectedContentCounterpart.address_info ? null : 'detail'}>
         {props.selectedContent.images === null? null :
