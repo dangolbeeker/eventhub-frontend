@@ -162,9 +162,13 @@ const configureVDisplay = (ve,things) => {
 
    let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought===false)
    let displayVE = configureVEDisplay(tickets,state.venueEvents)
+   let total = 0
+   displayVE.forEach(ve=>total = total + parseInt(ve.pricing_info.min))
+   debugger
    console.log(tickets)
    console.log(displayVE)
 return{
+  total:total,
   displayTickets:tickets,
   displayVenueEvents:displayVE,
   displayVenues:configureVDisplay(displayVE,state.venues),

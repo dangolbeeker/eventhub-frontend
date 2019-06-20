@@ -24,6 +24,7 @@ class CheckoutForm extends Component {
     .then(resp=>resp.json())
     .then(data=>{
       this.props.confirmTicketPurchase(data)
+      this.props.history.push('/tickets')
     })
   }
 
