@@ -28,9 +28,9 @@ class VenueContainer extends React.Component{
 
   handleEventFilter = (event,term) => {
     if(event.name.toLowerCase().includes(term.toLowerCase())){return true}
-    else if(event.classifications.genre.toLowerCase().includes(term.toLowerCase())){return true}
-    else if(event.classifications.sub_genre.toLowerCase().includes(term.toLowerCase())){return true}
-    else if(event.classifications.sub_category.toLowerCase().includes(term.toLowerCase())){return true}
+    else if(event.classifications.genre){if(event.classifications.genre.toLowerCase().includes(term.toLowerCase())){return true}}
+    else if(event.classifications.sub_genre){if(event.classifications.sub_genre.toLowerCase().includes(term.toLowerCase())){return true}}
+    else if(event.classifications.sub_category){if(event.classifications.sub_category.toLowerCase().includes(term.toLowerCase())){return true}}
     else{return false}
       // return(event.name.toLowerCase().includes(term.toLowerCase())
       // ||
@@ -74,6 +74,7 @@ class VenueContainer extends React.Component{
   {
     return (
     <Container >
+    <h1>Event Hub</h1>
     <Image inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
     <h2>{this.capatilizeString(this.props.location.pathname.split('/')[this.props.location.pathname.split('/').length-1])}</h2>
     <Search showNoResults={false}onSearchChange={this.handleChange}/>

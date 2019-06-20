@@ -19,15 +19,18 @@ const VenueEventContainer = (props) => {
   let info2Root=[]
   let info2Panels=[]
   let info2Content=[]
-  let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
+  let info3Root=[]
+  let info3Panels=[]
+  let info3Content=[]
+  // let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
 
   const createInfo = () =>{
 
     if(props.selectedContentCounterpart.address_info){
-      debugger
 
+      // each block of iteration creates a nested accordian
+      // if you get to this block yout selectedContentCounterpart was a venue
 
-      // info.push("Address Info")
       let counter = 0
       Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
@@ -60,8 +63,8 @@ const VenueEventContainer = (props) => {
 
       // info2.push("Box Office Info")
       let counter2 = 0
-      if(props.selectedContentCounterpart.box_office_info)
-      {Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
+
+      Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
         info2Panels.push({
@@ -77,29 +80,102 @@ const VenueEventContainer = (props) => {
     info2Root.push({
       key:'root-2',
       title:'Info',
-      content:[info2Content]
-  })}}
-  else if(props.selectedContentCounterpart.classifications){
-    // info2.push("Event Info")
-    let counter3 = 0
-    Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
-      if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+      content:[info2Content]})
 
-      if(value[1]!=="Undefined"){
-        info2Panels.push({
+      let counter3 = 0
+
+      Object.entries(props.selectedContent.classifications).forEach(value=>{
+        if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+        if(value[1] !== null)
+        {
+          info3Panels.push({
         key:counter3,
         title:`${capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
-        counter3 = counter3 + 1
+      counter3 = counter3 + 1
+    }
+    })
+
+    info3Content.push(<div><Accordion.Accordion panels={info3Panels}/></div>)
+
+    info3Root.push({
+      key:'root-3',
+      title:'Info',
+      content:[info3Content]
+
+
+  })}
+  //end of venue rendering
+  else if(props.selectedContentCounterpart.classifications){
+    // if you get to this block yout selectedContentCounterpart was an event
+    let counter4 = 0
+    Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
+      if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+
+      if(value[1]!=="Undefined"){
+        info3Panels.push({
+        key:counter4,
+        title:`${capatilizeString(value[0])}`,
+        content:`${value[1]}`
+      })
+        counter4 = counter4 + 1
     }})
-
-    info2Content = (<div><Accordion.Accordion panels={info2Panels}/></div>)
-
-    info2Root.push({
+    info2Content = (<div><Accordion.Accordion panels={info3Panels}/></div>)
+    info3Root.push({
       key:'root-2',
       title:'Info',
       content :[info2Content]
+    })
+
+
+
+
+    let counter5=0
+    Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
+      if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+      if(value[1] === null){value[1] = "no info available"}
+      info2Panels.push({
+      key:counter5,
+      title:`${capatilizeString(value[0])}`,
+      content:`${value[1]}`
+    })
+      counter5 = counter5 + 1
+  })
+
+  info2Content.push(<div><Accordion.Accordion panels={info2Panels}/></div>)
+
+  info2Root.push({
+    key:'root-2',
+    title:'Info',
+    content:[info2Content]})
+
+
+
+    let counter6 = 0
+    Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
+      if(value[0]!=="longitude"&&value[0]!=="latitude")
+      {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
+      infoPanels.push({
+      key:counter6,
+      title:`${capatilizeString(value[0])}`,
+      content:`${value[1]}`
+    })
+    counter6 = counter6 + 1
+    }
+    })
+    infoPanels.push({
+      key:counter6,
+      title: "Full Address",
+      content:infoPanels[2].content.split('(')[0] + ', ' +infoPanels[0].content + ', ' + infoPanels[1].content + ' ' + infoPanels[4].content + ', ' + infoPanels[3].content
+    })
+
+    infoContent.push(<div><Accordion.Accordion panels={infoPanels}/></div>)
+
+    infoRoot.push({
+      key:'root-1',
+      title:'Info',
+      content:{content:infoContent}
     })
 
   }
@@ -111,13 +187,7 @@ const VenueEventContainer = (props) => {
   }
 
   const renderInfo = (info) =>{
-    return info.map(entry=>{
-    if(headerThese.includes(entry)){
-      return(<h3>{entry}</h3>)
-    }else{
-      return(<h4>{entry}</h4>)
-    }
-  })
+    return info.map(entry=><h4>{entry}</h4>)
   }
 
 
@@ -134,8 +204,14 @@ const VenueEventContainer = (props) => {
 
 
   const returnImages = (props) => {
-    return(props.location.pathname.split('/').length === 5 ? testImagesForNull(props.selectedContentCounterpart.images) : testImagesForNull(props.selectedContent.images)
-  )
+    let images = []
+    if(props.selectedContent.images&&props.selectedContentCounterpart.images !== null)
+    {
+      images = props.selectedContent.images.concat(props.selectedContentCounterpart.images)
+    }
+    else if(props.selectedContent.images&&props.selectedContentCounterpart.images === null){}
+    else(props.selectedContent.images === null ? images = props.selectedContentCounterpart.images : images = props.selectedContent.images)
+    return testImagesForNull(images)
   }
 
   const handleNaming = () => {
@@ -178,7 +254,16 @@ const VenueEventContainer = (props) => {
 
   const figureTitleBasedOnInfo = (info) => {
     debugger
-     return(info[0].title === "City" ? "Address Info" : "Classifications")
+     switch(info[0].title){
+       case"City":
+       return"Address Info"
+       case"Open hours":
+       return"Box Office"
+       case"Genre":
+       return"Classifications"
+       default:
+       return"yeet"
+     }
    }
 
    const seeIfOnSale = (info) => {
@@ -205,21 +290,20 @@ const VenueEventContainer = (props) => {
     <Container>
     {createInfo()}
     <Segment>
-    <Grid columns={props.selectedContentCounterpart.classifications ? 1 : 2}>
-    {
-      props.selectedContentCounterpart.address_info?
+    <Grid columns={3}>
+      <Grid.Column>
+      <h2>{figureTitleBasedOnInfo(infoPanels) }</h2>
+      <Accordion panels={infoRoot} exclusive={false} fluid />
+      </Grid.Column>
+      <Grid.Column>
+      <h2>{figureTitleBasedOnInfo(info2Panels)}</h2>
+      <Accordion panels={info2Root} exclusive={false} fluid />
+      </Grid.Column>
     <Grid.Column>
-    <h2>{figureTitleBasedOnInfo(infoPanels) }</h2>
-    {infoPanels.length === 0 ? null : <Accordion panels={infoRoot} exclusive={false} fluid />}
-    </Grid.Column>
-    : null
-  }
-    <Grid.Column>
-    <h2>{props.selectedContentCounterpart.box_office_info ? "Box Office Info" : "Event Categories"}</h2>
-    <Accordion panels={info2Root} exclusive={false} fluid />
+    <h2>{figureTitleBasedOnInfo(info3Panels)}</h2>
+    <Accordion panels={info3Root} exclusive={false} fluid />
     </Grid.Column>
     </Grid>
-    {props.selectedContentCounterpart.classifications ? null : <Divider vertical/> }
     </Segment>
     </Container>
     <h2>Showings</h2>
