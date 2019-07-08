@@ -14,9 +14,6 @@ class TicketContainer extends React.Component{
         obj = venue
       }}
     )
-    console.log(venues)
-    console.log(obj)
-    debugger
     return obj
   }
 
@@ -27,9 +24,6 @@ class TicketContainer extends React.Component{
         obj = e
       }}
     )
-    console.log(events)
-    console.log(obj)
-    debugger
     return obj
   }
 
@@ -40,9 +34,6 @@ class TicketContainer extends React.Component{
         obj = venueEvent
       }}
     )
-    console.log(venueEvents)
-    console.log(obj)
-    debugger
     return obj
   }
 
@@ -128,7 +119,6 @@ handleNaming = () => {
  // }
 
  const configureVEDisplay = (tickets,things) => {
-    console.log(tickets,things)
     return tickets.map(ticket=>things[ticket.venue_event_id])
 }
 
@@ -138,7 +128,6 @@ handleNaming = () => {
 
 const configureVDisplay = (ve,things) => {
     return ve.map(ve=>{
-      debugger
       return things[ve.venue_id]
     })
 }

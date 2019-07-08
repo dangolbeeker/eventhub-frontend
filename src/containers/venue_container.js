@@ -53,7 +53,6 @@ class VenueContainer extends React.Component{
 
   handleChange = (e) => {
     this.setState({searchTerm: e.target.value})
-    console.log("STATE CHANGED")
   }
 
   componentDidUpdate = (prevProps) => {

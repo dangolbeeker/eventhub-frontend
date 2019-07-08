@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card,Container,Image,Accordion,Divider,Grid,Segment} from 'semantic-ui-react'
+import {Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button} from 'semantic-ui-react'
 import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
@@ -12,33 +12,33 @@ const mapStyles={
   height:'45%',
 }
 
-const VenueEventContainer = (props) => {
+let infoRoot=[]
+let infoPanels=[]
+let infoContent=[]
+let info2Root=[]
+let info2Panels=[]
+let info2Content=[]
+let info3Root=[]
+let info3Panels=[]
+let info3Content=[]
 
-  let infoRoot=[]
-  let infoPanels=[]
-  let infoContent=[]
-  let info2Root=[]
-  let info2Panels=[]
-  let info2Content=[]
-  let info3Root=[]
-  let info3Panels=[]
-  let info3Content=[]
+class VenueEventContainer extends React.Component{
   // let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
 
-  const createInfo = () =>{
+  createInfo = () =>{
 
-    if(props.selectedContentCounterpart.address_info){
+    if(this.props.selectedContentCounterpart.address_info){
 
       // each block of iteration creates a nested accordian
       // if you get to this block your selectedContentCounterpart was a venue
 
       let counter = 0
-      Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
+      Object.entries(this.props.selectedContentCounterpart.address_info).forEach(value=>{
         if(value[0]!=="longitude"&&value[0]!=="latitude")
         {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         infoPanels.push({
         key:counter,
-        title:`${capatilizeString(value[0])}`,
+        title:`${this.capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
       counter = counter + 1
@@ -65,12 +65,12 @@ const VenueEventContainer = (props) => {
       // info2.push("Box Office Info")
       let counter2 = 0
 
-      Object.entries(props.selectedContentCounterpart.box_office_info).forEach(value=>{
+      Object.entries(this.props.selectedContentCounterpart.box_office_info).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] === null){value[1] = "no info available"}
         info2Panels.push({
         key:counter2,
-        title:`${capatilizeString(value[0])}`,
+        title:`${this.capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
         counter2 = counter2 + 1
@@ -85,13 +85,13 @@ const VenueEventContainer = (props) => {
 
       let counter3 = 0
 
-      Object.entries(props.selectedContent.classifications).forEach(value=>{
+      Object.entries(this.props.selectedContent.classifications).forEach(value=>{
         if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
         if(value[1] !== null)
         {
           info3Panels.push({
         key:counter3,
-        title:`${capatilizeString(value[0])}`,
+        title:`${this.capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
       counter3 = counter3 + 1
@@ -108,17 +108,17 @@ const VenueEventContainer = (props) => {
 
   })}
   //end of venue rendering
-  else if(props.selectedContentCounterpart.classifications){
+  else if(this.props.selectedContentCounterpart.classifications){
     // if you get to this block yout selectedContentCounterpart was an event
 
     let counter4 = 0
-    Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
+    Object.entries(this.props.selectedContentCounterpart.classifications).forEach(value=>{
       if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
 
       if(value[1]!=="Undefined"){
         info3Panels.push({
         key:counter4,
-        title:`${capatilizeString(value[0])}`,
+        title:`${this.capatilizeString(value[0])}`,
         content:`${value[1]}`
       })
         counter4 = counter4 + 1
@@ -135,12 +135,12 @@ const VenueEventContainer = (props) => {
 
     //info2 accordion
     let counter5=0
-    Object.entries(props.selectedContent.box_office_info).forEach(value=>{
+    Object.entries(this.props.selectedContent.box_office_info).forEach(value=>{
       if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
       if(value[1] === null){value[1] = "no info available"}
       info2Panels.push({
       key:counter5,
-      title:`${capatilizeString(value[0])}`,
+      title:`${this.capatilizeString(value[0])}`,
       content:`${value[1]}`
     })
       counter5 = counter5 + 1
@@ -156,12 +156,12 @@ const VenueEventContainer = (props) => {
 
     // info accordion
     let counter6 = 0
-    Object.entries(props.selectedContent.address_info).forEach(value=>{
+    Object.entries(this.props.selectedContent.address_info).forEach(value=>{
       if(value[0]!=="longitude"&&value[0]!=="latitude")
       {if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
       infoPanels.push({
       key:counter6,
-      title:`${capatilizeString(value[0])}`,
+      title:`${this.capatilizeString(value[0])}`,
       content:`${value[1]}`
     })
     counter6 = counter6 + 1
@@ -185,37 +185,37 @@ const VenueEventContainer = (props) => {
 
 }
 
-  const capatilizeString=(string)=>{
+  capatilizeString=(string)=>{
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const handleNaming = () => {
-      return(props.selectedContent.address_info ?
+  handleNaming = () => {
+      return(this.props.selectedContent.address_info ?
         <h2>
-        <Link to={`/event/${props.selectedContentCounterpart.id}`}>
-        {props.selectedContentCounterpart.name}
-        </Link> @ <Link to={`/venue/${props.selectedContent.id}`}>
-         {props.selectedContent.name}
+        <Link to={`/event/${this.props.selectedContentCounterpart.id}`}>
+        {this.props.selectedContentCounterpart.name}
+        </Link> @ <Link to={`/venue/${this.props.selectedContent.id}`}>
+         {this.props.selectedContent.name}
          </Link>
          </h2>
         :
-        <h2><Link to={`/event/${props.selectedContent.id}`}>{props.selectedContent.name}</Link> @ <Link to={`/venue/${props.selectedContentCounterpart.id}`}>{props.selectedContentCounterpart.name}</Link></h2>
+        <h2><Link to={`/event/${this.props.selectedContent.id}`}>{this.props.selectedContent.name}</Link> @ <Link to={`/venue/${this.props.selectedContentCounterpart.id}`}>{this.props.selectedContentCounterpart.name}</Link></h2>
       )
 
   }
 
-  const renderSlots = () =>{
-   if(Object.values(props.selectedContentVenueEvents).length>0){
-     return Object.values(props.selectedContentVenueEvents).map(showing=>
+  renderSlots = () =>{
+   if(Object.values(this.props.selectedContentVenueEvents).length>0){
+     return Object.values(this.props.selectedContentVenueEvents).map(showing=>
        <React.Fragment><Slot{...showing}/></React.Fragment>)}
    else{return"Loading"}
   }
 
-   const renderGoogleMap = (address_info) => {
+   renderGoogleMap = (address_info) => {
      return(
-       <Container fluid className={props.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
+       <Container fluid className={this.props.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
        <Map
-           google={props.google}
+           google={this.props.google}
            zoom={13}
            style={mapStyles}
            initialCenter={{ lat: address_info.latitude, lng: address_info.longitude}}
@@ -226,7 +226,7 @@ const VenueEventContainer = (props) => {
      )
    }
 
-  const figureTitleBasedOnInfo = (info) => {
+  figureTitleBasedOnInfo = (info) => {
      switch(info[0].title){
        case"City":
        return"Address Info"
@@ -239,54 +239,89 @@ const VenueEventContainer = (props) => {
      }
    }
 
-   const seeIfOnSale = (info) => {
+   seeIfOnSale = (info) => {
      return(info.on_sale ? "On Sale!" : "Not on Sale")
    }
 
-  return(
-    <Container >
-    <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
-    {handleNaming()}
-    <div className='cont'>
-    {props.selectedContent.images&&props.selectedContentCounterpart.images === null ? null :
-    <Carousel
-        id='customCarousel'
-        elements={props.images}
-        duration  ={3000}
-        animation  ='slide left'
-        showNextPrev  =  {false}
-        showIndicators  ={true}
-      />}
-    {props.selectedContent.address_info ? renderGoogleMap(props.selectedContent.address_info) : renderGoogleMap(props.selectedContentCounterpart.address_info)}
-    </div>
-    <Container>
-    <Container>
-    {createInfo()}
-    <Segment>
-    <Grid columns={3}>
-      <Grid.Column>
-      <h2>{figureTitleBasedOnInfo(infoPanels) }</h2>
-      <Accordion panels={infoRoot} exclusive={false} fluid />
-      </Grid.Column>
-      <Grid.Column>
-      <h2>{figureTitleBasedOnInfo(info2Panels)}</h2>
-      <Accordion panels={info2Root} exclusive={false} fluid />
-      </Grid.Column>
-    <Grid.Column>
-    <h2>{figureTitleBasedOnInfo(info3Panels)}</h2>
-    <Accordion panels={info3Root} exclusive={false} fluid />
-    </Grid.Column>
-    </Grid>
-    </Segment>
-    </Container>
-    <h2>Showings</h2>
-    <Divider/>
-    </Container>
-    <StackGrid columnWidth={250}>
-    {renderSlots()}
-    </StackGrid>
-    </Container>
-  )
+   toggleForm = () => {
+    let form = document.getElementById('review')
+      return form.style.visibility === "hidden" ? form.style.visibility === "visible" : form.style.visibility === "hidden"
+   }
+   tryToMatchTicket = (ticket,venueEvents) =>{
+    let matchingTicketEvents = venueEvents.filter(event=>event.id===ticket.venue_event_id)
+    return(matchingTicketEvents.length > 0 ? true : false)
+   }
+   makeMatchingtickets = (tickets,venueEvents) => {
+     return tickets.filter(ticket=>ticket.bought===true&&this.tryToMatchTicket(ticket,venueEvents))
+   }
+
+   checkForPurchase = () => {
+    let matchingTickets  = this.makeMatchingtickets(this.props.user.tickets,this.props.selectedContentVenueEvents)
+    matchingTickets.length > 0 ? this.toggleForm() : alert("you must a ticket to the event before you can review it!")
+   }
+
+
+  render()
+    {
+      return(
+      <Container >
+        <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
+        {this.handleNaming()}
+        <div className='cont'>
+        {this.props.selectedContent.images&&this.props.selectedContentCounterpart.images === null ? null :
+          <Carousel
+          id='customCarousel'
+          elements={this.props.images}
+          duration  ={3000}
+          animation  ='slide left'
+          showNextPrev  =  {false}
+          showIndicators  ={true}
+        />}
+        {this.props.selectedContent.address_info ? this.renderGoogleMap(this.props.selectedContent.address_info) : this.renderGoogleMap(this.props.selectedContentCounterpart.address_info)}
+        </div>
+        <Container>
+          <Container>
+            {this.createInfo()}
+              <Segment>
+                <Grid columns={3}>
+                  <Grid.Column>
+                    <h2>{this.figureTitleBasedOnInfo(infoPanels) }</h2>
+                    <Accordion panels={infoRoot} exclusive={false} fluid />
+                    </Grid.Column>
+                    <Grid.Column>
+                    <h2>{this.figureTitleBasedOnInfo(info2Panels)}</h2>
+                    <Accordion panels={info2Root} exclusive={false} fluid />
+                  </Grid.Column>
+
+                  <Grid.Column>
+                    <h2>{this.figureTitleBasedOnInfo(info3Panels)}</h2>
+                    <Accordion panels={info3Root} exclusive={false} fluid />
+                  </Grid.Column>
+                  </Grid>
+              </Segment>
+          </Container>
+          <h2>Showings</h2>
+            <Divider/>
+        </Container>
+      <StackGrid columnWidth={250}>
+      {this.renderSlots}
+      </StackGrid>
+      {this.props.reviews.length > 0 ? <h2>Reviews</h2> : <h2>{this.props.user.id != null ? "Be the first to write a review for this Event!":"Log in to write a review!"}</h2>}
+      { this.props.user.id !== null ? <Button onClick={this.checkForPurchase} size="big" primary>Write a Review!</Button> : null}
+      <Form id="review" style={{visibility:"hidden"}}>
+        <Form.Field>
+          <label>Rating</label>
+          <input name="Rating" type="integer" placeholder="0"/>
+        </Form.Field>
+        <Form.Field>
+          <label>Review Body</label>
+          <input name="Body" type="textarea" placeholder="this was an awesome event..."/>
+        </Form.Field>
+      </Form>
+      <Divider/>
+      </Container>
+    )
+  }
 }
 
 const actuallyReturnImages = (images) => {
@@ -308,10 +343,20 @@ const returnImages = (state) => {
   return testImagesForNull(images)
 }
 
+const returnReviews = (reviews,venueEvent) => {
+  return(venueEvent.length === 0 && reviews.length === 0 ? [] : createReviewsArr(reviews,venueEvent))
+}
+
+const createReviewsArr = (reviews,venueEvent) => {
+  console.log(reviews.filter(review=>review.venue_event.id === venueEvent.id))
+  return []
+}
 
 
 const mapStateToProps=(state)=>{
   return{
+    user:state.user,
+    reviews:returnReviews(state.reviews,state.selectedContentVenueEvents),
     images:returnImages(state),
     selectedContent:state.selectedContent,
     selectedContentVenueEvents:state.selectedContentVenueEvents,

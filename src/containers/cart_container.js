@@ -60,13 +60,13 @@ class CartContainer extends React.Component{
 
  renderCart = () => {
      if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
-     { console.log(this.props)
+     {
        return(this.props.displayTickets).map(ticket=>{
-         console.log(this.props)
+
         let cartVenueEvent = this.findVenueEvent(this.props.displayVenueEvents,ticket)
         let cartVenue = this.findVenue(this.props.displayVenues,cartVenueEvent)
         let cartEvent = this.findEvent(this.props.displayEvents,cartVenueEvent)
-        console.log(cartVenueEvent)
+
          return(<HomeCard{...ticket}key={ticket.id}
            name={`${cartEvent.name} @ ${cartVenue.name}`}
            images={cartEvent.images}{...this.props.location}
@@ -164,9 +164,6 @@ const configureVDisplay = (ve,things) => {
    let displayVE = configureVEDisplay(tickets,state.venueEvents)
    let total = 0
    displayVE.forEach(ve=>total = total + parseInt(ve.pricing_info.min))
-   debugger
-   console.log(tickets)
-   console.log(displayVE)
 return{
   total:total,
   displayTickets:tickets,

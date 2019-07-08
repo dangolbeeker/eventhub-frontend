@@ -98,7 +98,6 @@ class HomeCard extends React.Component{
  }
 
   render(){
-    console.log(this.props.venueEvent)
     return(
       <Card className="animate-pop-in" height='500'>
         <Image height="140" src={this.renderVenueImage()} />

@@ -151,7 +151,6 @@ class Slot extends React.Component{
 
 
   render(){
-    console.log(this.props)
     return(
       <Card>
       { this.props.sale_info ? this.checkForOnsale() : null}
@@ -176,7 +175,7 @@ const mapStateToProps=(state)=>{
 
 const mapDispatchToProps = (dispatch) => {
     return{updateUser:data=>
-      {console.log(data)
+      {
         dispatch({type:"ADD_CART_TICKETS",payload:data})
       }
     }

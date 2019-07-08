@@ -10,7 +10,7 @@ const HomeContainer = (props) => {
 
 
   const renderVenueCards = () => {
-    console.log(props)
+
     let arr = Object.values(props.venues)
     return arr.map(venue=><Grid.Column><HomeCard key={venue.id} {...venue}{...props.location} /></Grid.Column>)
   }
