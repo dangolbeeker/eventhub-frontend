@@ -25,10 +25,23 @@ let info3Content=[]
 class VenueEventContainer extends React.Component{
   // let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
 
+  state = {
+    toggleForm:false
+  }
+
   createInfo = () =>{
 
     if(this.props.selectedContentCounterpart.address_info){
-
+      // sometimes the app re-renders cause of late arriving info, just set these things to blank so i dont get duplicate info accordions
+      infoRoot=[]
+      infoPanels=[]
+      infoContent=[]
+      info2Root=[]
+      info2Panels=[]
+      info2Content=[]
+      info3Root=[]
+      info3Panels=[]
+      info3Content=[]
       // each block of iteration creates a nested accordian
       // if you get to this block your selectedContentCounterpart was a venue
 
@@ -213,7 +226,7 @@ class VenueEventContainer extends React.Component{
 
    renderGoogleMap = (address_info) => {
      return(
-       <Container fluid className={this.props.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
+       <div fluid className={this.props.images === null ? 'mapbox2' : 'mapbox3'} textAlign="center">
        <Map
            google={this.props.google}
            zoom={13}
@@ -222,12 +235,12 @@ class VenueEventContainer extends React.Component{
          >
          <Marker position={{lat: address_info.latitude, lng: address_info.longitude}} />
          </Map>
-        </Container>
+        </div>
      )
    }
 
   figureTitleBasedOnInfo = (info) => {
-     switch(info[0].title){
+     switch(info.title){
        case"City":
        return"Address Info"
        case"Open hours":
@@ -244,8 +257,9 @@ class VenueEventContainer extends React.Component{
    }
 
    toggleForm = () => {
-    let form = document.getElementById('review')
-      return form.style.visibility === "hidden" ? form.style.visibility === "visible" : form.style.visibility === "hidden"
+    this.setState(prevState=>{
+      return{toggleForm: !prevState.toggleForm}
+    })
    }
    tryToMatchTicket = (ticket,venueEvents) =>{
     let matchingTicketEvents = venueEvents.filter(event=>event.id===ticket.venue_event_id)
@@ -263,6 +277,7 @@ class VenueEventContainer extends React.Component{
 
   render()
     {
+      this.createInfo()
       return(
       <Container >
         <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
@@ -281,20 +296,19 @@ class VenueEventContainer extends React.Component{
         </div>
         <Container>
           <Container>
-            {this.createInfo()}
               <Segment>
                 <Grid columns={3}>
                   <Grid.Column>
-                    <h2>{this.figureTitleBasedOnInfo(infoPanels) }</h2>
+                    <h2>{this.figureTitleBasedOnInfo(infoPanels[0]) }</h2>
                     <Accordion panels={infoRoot} exclusive={false} fluid />
                     </Grid.Column>
                     <Grid.Column>
-                    <h2>{this.figureTitleBasedOnInfo(info2Panels)}</h2>
+                    <h2>{this.figureTitleBasedOnInfo(info2Panels[0])}</h2>
                     <Accordion panels={info2Root} exclusive={false} fluid />
                   </Grid.Column>
 
                   <Grid.Column>
-                    <h2>{this.figureTitleBasedOnInfo(info3Panels)}</h2>
+                    <h2>{this.figureTitleBasedOnInfo(info3Panels[0])}</h2>
                     <Accordion panels={info3Root} exclusive={false} fluid />
                   </Grid.Column>
                   </Grid>
@@ -304,11 +318,14 @@ class VenueEventContainer extends React.Component{
             <Divider/>
         </Container>
       <StackGrid columnWidth={250}>
-      {this.renderSlots}
+      {this.renderSlots()}
       </StackGrid>
+      <Divider/>
+      <Container>
       {this.props.reviews.length > 0 ? <h2>Reviews</h2> : <h2>{this.props.user.id != null ? "Be the first to write a review for this Event!":"Log in to write a review!"}</h2>}
-      { this.props.user.id !== null ? <Button onClick={this.checkForPurchase} size="big" primary>Write a Review!</Button> : null}
-      <Form id="review" style={{visibility:"hidden"}}>
+      { this.props.user.id !== null ? <Button onClick={this.checkForPurchase}size="big" primary>Write a Review!</Button> : null}
+      {this.state.toggleForm === false ? null :
+      <Form id="review">
         <Form.Field>
           <label>Rating</label>
           <input name="Rating" type="integer" placeholder="0"/>
@@ -318,6 +335,8 @@ class VenueEventContainer extends React.Component{
           <input name="Body" type="textarea" placeholder="this was an awesome event..."/>
         </Form.Field>
       </Form>
+      }
+      </Container>
       <Divider/>
       </Container>
     )
