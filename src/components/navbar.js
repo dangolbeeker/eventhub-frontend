@@ -9,7 +9,6 @@ class Navbar extends React.Component{
 
   seeCurentUrl = () =>{
     if(this.props){
-      debugger
       let url = window.location.pathname.split("/")[1]
       switch(url){
       case"venues":

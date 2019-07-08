@@ -10,7 +10,7 @@ import StackGrid from 'react-stack-grid'
 
 const mapStyles={
   width:'40%',
-  height:'52.9%',
+  height:'45%',
 }
 
 const DetailContainer = (props) => {

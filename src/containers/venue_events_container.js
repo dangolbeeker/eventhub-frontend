@@ -9,7 +9,7 @@ import {Link} from  'react-router-dom'
 
 const mapStyles={
   width:'40%',
-  height:'52.9%',
+  height:'45%',
 }
 
 const VenueEventContainer = (props) => {
@@ -30,7 +30,7 @@ const VenueEventContainer = (props) => {
     if(props.selectedContentCounterpart.address_info){
 
       // each block of iteration creates a nested accordian
-      // if you get to this block yout selectedContentCounterpart was a venue
+      // if you get to this block your selectedContentCounterpart was a venue
 
       let counter = 0
       Object.entries(props.selectedContentCounterpart.address_info).forEach(value=>{
@@ -110,6 +110,7 @@ const VenueEventContainer = (props) => {
   //end of venue rendering
   else if(props.selectedContentCounterpart.classifications){
     // if you get to this block yout selectedContentCounterpart was an event
+
     let counter4 = 0
     Object.entries(props.selectedContentCounterpart.classifications).forEach(value=>{
       if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
@@ -126,12 +127,13 @@ const VenueEventContainer = (props) => {
     info3Root.push({
       key:'root-2',
       title:'Info',
-      content :[info2Content]
+      content :[info3Content]
     })
 
 
 
 
+    //info2 accordion
     let counter5=0
     Object.entries(props.selectedContent.box_office_info).forEach(value=>{
       if(value[0].includes("_")){value[0] = value[0].split("_").join(" ")}
@@ -152,7 +154,7 @@ const VenueEventContainer = (props) => {
     content:[info2Content]})
 
 
-
+    // info accordion
     let counter6 = 0
     Object.entries(props.selectedContent.address_info).forEach(value=>{
       if(value[0]!=="longitude"&&value[0]!=="latitude")
@@ -225,7 +227,6 @@ const VenueEventContainer = (props) => {
    }
 
   const figureTitleBasedOnInfo = (info) => {
-    debugger
      switch(info[0].title){
        case"City":
        return"Address Info"

@@ -101,7 +101,7 @@ handleNaming = () => {
 
 
   render(){
-    this.renderDemoAlert()
+    // this.renderDemoAlert()
       return (
     <StripeProvider apiKey="pk_test_tBdnFsQYv5jxi24KtBSB6Kyp00dieuLXMt">
       <Container>
