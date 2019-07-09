@@ -62,7 +62,7 @@ class HomeCard extends React.Component{
   }
 
   deleteCartItem = () => {
-    fetch(`http://eventhub-backend.herokuapp.com/tickets/destroy/${this.props.id}`,{
+    fetch(`https://eventhub-backend.herokuapp.com/tickets/destroy/${this.props.id}`,{
       method:"DELETE",
       headers:{
         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ class HomeCard extends React.Component{
   }
 
   purchaseCartItem = () => {
-    fetch(`http://eventhub-backend.herokuapp.com/tickets/purchase/${this.props.id}`,{
+    fetch(`https://eventhub-backend.herokuapp.com/tickets/purchase/${this.props.id}`,{
       method:"PATCH",
       headers:{
         'Content-Type': 'application/json',
