@@ -19,7 +19,7 @@ class App extends React.Component{
   autologin = () => {
     let token = localStorage.getItem("token")
     if(token){
-    fetch('http://localhost:3001/auto_login', {
+    fetch('http://eventhub-backend.herokuapp.com/auto_login', {
       method: 'POST',
       headers: {
       'Authorization':token,
@@ -32,16 +32,16 @@ class App extends React.Component{
   }}
 
   componentDidMount = () => {
-    fetch('http://localhost:3001/venues/index')
+    fetch('http://eventhub-backend.herokuapp.com/venues/index')
     .then(resp=>resp.json())
     .then(venues=>{this.props.addVenues(venues)})
-    fetch('http://localhost:3001/events/index')
+    fetch('http://eventhub-backend.herokuapp.com/events/index')
     .then(resp=>resp.json())
     .then(events=>{this.props.addEvents(events)})
-    fetch('http://localhost:3001/venue_events/index')
+    fetch('http://eventhub-backend.herokuapp.com/venue_events/index')
     .then(resp=>resp.json())
     .then(venueEvents=>{this.props.addVenueEvents(venueEvents)})
-    fetch('http://localhost:3001/reviews/index')
+    fetch('http://eventhub-backend.herokuapp.com/reviews/index')
     .then(resp=>resp.json())
     .then(reviews=>{this.props.addReviews(reviews)})
     this.autologin()

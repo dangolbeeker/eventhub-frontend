@@ -12,7 +12,7 @@ class CheckoutForm extends Component {
   submit(ev) {
     // User clicked submit
     let token = localStorage.getItem('token')
-    fetch('http://localhost:3001/tickets/purchase',{
+    fetch('http://eventhub-backend.herokuapp.com/tickets/purchase',{
       method:'PATCH',
       headers:{
         'Authorization':token,

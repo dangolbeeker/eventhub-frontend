@@ -47,7 +47,7 @@ class LoginContainer extends React.Component{
 
 
   login = () => {
-    fetch('http://localhost:3001/login',{
+    fetch('http://eventhub-backend.herokuapp.com/login',{
       method:'POST',
       headers:{
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ class LoginContainer extends React.Component{
   }
 
   register = () => {
-    fetch('http://localhost:3001/register',{
+    fetch('http://eventhub-backend.herokuapp.com/register',{
       method:'POST',
       headers:{
         'Content-Type': 'application/json',

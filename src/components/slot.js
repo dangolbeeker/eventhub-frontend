@@ -19,7 +19,7 @@ class Slot extends React.Component{
 
   createCartTicket = (veID,userID) => {
     let token = localStorage.getItem("token")
-    fetch('http://localhost:3001/tickets/create',{
+    fetch('http://eventhub-backend.herokuapp.com/tickets/create',{
       method: 'POST',
       headers: {
         'Authorization':token,
