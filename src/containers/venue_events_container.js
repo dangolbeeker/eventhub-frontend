@@ -270,6 +270,7 @@ class VenueEventContainer extends React.Component{
    }
 
    checkForPurchase = () => {
+     alert("review writing is under construction!")
     let matchingTickets  = this.makeMatchingtickets(this.props.user.tickets,this.props.selectedContentVenueEvents)
     matchingTickets.length > 0 ? this.toggleForm() : alert("you must a ticket to the event before you can review it!")
    }

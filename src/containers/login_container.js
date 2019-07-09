@@ -96,6 +96,7 @@ class LoginContainer extends React.Component{
   // }
 
   render(){
+    alert('use username: edwin and password: ed should you not want to register')
       return (
       <Container>
       <h1>{this.props.location.pathname ==='/login' ? "Log In" : "Register"}</h1>
