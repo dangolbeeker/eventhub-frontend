@@ -8,8 +8,8 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 import {Link} from  'react-router-dom'
 
 const mapStyles={
-  width:'40%',
-  height:'45%',
+  width:'670px',
+  height:'545px',
 }
 
 let infoRoot=[]
