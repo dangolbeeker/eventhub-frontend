@@ -9,7 +9,7 @@ import StackGrid from 'react-stack-grid'
 
 
 const mapStyles={
-  width:'670px',
+  width:'760px',
   height:'545px',
 }
 
@@ -148,7 +148,7 @@ const DetailContainer = (props) => {
   const renderSlots = () =>{
    if(Object.values(props.selectedContentCounterpart).length>0){
      return Object.values(props.selectedContentCounterpart).map(e=>
-       <React.Fragment><Slot{...e} key={e.id} location={props.location}/><Divider/></React.Fragment>
+       <React.Fragment><Slot{...e} key={e.id} location={props.location}/></React.Fragment>
      )
    }
    else{return"Loading"}
@@ -242,6 +242,7 @@ const DetailContainer = (props) => {
     <StackGrid columnWidth={250}>
     {renderSlots()}
     </StackGrid>
+    <Divider/>
     </div>
     </Container>
     </Container>

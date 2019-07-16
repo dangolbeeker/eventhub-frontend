@@ -1,14 +1,16 @@
 import React from 'react'
-import {Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button} from 'semantic-ui-react'
+import {Component,Fragment} from 'react'
+import {Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button,Dropdown} from 'semantic-ui-react'
 import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
 import  Carousel  from  'semantic-ui-carousel-react'
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 import {Link} from  'react-router-dom'
+import Popup from "reactjs-popup"
 
 const mapStyles={
-  width:'670px',
+  width:'760px',
   height:'545px',
 }
 
@@ -22,11 +24,13 @@ let info3Root=[]
 let info3Panels=[]
 let info3Content=[]
 
-class VenueEventContainer extends React.Component{
+class VenueEventContainer extends Component{
   // let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
 
   state = {
-    toggleForm:false
+    rating:0,
+    body:"",
+    selectedVE:0
   }
 
   createInfo = () =>{
@@ -220,7 +224,7 @@ class VenueEventContainer extends React.Component{
   renderSlots = () =>{
    if(Object.values(this.props.selectedContentVenueEvents).length>0){
      return Object.values(this.props.selectedContentVenueEvents).map(showing=>
-       <React.Fragment><Slot{...showing}/></React.Fragment>)}
+       <Slot{...showing}/>)}
    else{return"Loading"}
   }
 
@@ -256,11 +260,6 @@ class VenueEventContainer extends React.Component{
      return(info.on_sale ? "On Sale!" : "Not on Sale")
    }
 
-   toggleForm = () => {
-    this.setState(prevState=>{
-      return{toggleForm: !prevState.toggleForm}
-    })
-   }
    tryToMatchTicket = (ticket,venueEvents) =>{
     let matchingTicketEvents = venueEvents.filter(event=>event.id===ticket.venue_event_id)
     return(matchingTicketEvents.length > 0 ? true : false)
@@ -272,12 +271,89 @@ class VenueEventContainer extends React.Component{
    checkForPurchase = () => {
      alert("review writing is under construction!")
     let matchingTickets  = this.makeMatchingtickets(this.props.user.tickets,this.props.selectedContentVenueEvents)
-    matchingTickets.length > 0 ? this.toggleForm() : alert("you must a ticket to the event before you can review it!")
+    console.log(matchingTickets.length)
+    matchingTickets.length > 0 ? this.toggleForm() : alert("you must buy a ticket to the event before you can review it!")
    }
+
+   handleChange = (e) => {
+     console.log(e.target.value)
+     debugger
+
+     this.setState({[e.target.name]: e.target.value})
+   }
+
+   findMatchingVenueEvent = (ticket) => {
+     let item = null
+     this.props.selectedContentVenueEvents.forEach(ve=>{
+       if(ve.id === ticket.venue_event_id){item = ve}
+     })
+     return item
+   }
+
+   handleDropdown = (e) => {
+
+     this.setState({
+       selectedVE: parseInt(e.target.attributes[0].value)
+     })
+   }
+
+   configurePurchasedDates = () => {
+     let dateObj={}
+     let dateArr=[]
+     let matchingTickets  = this.makeMatchingtickets(this.props.user.tickets,this.props.selectedContentVenueEvents)
+     matchingTickets.forEach(ticket=>{
+       if(dateObj[ticket.venue_event_id] === undefined){
+         dateArr.push(this.findMatchingVenueEvent(ticket))
+         dateObj[ticket.venue_event_id] = true
+       }
+     })
+     return(dateArr.map(showing=><span value={showing.id} name='selectedVE' onClick={this.handleDropdown}>{showing.event_info.date}||{showing.event_info.time}</span>))
+   }
+
+   returnPopUp = () => {
+    return(
+    <Popup trigger={<Button onClick={this.checkForPurchase}size="big" primary>Write a Review!</Button>}position="top center">
+     <Form big>
+       <Form.Field>
+         <label>Rating</label>
+         <input name="reviewRating" value={this.state.rating}onChange={this.handleChange}type="integer" />
+       </Form.Field>
+       <Dropdown text="Time and date">
+        <Dropdown.Menu>
+          {this.configurePurchasedDates()}
+        </Dropdown.Menu>
+        </Dropdown>
+       <Form.Field>
+         <label>Review Body</label>
+         <input name="reviewBody" type="textarea" value={this.state.body}onChange={this.handleChange}placeholder="this was an awesome event..."/>
+       </Form.Field>
+       <Button onClick={this.submitReview}primary>Submit</Button>
+     </Form>
+     </Popup>
+    )
+   }
+
+   submitReview = () => {
+     let token = localStorage.getItem("token")
+     fetch('https://localhost:3001/reviews/create',{
+       method: 'POST',
+       headers: {
+         'Authorization':token,
+           'Content-Type': 'application/json',
+           'Accepts': 'application/json'
+         },
+       body:JSON.stringify({
+           // userID:this.props.user,
+           // venueEventID:
+         })
+       })
+       .then(resp=>resp.json())
+       .then(data=>console.log(data))
+     }
 
 
   render()
-    {
+    {console.log(this.state)
       this.createInfo()
       return(
       <Container >
@@ -324,19 +400,7 @@ class VenueEventContainer extends React.Component{
       <Divider/>
       <Container>
       {this.props.reviews.length > 0 ? <h2>Reviews</h2> : <h2>{this.props.user.id != null ? "Be the first to write a review for this Event!":"Log in to write a review!"}</h2>}
-      { this.props.user.id !== null ? <Button onClick={this.checkForPurchase}size="big" primary>Write a Review!</Button> : null}
-      {this.state.toggleForm === false ? null :
-      <Form id="review">
-        <Form.Field>
-          <label>Rating</label>
-          <input name="Rating" type="integer" placeholder="0"/>
-        </Form.Field>
-        <Form.Field>
-          <label>Review Body</label>
-          <input name="Body" type="textarea" placeholder="this was an awesome event..."/>
-        </Form.Field>
-      </Form>
-      }
+      { this.props.user.id !== null ? this.returnPopUp() : null}
       </Container>
       <Divider/>
       </Container>

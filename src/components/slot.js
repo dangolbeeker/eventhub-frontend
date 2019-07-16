@@ -49,10 +49,10 @@ class Slot extends React.Component{
         </React.Fragment>
       )}else if(this.props.classifications){
         return(
-        <React.Fragment>
-        <h1>{this.props.name}</h1>
-        <h3>{this.props.classifications.genre === "Undefined" ? this.props.classifications.main_genre : this.props.classifications.genre}</h3>
-        </React.Fragment>)}}
+        <Card.Content>
+        <Card.Header>{this.props.name}</Card.Header>
+        <Card.Description>{this.props.classifications.genre === "Undefined" ? this.props.classifications.main_genre : this.props.classifications.genre}</Card.Description>
+        </Card.Content>)}}
       else{return(null)}
     }
 

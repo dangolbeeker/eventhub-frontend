@@ -15,6 +15,7 @@
     "react-slick": "^0.24.0",
     "react-stack-grid": "^0.7.1",
     "react-stripe-elements": "^3.0.0",
+    "reactjs-popup": "^1.4.1",
     "redux": "^4.0.1",
     "semantic-ui-carousel-react": "^1.0.4",
     "semantic-ui-css": "^2.4.1",

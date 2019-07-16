@@ -73,6 +73,10 @@ class App extends React.Component{
     return newObj
   }
 
+  triggerAlert = () => {
+    return this.props.user.id === null ? alert('use username: edwin and password: ed should you not want to register') : null
+  }
+
 
   render(){
     return (
@@ -146,34 +150,16 @@ class App extends React.Component{
             }} />
             <Route exact path='/tickets' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
-              {
-              // const tickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===true)
-              // const ticketVenueEvents =   tickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
-              // const ticketVenues = ticketVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
-              // const ticketEvents =  ticketVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
-              // return(ticketVenues&&ticketEvents&&ticketVenueEvents ?
-                 return(<TicketContainer{...routerProps}/>)}
-              }
+              {return(<TicketContainer{...routerProps}/>)}}
             }/>
             <Route exact path='/cart' render={(routerProps)=>{
               if(Object.values(this.props.venueEvents).length > 0 && Object.values(this.props.events).length > 0 && Object.values(this.props.venues).length > 0)
-              {
-              // const cartTickets = Object.values(this.props.user.tickets).filter(ticket=>ticket.bought===false)
-              // const cartVenueEvents =   cartTickets.map(ticket=>this.props.venueEvents[ticket.venue_event_id])
-              // const cartVenues = cartVenueEvents.map(venueEvent=>this.props.venues[venueEvent.venue_id])
-              // const cartEvents =  cartVenueEvents.map(venueEvent=>this.props.events[venueEvent.event_id])
-              // let total=0
-              // cartVenueEvents.forEach(ve=>{
-              //   total = total + parseInt(ve.pricing_info.min)
-              // })
-              // return(cartVenues&&cartEvents&&cartVenueEvents ?
-                return(<CartContainer{...routerProps}/>)
-              }
+              {return(<CartContainer{...routerProps}/>)}
             }}/>
           <Route exact path='/login' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/register' render={(routerProps)=><LoginContainer{...routerProps}/>}/>
           <Route exact path='/venues' render={(routerProps)=><VenueContainer{...routerProps}/>}/>
-          <Route exact path='/' render={(routerProps)=><HomeContainer{...routerProps}/>}/>
+          <Route exact path='/' render={(routerProps)=>{return<HomeContainer{...routerProps}/>}}/>
         </Switch>
       </div>
     );
@@ -230,19 +216,5 @@ const mapDispatchToProps = (dispatch) => {
     resetCart:()=>{dispatch({type:"RESET_CART_TICKETS",payload:null})}
   }
 }
-
-// <Route path="/event/:id" render={(routerProps) => {
-//     const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
-//       if (foundEvent){
-//       const foundVenueEvents = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)
-//       if(foundVenueEvents){
-//         this.props.addSelectedContent(foundEvent)
-//         this.props.addSelectedContentVenueEvents(foundVenueEvents)
-//         this.props.addSelectedContentCounterpart()
-//         return <DetailContainer{...routerProps}/>}
-//       } else {
-//         return <h1>Loading</h1>
-//       }
-//   }} />
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

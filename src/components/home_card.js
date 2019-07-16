@@ -97,15 +97,20 @@ class HomeCard extends React.Component{
   return(props.venueEvent.pricing_info === null ? null : `Price: $${this.props.venueEvent.pricing_info.min.split('.')[0]}`)
  }
 
+ // <Card.Content>
+ // <Card.Header>{this.props.name}</Card.Header>
+ // <Card.Description>{this.props.classifications.genre === "Undefined" ? this.props.classifications.main_genre : this.props.classifications.genre}</Card.Description>
+ // </Card.Content>
+
   render(){
     return(
       <Card className="animate-pop-in" height='500'>
-        <Image height="140" src={this.renderVenueImage()} />
         <Card.Content>
           <Card.Header>{this.renderVenueName()}</Card.Header>
           <p>{this.props.venueEvent ? `Date: ${this.props.venueEvent.event_info.date}` :null }</p>
-          <p>{this.props.venueEvent === undefined ? null : this.checkForPrice(this.props)}</p>
+          <Card.Description>{this.props.venueEvent === undefined ? null : this.checkForPrice(this.props)}</Card.Description>
         </Card.Content>
+        <Image height="140" src={this.renderVenueImage()} />
         {this.purchaseOrDetail()}
         {this.renderOptionalButton()}
         {this.renderDeleteButton()}
