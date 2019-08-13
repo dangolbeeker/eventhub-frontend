@@ -1,6 +1,6 @@
 import React from 'react'
 import {Component,Fragment} from 'react'
-import {Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button,Dropdown} from 'semantic-ui-react'
+import {List,Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button,Dropdown} from 'semantic-ui-react'
 import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
@@ -28,9 +28,10 @@ class VenueEventContainer extends Component{
   // let headerThese=["Address Info","Box Office Info","On Sale Now!","Not on sale","Event Info"]
 
   state = {
-    rating:0,
-    body:"",
-    selectedVE:0
+    reviewRating:0,
+    reviewBody:"",
+    selectedVE:null,
+    clicked:false
   }
 
   createInfo = () =>{
@@ -276,8 +277,6 @@ class VenueEventContainer extends Component{
    }
 
    handleChange = (e) => {
-     console.log(e.target.value)
-     debugger
 
      this.setState({[e.target.name]: e.target.value})
    }
@@ -291,7 +290,6 @@ class VenueEventContainer extends Component{
    }
 
    handleDropdown = (e) => {
-
      this.setState({
        selectedVE: parseInt(e.target.attributes[0].value)
      })
@@ -307,53 +305,94 @@ class VenueEventContainer extends Component{
          dateObj[ticket.venue_event_id] = true
        }
      })
-     return(dateArr.map(showing=><span value={showing.id} name='selectedVE' onClick={this.handleDropdown}>{showing.event_info.date}||{showing.event_info.time}</span>))
+     return(dateArr.map(showing=><List.Item name='selectedVE' value={showing.id} onClick={this.handleDropdown}>{showing.event_info.date} @ {showing.event_info.time}</List.Item>))
    }
 
-   returnPopUp = () => {
-    return(
-    <Popup trigger={<Button onClick={this.checkForPurchase}size="big" primary>Write a Review!</Button>}position="top center">
-     <Form big>
-       <Form.Field>
-         <label>Rating</label>
-         <input name="reviewRating" value={this.state.rating}onChange={this.handleChange}type="integer" />
-       </Form.Field>
-       <Dropdown text="Time and date">
-        <Dropdown.Menu>
-          {this.configurePurchasedDates()}
-        </Dropdown.Menu>
-        </Dropdown>
-       <Form.Field>
-         <label>Review Body</label>
-         <input name="reviewBody" type="textarea" value={this.state.body}onChange={this.handleChange}placeholder="this was an awesome event..."/>
-       </Form.Field>
-       <Button onClick={this.submitReview}primary>Submit</Button>
-     </Form>
-     </Popup>
+   flipTheReviewSwitch = () => {
+     this.setState((prevState)=>{
+       return{
+         clicked: !prevState.clicked
+       }
+     })
+   }
+
+   handleRating = (e) => {
+     this.setState({
+       reviewRating: parseInt(e.target.value)
+     })
+   }
+
+
+   returnReview = () => {
+    return( this.state.clicked ? <Form big>
+        <Button onClick={this.flipTheReviewSwitch}>Close Review Form </Button>
+        <Form.Field>
+          <label>Rating</label>
+          <input name="reviewRating" placeHolder={"0-10"}onChange={this.handleRating}type="number" min="0" max="10" />
+        </Form.Field>
+        <Dropdown text="Time and date">
+         <Dropdown.Menu>
+           {this.configurePurchasedDates()}
+         </Dropdown.Menu>
+         </Dropdown>
+        <Form.Field>
+          <label>Review Body</label>
+          <textarea name="reviewBody" type="textarea" onChange={this.handleChange}placeholder="this was an awesome event..."/>
+        </Form.Field>
+        <Button onClick={this.validateReview}primary>Submit</Button>
+      </Form> :
+      <Button onClick={this.flipTheReviewSwitch}>Write a Review!</Button>
     )
    }
 
    submitReview = () => {
-     let token = localStorage.getItem("token")
-     fetch('https://localhost:3001/reviews/create',{
-       method: 'POST',
-       headers: {
-         'Authorization':token,
+       let token = localStorage.getItem("token")
+       fetch('https://localhost:3001/reviews/create',{
+         method:'POST',
+         headers:{
+           'Authorization':token,
            'Content-Type': 'application/json',
            'Accepts': 'application/json'
          },
-       body:JSON.stringify({
-           // userID:this.props.user,
-           // venueEventID:
+         body:JSON.stringify({
+           userID: this.props.user,
+           venueEventID: this.state.selectedVE,
+           reviewRating: this.state.reviewRating,
+           reviewBody: this.state.reviewBody
          })
-       })
-       .then(resp=>resp.json())
-       .then(data=>console.log(data))
+       }).then(resp=>{console.log(resp)})
+
+     }
+     // fetch("https://eventhub-backend.herokuapp.com/tickets/purchase",{
+     //   method:'POST',
+     //   headers:{
+     //       'Authorization':token,
+     //       'Content-Type': 'application/json',
+     //       'Accepts': 'application/json'
+     //   },
+     //   body:JSON.stringify({
+     //     userID: this.props.user,
+     //     venueEventID: this.state.selectedVE,
+     //     reviewRating: this.state.reviewRating,
+     //     reviewBody: this.state.reviewBody
+     //   })
+     // })
+     //   .then(resp=>resp.json())
+     //   .then(data=>console.log(data))
+
+     validateReview = () => {
+       // event.persist()
+       if(this.state.selectedVE !== null){
+         this.submitReview()
+       }
+       else{
+         alert("select a date to review for")
+       }
      }
 
-
   render()
-    {console.log(this.state)
+    {
+      console.log(this.props)
       this.createInfo()
       return(
       <Container >
@@ -400,7 +439,7 @@ class VenueEventContainer extends Component{
       <Divider/>
       <Container>
       {this.props.reviews.length > 0 ? <h2>Reviews</h2> : <h2>{this.props.user.id != null ? "Be the first to write a review for this Event!":"Log in to write a review!"}</h2>}
-      { this.props.user.id !== null ? this.returnPopUp() : null}
+      { this.props.user.id !== null ? this.returnReview() : null}
       </Container>
       <Divider/>
       </Container>

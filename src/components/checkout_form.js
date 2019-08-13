@@ -9,7 +9,7 @@ class CheckoutForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  submit(ev) {
+  submit() {
     // User clicked submit
     let token = localStorage.getItem('token')
     fetch('https://eventhub-backend.herokuapp.com/tickets/purchase',{

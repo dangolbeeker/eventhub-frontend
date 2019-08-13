@@ -23,6 +23,7 @@ const HomeContainer = (props) => {
   return (
     <Container>
     <p>pss... use username: edwin, password: ed if you don't want to register</p>
+    <p>If nothing comes up for events, give it some time. heroku is waking up my backend.</p>
     <Image className="animate-pop-in"inline height='140'src='https://i.imgur.com/VYmFGrQ.png'/>
       <h2 classname="animate-pop-in">Featured Venues</h2>
     <Container celled="true">
