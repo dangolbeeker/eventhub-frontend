@@ -38,7 +38,7 @@ class App extends React.Component{
     fetch('https://eventhub-backend.herokuapp.com/events/index')
     .then(resp=>resp.json())
     .then(events=>{this.props.addEvents(events)})
-    fetch('http://localhost:3001/venue_events/index')
+    fetch('http://eventhub-backend.herokuapp.com/venue_events/index')
     .then(resp=>resp.json())
     .then(venueEvents=>{this.props.addVenueEvents(venueEvents)})
     // fetch('https://eventhub-backend.herokuapp.com/reviews/index')

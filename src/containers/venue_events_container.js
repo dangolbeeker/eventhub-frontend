@@ -403,7 +403,7 @@ class VenueEventContainer extends Component{
               </Feed.Label>
               <Feed.Content>
               <Feed.Summary>
-              <Feed.User>"someone for now, will be someones name later"</Feed.User>
+              <Feed.User>random dude who will have a name later when i figure it out</Feed.User>
               <Feed.Like>
               <Icon name="star"/>
               {`${review.rating} stars` }
