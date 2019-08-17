@@ -10,6 +10,7 @@ class TicketContainer extends React.Component{
   findVenue = (venues,item) => {
     let obj = {}
     venues.forEach(venue=>{
+      console.log(venue)
       if(venue.id===item.venue_id){
         obj = venue
       }}
@@ -30,6 +31,7 @@ class TicketContainer extends React.Component{
   findVenueEvent = (venueEvents,item) => {
     let obj = {}
     venueEvents.forEach(venueEvent=>{
+      console.log(venueEvent)
       if(venueEvent.id===item.venue_event_id){
         obj = venueEvent
       }}
@@ -127,6 +129,7 @@ handleNaming = () => {
 }
 
 const configureVDisplay = (ve,things) => {
+  debugger
     return ve.map(ve=>{
       return things[ve.venue_id]
     })

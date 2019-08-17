@@ -1,6 +1,6 @@
 import React from 'react'
 import {Component,Fragment} from 'react'
-import {List,Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button,Dropdown} from 'semantic-ui-react'
+import {Feed,List,Card,Container,Image,Accordion,Divider,Grid,Segment,Form,Button,Dropdown,Icon} from 'semantic-ui-react'
 import StackGrid from 'react-stack-grid'
 import {connect} from 'react-redux'
 import Slot from '../components/slot'
@@ -325,6 +325,7 @@ class VenueEventContainer extends Component{
 
    returnReview = () => {
     return( this.state.clicked ? <Form big>
+        <h2>The review functionality is under construction, submitting one might break the site</h2>
         <Button onClick={this.flipTheReviewSwitch}>Close Review Form </Button>
         <Form.Field>
           <label>Rating</label>
@@ -390,9 +391,42 @@ class VenueEventContainer extends Component{
        }
      }
 
+     returnReviews = (reviews) => {
+       console.log(reviews)
+       return(
+         <Feed>
+         {
+           reviews.map(review=>
+             <>
+             <Feed.Event>
+              <Feed.Label>
+                <Image src="https://icon-library.net/images/free-profile-icon/free-profile-icon-25.jpg"/>
+              </Feed.Label>
+              <Feed.Content>
+              <Feed.Summary>
+              <Feed.User>"someone for now, will be someones name later"</Feed.User>
+              <Feed.Like>
+              <Icon name="star"/>
+              {`${review.rating} stars` }
+              </Feed.Like>
+              <Feed.Extra text>
+                {review.body}
+              </Feed.Extra>
+              </Feed.Summary>
+              </Feed.Content>
+             </Feed.Event>
+             <Divider/>
+             </>
+           )
+         }
+         </Feed>
+       )
+       // reviews.map(review=>)
+     }
+
   render()
     {
-      console.log(this.props)
+      console.log(this.props.reviews.length)
       this.createInfo()
       return(
       <Container >
@@ -438,8 +472,9 @@ class VenueEventContainer extends Component{
       </StackGrid>
       <Divider/>
       <Container>
-      {this.props.reviews.length > 0 ? <h2>Reviews</h2> : <h2>{this.props.user.id != null ? "Be the first to write a review for this Event!":"Log in to write a review!"}</h2>}
-      { this.props.user.id !== null ? this.returnReview() : null}
+      {this.props.reviews.length === 0 ? <h2>{this.props.user.id != null ? "Be the first to write a review for this Event!":"Log in to write a review!"}</h2> : <h2>Reviews</h2> }
+      {this.props.user.id !== null ? this.returnReview() : null}
+      {this.props.reviews.length === 0 ? null : this.returnReviews(this.props.reviews)}
       </Container>
       <Divider/>
       </Container>
@@ -466,20 +501,24 @@ const returnImages = (state) => {
   return testImagesForNull(images)
 }
 
-const returnReviews = (reviews,venueEvent) => {
-  return(venueEvent.length === 0 && reviews.length === 0 ? [] : createReviewsArr(reviews,venueEvent))
+const returnReviews = (venueEvents) => {
+  let arr = []
+    venueEvents.forEach(ve=>{
+      arr = arr.concat(ve.reviews)
+    })
+    return arr
 }
 
-const createReviewsArr = (reviews,venueEvent) => {
-  console.log(reviews.filter(review=>review.venue_event.id === venueEvent.id))
-  return []
-}
+// const createReviewsArr = (reviews,venueEvent) => {
+//   console.log(reviews.filter(review=>review.venue_event.id === venueEvent.id))
+//   return []
+// }
 
 
 const mapStateToProps=(state)=>{
   return{
     user:state.user,
-    reviews:returnReviews(state.reviews,state.selectedContentVenueEvents),
+    reviews:returnReviews(state.selectedContentVenueEvents),
     images:returnImages(state),
     selectedContent:state.selectedContent,
     selectedContentVenueEvents:state.selectedContentVenueEvents,
