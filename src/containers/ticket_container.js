@@ -88,6 +88,9 @@ handleNaming = () => {
 
 
   render(){
+    console.log(
+      "if you see this log, don't worry about. but be worried if you don't see it"
+  )
       return (
     <StripeProvider apiKey="pk_test_tBdnFsQYv5jxi24KtBSB6Kyp00dieuLXMt">
       <Container>
