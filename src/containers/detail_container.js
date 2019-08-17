@@ -51,7 +51,6 @@ const DetailContainer = (props) => {
   }
 
   const createInfo = () =>{
-    console.log(props)
     if(props.selectedContent.address_info){
 
 
