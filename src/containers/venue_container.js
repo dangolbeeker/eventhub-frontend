@@ -70,7 +70,7 @@ class VenueContainer extends React.Component{
 
 
   render()
-  {
+   {
     return (
     <Container >
     <h1>Event Hub</h1>
@@ -112,7 +112,6 @@ const configureEventsOrVenues = (location,state) => {
     case"events":
     return{venuesOrEvents:configureEvents(location[4],state.events)}
     default:
-    console.log('you super done goofed here')
     break;
   }
 }

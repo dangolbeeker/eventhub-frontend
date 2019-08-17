@@ -43,18 +43,18 @@ class CartContainer extends React.Component{
 
 // componentDidUpdate = (prevProps) => {
 //   // compare urls on update
-//   debugger
+//
 //   if(this.props.location.pathname !== prevProps.location.pathname){
 //     //set venueOrEvents to null and let mapstate handle giving props
-//     debugger
+//
 //     this.forceUpdate()
 // }}
 
 // shouldComponentUpdate = (prevProps) => {
-//   console.log("FROM",this.props.location.pathname)
-//   console.log("TO",prevProps.location.pathname)
-//   console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
-//   debugger
+//   ("FROM",this.props.location.pathname)
+//   ("TO",prevProps.location.pathname)
+//   ("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
+//
 //   return(prevProps.location.pathname === this.props.location.pathname ? false : true)
 // }
 
@@ -83,7 +83,7 @@ handleNaming = () => {
     case"/tickets":
     return(this.props.displayTickets.length>0 ? "Tickets" : "You have no tickets!")
     default:
-    console.log("you got here somehow, enjoy")
+    break;
   }
 }
 
@@ -124,10 +124,10 @@ handleNaming = () => {
  // const configureTickets=(tickets)=>{
  //   switch(window.location.href.split('/')[3]){
  //     case"tickets":
- //     debugger
+ //
  //     return(Object.values(tickets).filter(ticket=>ticket.bought===true))
  //     case"cart":
- //     debugger
+ //
  //     return(Object.values(tickets).filter(ticket=>ticket.bought===false))
  //   }
  // }
@@ -157,8 +157,8 @@ const configureVDisplay = (ve,things) => {
  const mapStateToProps = (state) => {
    // let ticketsToRender = configureTickets(state.user.tickets)
    // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
-   // console.log(ticketsToRender)
-   // console.log(ticketVenueEvents)
+   // (ticketsToRender)
+   // (ticketVenueEvents)
 
    let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought===false)
    let displayVE = configureVEDisplay(tickets,state.venueEvents)

@@ -24,6 +24,7 @@ const defaultState = {
       case"ADD_EVENTS":
         return {...state,events:action.payload}
       case"ADD_VENUE_EVENTS":
+        
         return {...state,venueEvents:action.payload}
       case"ADD_REVIEWS":
         return {...state,reviews:action.payload}

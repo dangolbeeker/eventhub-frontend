@@ -53,7 +53,7 @@ class App extends React.Component{
     if(venueEvents.length>0&&Object.values(obj).length>0)
     {
       // newObj[venueEvents[0].event_id] = obj[venueEvents[0].event_id]
-      // console.log("FORCED ITEM",newObj)
+      // ("FORCED ITEM",newObj)
     venueEvents.forEach(event=>{
       if(newObj[event.event_id]){}
       else{newObj[event.event_id] = obj[event.event_id]}
@@ -134,6 +134,7 @@ class App extends React.Component{
           <Route exact path="/event/:id" render={(routerProps) => {
               const foundEvent = this.props.events[parseInt(routerProps.match.params.id)]
                 if (foundEvent){
+                  console.log(Object.values(this.props.venueEvents))
                   const foundEventVenues = Object.values(this.props.venueEvents).filter(event=>event.event_id===foundEvent.id)
                   if(foundEventVenues){
                     const foundVenuesForEvent = this.makeFoundVenues(foundEventVenues,this.props.venues)

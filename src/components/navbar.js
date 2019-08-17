@@ -38,7 +38,7 @@ class Navbar extends React.Component{
   }
 
   // pushNavbar = (name) => {
-  //   console.log(this.props)
+  //   (this.props)
   //   switch(name){
   //     case"venues":
   //       this.props.history.push('/venues')
@@ -53,7 +53,7 @@ class Navbar extends React.Component{
   //       this.props.history.push('/tickets')
   //       break;
   //     case"sports":
-  //       console.log("should be going to sports")
+  //       ("should be going to sports")
   //       this.props.history.push('/events/sports')
   //       break;
   //     case"music":

@@ -272,7 +272,7 @@ class VenueEventContainer extends Component{
    checkForPurchase = () => {
      alert("review writing is under construction!")
     let matchingTickets  = this.makeMatchingtickets(this.props.user.tickets,this.props.selectedContentVenueEvents)
-    console.log(matchingTickets.length)
+    (matchingTickets.length)
     matchingTickets.length > 0 ? this.toggleForm() : alert("you must buy a ticket to the event before you can review it!")
    }
 
@@ -346,24 +346,24 @@ class VenueEventContainer extends Component{
     )
    }
 
-   submitReview = () => {
-       let token = localStorage.getItem("token")
-       fetch('https://localhost:3001/reviews/create',{
-         method:'POST',
-         headers:{
-           'Authorization':token,
-           'Content-Type': 'application/json',
-           'Accepts': 'application/json'
-         },
-         body:JSON.stringify({
-           userID: this.props.user,
-           venueEventID: this.state.selectedVE,
-           reviewRating: this.state.reviewRating,
-           reviewBody: this.state.reviewBody
-         })
-       }).then(resp=>{console.log(resp)})
+   // submitReview = () => {
+   //     let token = localStorage.getItem("token")
+   //     fetch('https://localhost:3001/reviews/create',{
+   //       method:'POST',
+   //       headers:{
+   //         'Authorization':token,
+   //         'Content-Type': 'application/json',
+   //         'Accepts': 'application/json'
+   //       },
+   //       body:JSON.stringify({
+   //         userID: this.props.user,
+   //         venueEventID: this.state.selectedVE,
+   //         reviewRating: this.state.reviewRating,
+   //         reviewBody: this.state.reviewBody
+   //       })
+   //     }).then(resp=>{(resp)})
 
-     }
+     // }
      // fetch("https://eventhub-backend.herokuapp.com/tickets/purchase",{
      //   method:'POST',
      //   headers:{
@@ -379,7 +379,7 @@ class VenueEventContainer extends Component{
      //   })
      // })
      //   .then(resp=>resp.json())
-     //   .then(data=>console.log(data))
+     //   .then(data=>(data))
 
      validateReview = () => {
        // event.persist()
@@ -392,7 +392,6 @@ class VenueEventContainer extends Component{
      }
 
      returnReviews = (reviews) => {
-       console.log(reviews)
        return(
          <Feed>
          {
@@ -426,7 +425,6 @@ class VenueEventContainer extends Component{
 
   render()
     {
-      console.log(this.props.reviews.length)
       this.createInfo()
       return(
       <Container >
@@ -510,7 +508,7 @@ const returnReviews = (venueEvents) => {
 }
 
 // const createReviewsArr = (reviews,venueEvent) => {
-//   console.log(reviews.filter(review=>review.venue_event.id === venueEvent.id))
+//   (reviews.filter(review=>review.venue_event.id === venueEvent.id))
 //   return []
 // }
 

@@ -10,7 +10,6 @@ const HomeContainer = (props) => {
 
 
   const renderVenueCards = () => {
-
     let arr = Object.values(props.venues)
     return arr.map(venue=><Grid.Column><HomeCard key={venue.id} {...venue}{...props.location} /></Grid.Column>)
   }
@@ -28,7 +27,7 @@ const HomeContainer = (props) => {
       <h2 classname="animate-pop-in">Featured Venues</h2>
     <Container celled="true">
     <Card.Group center="true">
-      <Grid columns={Object.keys(props.venues).length}>
+      <Grid columns={2}>
       {renderVenueCards()}
       </Grid>
     </Card.Group>

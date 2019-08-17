@@ -35,7 +35,7 @@ const DetailContainer = (props) => {
   //
   // const generatePanels = () => {
   //   if(props.selectedContent){
-  //     debugger
+  //
   //       return([
   //       {key:0,
   //         title:"Address Info",
@@ -51,9 +51,9 @@ const DetailContainer = (props) => {
   }
 
   const createInfo = () =>{
-
+    console.log(props)
     if(props.selectedContent.address_info){
-      debugger
+
 
 
       // info.push("Address Info")
@@ -177,7 +177,7 @@ const DetailContainer = (props) => {
   }}
 
   const renderGoogleMap = (addressInfo) => {
-    debugger
+
     return(
       <div className={props.selectedContent.images === null ? 'mapbox2' : 'mapbox'}>
       <Map

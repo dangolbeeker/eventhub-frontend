@@ -10,7 +10,6 @@ class TicketContainer extends React.Component{
   findVenue = (venues,item) => {
     let obj = {}
     venues.forEach(venue=>{
-      console.log(venue)
       if(venue.id===item.venue_id){
         obj = venue
       }}
@@ -31,7 +30,6 @@ class TicketContainer extends React.Component{
   findVenueEvent = (venueEvents,item) => {
     let obj = {}
     venueEvents.forEach(venueEvent=>{
-      console.log(venueEvent)
       if(venueEvent.id===item.venue_event_id){
         obj = venueEvent
       }}
@@ -40,10 +38,10 @@ class TicketContainer extends React.Component{
   }
 
 // shouldComponentUpdate = (prevProps) => {
-//   console.log("FROM",this.props.location.pathname)
-//   console.log("TO",prevProps.location.pathname)
-//   console.log("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
-//   debugger
+//   ("FROM",this.props.location.pathname)
+//   ("TO",prevProps.location.pathname)
+//   ("IF FALSE SHOULD NOT UPDATE",prevProps.location.pathname === this.props.location.pathname)
+//
 //   return(prevProps.displayTickets.length===this.props.displayTickets||prevProps.location.pathname === this.props.location.pathname ? false : true)
 // }
 //
@@ -54,7 +52,7 @@ class TicketContainer extends React.Component{
  renderCart = () => {
      if(this.props.displayTickets.length>0&&this.props.displayVenues.length>0&&this.props.displayEvents.length>0&&this.props.displayVenueEvents.length>0)
      {
-       debugger
+
        return(this.props.displayTickets).map(ticket=>{
 
         let cartVenueEvent = this.findVenueEvent(this.props.displayVenueEvents,ticket)
@@ -76,7 +74,7 @@ handleNaming = () => {
     case"/tickets":
     return(this.props.displayTickets.length>0 ? "Tickets" : "You have no tickets!")
     default:
-    console.log("you got here somehow, enjoy")
+    break;
   }
 }
 
@@ -112,10 +110,10 @@ handleNaming = () => {
  // const configureTickets=(tickets)=>{
  //   switch(window.location.href.split('/')[3]){
  //     case"tickets":
- //     debugger
+ //
  //     return(Object.values(tickets).filter(ticket=>ticket.bought===true))
  //     case"cart":
- //     debugger
+ //
  //     return(Object.values(tickets).filter(ticket=>ticket.bought===false))
  //   }
  // }
@@ -129,7 +127,7 @@ handleNaming = () => {
 }
 
 const configureVDisplay = (ve,things) => {
-  debugger
+
     return ve.map(ve=>{
       return things[ve.venue_id]
     })
@@ -140,8 +138,8 @@ const configureVDisplay = (ve,things) => {
  const mapStateToProps = (state) => {
    // let ticketsToRender = configureTickets(state.user.tickets)
    // let ticketVenueEvents = ticketsToRender.map(ticket=>state.venueEvents[ticket.venue_event_id])
-   // console.log(ticketsToRender)
-   // console.log(ticketVenueEvents)
+   // (ticketsToRender)
+   // (ticketVenueEvents)
       let tickets =  Object.values(state.tickets).filter(ticket=>ticket.bought===true)
       let displayVE = configureVEDisplay(tickets,state.venueEvents)
    return{
