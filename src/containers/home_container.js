@@ -27,7 +27,7 @@ const HomeContainer = (props) => {
       <h2 classname="animate-pop-in">Featured Venues</h2>
     <Container celled="true">
     <Card.Group center="true">
-      <Grid columns={2}>
+      <Grid columns={Object.keys(props.venues).length}>
       {renderVenueCards()}
       </Grid>
     </Card.Group>
